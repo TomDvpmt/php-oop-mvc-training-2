@@ -1,6 +1,8 @@
 <?php
 
-class Controller {
+namespace PhpTraining2\core;
+
+trait Controller {
 
     /**
      * Requires a specific view.

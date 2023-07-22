@@ -3,11 +3,11 @@
 /**
  * Displays info in a readable manner.
  * 
- * @param mixed $stuff
+ * @param mixed $data
  */
 
-function show($stuff) {
+function show($data) {
     echo "<pre>";
-    print_r($stuff);
+    print_r($data);
     echo "</pre>";
 }

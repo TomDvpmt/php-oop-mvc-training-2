@@ -1,9 +1,15 @@
 <?php
 
-class Home extends Controller {
+namespace PhpTraining2\controllers;
+
+use PhpTraining2\core\Controller;
+
+class Home {
+
+    use Controller;
     
     public function index() {
-        // echo "This is home controller";
         $this->view("home");
+        
     }
 }

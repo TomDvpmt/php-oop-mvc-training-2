@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpTraining2\core;
+
 class App {
 
     private string $controller = "Home";
@@ -28,7 +30,7 @@ class App {
         $filename = ucfirst($url[0]);
         $filepath = "../app/controllers/" . $filename . ".php";
 
-        $this-> controller = $filename;
+        $this->controller = $filename;
 
         if(!file_exists($filepath)) {
             $filepath = "../app/controllers/Error404.php";
@@ -36,7 +38,8 @@ class App {
         } 
         require $filepath;
 
-        $controller = new $this->controller;
+        $controllerFullName = "\\PhpTraining2\\controllers\\" . $this->controller;
+        $controller = new $controllerFullName;
         call_user_func_array([$controller, $this->method], []);
     }
 }
