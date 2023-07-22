@@ -35,7 +35,7 @@ trait Database {
      * @return mixed
      */
 
-    public function getRows($query, $params = []) {
+     public function getRows($query, $params = []) {
         $pdo = $this->connect();
 
         try {
@@ -53,4 +53,5 @@ trait Database {
             die("Error : " . $e->getMessage());
         }
     }
+    
 }
