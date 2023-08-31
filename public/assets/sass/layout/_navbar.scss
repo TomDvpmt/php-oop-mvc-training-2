@@ -1,0 +1,22 @@
+.navbar {
+    background-color: $color-primary;
+    padding: 0 1rem;
+
+    ul {
+        display: flex;
+        gap: 1rem;
+        list-style-type: none;
+    }
+
+    a {
+        display: block;
+        padding: 1rem 0;
+        text-decoration: none;
+        transition: all ease 100ms;
+
+        &:hover {
+            background-color: $color-secondary;
+            color: white;
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "name": "php-training2",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "sass": "sass --watch ./public/assets/sass/main.scss:./public/assets/css/style.css --style compressed"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "sass": "^1.66.1"
+    }
+}

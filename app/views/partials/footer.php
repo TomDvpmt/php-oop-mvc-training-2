@@ -1,0 +1,3 @@
+<footer>
+    Great footer
+</footer>

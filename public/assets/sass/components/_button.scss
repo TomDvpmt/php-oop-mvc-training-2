@@ -1,0 +1,15 @@
+.button {
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    border: none;
+    background-color: $color-secondary;
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color ease 150ms;
+
+    &:hover {
+        background-color: lighten($color-secondary, 10%);
+    }
+}

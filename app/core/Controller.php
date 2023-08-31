@@ -7,6 +7,7 @@ trait Controller {
     /**
      * Requires a specific view.
      * 
+     * @access public
      * @param string $name The view name
      */
 

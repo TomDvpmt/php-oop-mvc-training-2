@@ -1,0 +1,28 @@
+/**************************** Couleurs *****************************/
+
+$color-text: black;
+$color-text-light: lighten($color-text, 10%);
+$color-text-lighter: lighten($color-text, 30%);
+$color-text-lightest: lighten($color-text, 50%);
+
+$color-primary: #c3d4e8;
+$color-secondary: #718073;
+$color-secondary-darker: darken($color-secondary, 10%);
+$color-tertiary: #eccbb4;
+
+$color-background-default: #f7f7f7;
+$color-background-dark: darken($color-background-default, 5%);
+$color-background-darker: darken($color-background-default, 20%);
+$color-background-darkest: darken($color-background-default, 70%);
+
+$color-success: #00c224;
+$color-danger: #ff0000;
+
+/*************************** Breakpoints ****************************/
+
+$breakpoints: (
+    tablet: 700px,
+    tablet-large: 950px,
+    desktop: 1200px,
+    desktop-large: 1440px,
+);

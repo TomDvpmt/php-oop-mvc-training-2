@@ -1,0 +1,24 @@
+.form {
+    max-width: 300px;
+    margin: 4rem auto;
+
+    &__errors {
+        padding-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    &__field {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        & input {
+            padding: 0.5rem 1rem;
+            border-width: 1px;
+            border-radius: 0.5rem;
+        }
+    }
+}

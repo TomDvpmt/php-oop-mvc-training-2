@@ -6,11 +6,12 @@ use PDO;
 use Exception;
 
 trait Database {
+    
     /**
      * Connects to the database with PDO
      * 
      * @access private
-     * @package PhpTraining2/core
+     * @package PhpTraining2\core
      * @return object
      */
     
@@ -29,7 +30,7 @@ trait Database {
      * Gets a list of rows from the database.
      * 
      * @access public
-     * @package PhpTraining2/core
+     * @package PhpTraining2\core
      * @param string $query The SQL query string
      * @param array $params The optional parameters to the query
      * @return mixed
