@@ -6,12 +6,12 @@ require_once '../vendor/autoload.php';
 $dotenv = Dotenv::createImmutable("..");
 $dotenv->load();
 
-require "config.php";
-require "functions.php";
-require "Database.php";
-require "Model.php";
-require "Controller.php";
-require "App.php";
+require_once "config.php";
+require_once "functions.php";
+require_once "Database.php";
+require_once "Model.php";
+require_once "Controller.php";
+require_once "App.php";
 
 
 

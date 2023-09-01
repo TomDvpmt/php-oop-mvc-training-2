@@ -38,7 +38,7 @@ class App {
             $filepath = "../app/controllers/Error404.ctrl.php";
             $this->controller = "Error404";
         } 
-        require $filepath;
+        require_once $filepath;
 
         /** Select method **/
         $controllerFullName = "\\PhpTraining2\\controllers\\" . $this->controller;

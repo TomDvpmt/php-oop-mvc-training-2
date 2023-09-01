@@ -1,0 +1,7 @@
+/************ Media queries **************/
+
+@mixin responsive($screen-type) {
+    @media screen and (min-width: map-get($breakpoints, $screen-type)) {
+        @content;
+    }
+}

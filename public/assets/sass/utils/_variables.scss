@@ -1,4 +1,4 @@
-/**************************** Couleurs *****************************/
+/**************************** Colors *****************************/
 
 $color-text: black;
 $color-text-light: lighten($color-text, 10%);
@@ -21,6 +21,7 @@ $color-danger: #ff0000;
 /*************************** Breakpoints ****************************/
 
 $breakpoints: (
+    mobile-large: 500px,
     tablet: 700px,
     tablet-large: 950px,
     desktop: 1200px,

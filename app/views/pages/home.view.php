@@ -1,5 +1,6 @@
 <?php 
 
+$location = "home";
 $title = "Home view";
 $content = "<p>Awesome content</p>";
 

@@ -16,6 +16,6 @@ trait Controller {
         if(!file_exists($filename)) {
             $filename = "../app/views/error404.view.php";
         } 
-        require $filename;
+        require_once $filename;
     }
 }

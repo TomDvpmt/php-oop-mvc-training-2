@@ -1,13 +1,16 @@
 <nav class="navbar">
     <ul>
        <li>
-           <a href="/">Home</a>
+           <a href="/public">Home</a>
        </li>
        <li>
+           <a href="/public/products">Products</a>
+       </li>
+       <!-- <li>
            <a href="/login">Log in</a>
        </li>
        <li>
            <a href="/register">Register</a>
-       </li> 
+       </li>  -->
     </ul>
 </nav>
