@@ -11,7 +11,7 @@ trait Controller {
      * @param string $name The view name
      */
 
-    public function view($name) {
+    public function view($name, $errorMessage = null, $successMessage = null) {
         $filename = "../app/views/" . $name . ".view.php";
         if(!file_exists($filename)) {
             $filename = "../app/views/error404.view.php";

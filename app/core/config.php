@@ -15,3 +15,5 @@ define("DB_PASSWORD", $_SERVER["DB_PASSWORD"]);
 // define main folders paths
 $rootDir = htmlspecialchars(($_SERVER["DOCUMENT_ROOT"]));
 define("VIEWS_DIR", $rootDir . "/app/views/");
+define("CTRL_DIR", $rootDir . "/app/controllers/");
+define("MODELS_DIR", $rootDir . "/app/models/");

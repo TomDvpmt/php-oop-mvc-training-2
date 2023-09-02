@@ -15,10 +15,9 @@ class App {
 
     private function splitUrl() {
 
-        $url = $_GET["url"] ?? "home";
-        $url = explode("/", $url);
-
-        return $url;
+        $URL = $_GET["url"] ?? "home";
+        $URL = explode("/", $URL);
+        return $URL;
     }
 
     /**
@@ -26,10 +25,10 @@ class App {
      */
 
     public function loadController() {
-        $url = $this->splitUrl();
+        $URL = $this->splitUrl();
 
         /** Select controller **/
-        $filename = ucfirst($url[0]);
+        $filename = ucfirst($URL[0]);
         $filepath = "../app/controllers/" . $filename . ".ctrl.php";
 
         $this->controller = $filename;
@@ -40,9 +39,19 @@ class App {
         } 
         require_once $filepath;
 
-        /** Select method **/
         $controllerFullName = "\\PhpTraining2\\controllers\\" . $this->controller;
         $controller = new $controllerFullName;
+
+        /** Select method **/
+        if(!empty($URL[1])) {
+            if(method_exists($controller, $URL[1])) {
+                $this->method = $URL[1];
+                unset($URL[1]);
+            }
+        }
+
+        show($URL);
+        show($this->method);
 
         // call_user_func_array : the first parameter is an array with the class of the function and its name, the second is an array of arguments for the function
         call_user_func_array([$controller, $this->method], []); 
