@@ -9,9 +9,12 @@ trait Controller {
      * 
      * @access public
      * @param string $name The view name
+     * @param array $data Array of data to pass to the view
+     * @param string $errorMessage Error message to display
+     * @param string $successMessage Success message to display
      */
 
-    public function view($name, $errorMessage = null, $successMessage = null) {
+    public function view($name, $data = [], $errorMessage = null, $successMessage = null) {
         $filename = "../app/views/" . $name . ".view.php";
         if(!file_exists($filename)) {
             $filename = "../app/views/error404.view.php";

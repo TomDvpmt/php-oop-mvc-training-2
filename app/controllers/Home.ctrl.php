@@ -11,7 +11,6 @@ class Home {
     use Model;
     
     public function index() {
-        // show($this->findOne(["email" => "test@test.com"]));
         $this->view("pages/home");
     }
 

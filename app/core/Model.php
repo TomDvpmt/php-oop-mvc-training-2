@@ -8,6 +8,7 @@ trait Model {
     
     use Database;
 
+    // default values
     protected string $table = "users";
     protected int $limit = 10;
     protected int $offset = 0;
@@ -71,7 +72,6 @@ trait Model {
      * @access public
      * @package PhpTraining2\core
      * @param array $data
-     * @param array $dataNot
      * @return array
      */
 
@@ -83,12 +83,20 @@ trait Model {
     }
 
     /**
+     * Add an entry in a table
      * 
+     * @access public
+     * @package PhpTraining2\core
+     * @param array $data
      */
 
     public function create($data) 
     {
-
+        $columns = array_keys($data);
+        $values = array_map(fn($item) => "'" . $item . "'", array_values($data));
+        $query = "INSERT INTO $this->table (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $values) . ")";
+        
+        $this->getRows($query);
     }
 
     public function update($id, $data) 

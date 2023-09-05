@@ -1,6 +1,6 @@
 <?php 
 
 $title = "Products";
-$content = "<p>Awesome products</p>";
+$content = $data;
 
 require_once VIEWS_DIR . "/layout.php";
