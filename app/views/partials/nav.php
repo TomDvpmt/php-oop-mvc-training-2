@@ -4,7 +4,10 @@
            <a href="/public">Home</a>
        </li>
        <li>
-           <a href="/public/products">Products</a>
+           <a href="/public/shoes">Shoes</a>
+       </li>
+       <li>
+           <a href="/public/equipment">Equipment</a>
        </li>
        <li>
            <a href="/public/products/add">Add a product</a>

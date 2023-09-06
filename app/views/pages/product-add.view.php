@@ -6,6 +6,13 @@ ob_start(); ?>
 
 <form method="POST" class="form">
     <div class="form__field">
+        <select name="product-type" id="product-type">
+            <option value="">-- Please choose a product type --</option>
+            <option value="shoes">Shoes</option>
+            <option value="equipment">Equipment</option>
+        </select>
+    </div>
+    <div class="form__field">
         <label for="product-name">Name :</label>
         <input type="text" name="product-name" />
     </div>

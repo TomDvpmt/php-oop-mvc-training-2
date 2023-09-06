@@ -1,5 +1,4 @@
-<article>
-    <h2><?= $product->name ?></h2>
-    <p><?= $product->description ?></p>
-    <p>$ <?= $product->price ?></p>
+<article class="product">
+    <h2 class="product__title"><?= $product->name ?></h2>
+    <p class="product__price">$ <?= $product->price ?></p>
 </article>

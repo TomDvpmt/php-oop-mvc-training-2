@@ -14,10 +14,10 @@ trait Controller {
      * @param string $successMessage Success message to display
      */
 
-    public function view($name, $data = [], $errorMessage = null, $successMessage = null) {
+    public function view(string $name, array $data = [], string $errorMessage = null, string $successMessage = null) {
         $filename = "../app/views/" . $name . ".view.php";
         if(!file_exists($filename)) {
-            $filename = "../app/views/error404.view.php";
+            $filename = "../app/views/pages/error404.view.php";
         } 
         require_once $filename;
     }

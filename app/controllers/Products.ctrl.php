@@ -4,7 +4,8 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
-use PhpTraining2\models\Product;
+use PhpTraining2\models\Shoe;
+
 require_once MODELS_DIR . "Product.php";
 
 class Products {
@@ -14,41 +15,41 @@ class Products {
 
     public function __construct()
     {
-        $this->table = "products";
+        
     }
 
-    /**
-     * Entry function of the Products controller (control the Products main page). 
-     * 
-     * @access public
-     * @package PhpTraining2\controllers
-     */
+    // /**
+    //  * Entry function of the Products controller (control the Products main page). 
+    //  * 
+    //  * @access public
+    //  * @package PhpTraining2\controllers
+    //  */
 
 
-    public function index() {
-        $products = $this->getAllProducts();
-        $content = [];
+    // public function index() {
+    //     $products = $this->getAllProducts();
+    //     $content = [];
 
-        foreach($products as $item) {
-            $product = new Product($item->name, $item->description, $item->price);
-            array_push($content, $product->getProductHtml());
-        }
+    //     foreach($products as $item) {
+    //         $product = new Product($item->type, $item->name, $item->description, $item->price);
+    //         array_push($content, $product->getProductHtml());
+    //     }
 
-        $this->view("pages/products", implode($content));
-    }
+    //     $this->view("pages/products", $content);
+    // }
 
-    /**
-     * Get an array of all the products from database. 
-     * 
-     * @access private
-     * @package PhpTraining2\controllers
-     * @return array
-     */
+    // /**
+    //  * Get an array of all the products from database. 
+    //  * 
+    //  * @access private
+    //  * @package PhpTraining2\controllers
+    //  * @return array
+    //  */
 
-    private function getAllProducts() {
-        $products = $this->findAll();
-        return $products;
-    }
+    // private function getAllProducts() {
+    //     $products = $this->findAll();
+    //     return $products;
+    // }
     
 
     /**
@@ -62,13 +63,19 @@ class Products {
 
         if(isset($_POST["product-name"])) {
             
+            $type = htmlspecialchars($_POST["product-type"]);
             $name = htmlspecialchars($_POST["product-name"]);
             $description = htmlspecialchars($_POST["product-description"]);
             $price = htmlspecialchars($_POST["product-price"]);
             
-            if(!empty($name) && !empty($description) && !empty($price)) {
-                $product = new Product($name, $description, $price);
-                $product->createProduct();
+            if(!empty($type) && !empty($name) && !empty($description) && !empty($price)) {
+
+                if($type === "shoe") {
+                    $shoe = new Shoe();
+                    $shoe->createShoe();
+                } elseif($type === "equipment") {
+                    //
+                }
                 $successMessage = "Product added.";
                 $this->view("pages/product-add", [], null, $successMessage);
                 
