@@ -4,8 +4,8 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
-use PhpTraining2\models\Product;
-require_once MODELS_DIR . "Product.php";
+use PhpTraining2\models\Shoe;
+require_once MODELS_DIR . "Shoe.php";
 
 class Shoes {
 
@@ -30,7 +30,14 @@ class Shoes {
         $content = [];
 
         foreach($shoes as $item) {
-            $shoe = new Product($item->name, $item->description, $item->price);
+            $shoe = new Shoe(
+                $item->name, 
+                $item->description, 
+                $item->price, 
+                $item->img_url, // beware of difference between SQL column name (img_url) and php variable (imgUrl)
+                $item->waterproof, 
+                $item->level
+            );
             array_push($content, $shoe->getProductHtml());
         }
 

@@ -3,11 +3,17 @@
 namespace PhpTraining2\models;
 require_once "Product.php";
 
-class Shoe extends Product {
+final class Shoe extends Product {
 
-    public function __construct(protected int $waterproof = 1, protected int $level = 1)
+    public function __construct(
+        protected string $name = "", 
+        protected string $description = "", 
+        protected int $price = 0, 
+        protected string $imgUrl = "", 
+        protected int $waterproof = 1, 
+        protected int $level = 1)
     {
-        parent::__construct();
+        parent::__construct($name, $description, $price, $imgUrl);
     }
 
     /**

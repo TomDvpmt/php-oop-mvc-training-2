@@ -13,11 +13,6 @@ class Products {
     use Controller;
     use Model;
 
-    public function __construct()
-    {
-        
-    }
-
     // /**
     //  * Entry function of the Products controller (control the Products main page). 
     //  * 
@@ -67,14 +62,17 @@ class Products {
             $name = htmlspecialchars($_POST["product-name"]);
             $description = htmlspecialchars($_POST["product-description"]);
             $price = htmlspecialchars($_POST["product-price"]);
+            $imgUrl = htmlspecialchars($_POST["product-imgUrl"]);
+            $waterproof = htmlspecialchars($_POST["product-waterproof"]);
+            $level = htmlspecialchars($_POST["product-level"]);
             
             if(!empty($type) && !empty($name) && !empty($description) && !empty($price)) {
 
                 if($type === "shoe") {
-                    $shoe = new Shoe();
+                    $shoe = new Shoe($name, $description, $price, $imgUrl, $waterproof, $level);
                     $shoe->createShoe();
                 } elseif($type === "equipment") {
-                    //
+                    //                    
                 }
                 $successMessage = "Product added.";
                 $this->view("pages/product-add", [], null, $successMessage);

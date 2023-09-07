@@ -4,13 +4,15 @@ namespace PhpTraining2\models;
 
 use PhpTraining2\core\Model;
 
-class Product {
+abstract class Product {
     use Model;
     
-    public function __construct(protected string $name = "", protected string $description = "", protected int $price = 0, protected string $imgUrl = "")
-    {
-        
-    }
+    public function __construct(
+        protected string $name = "", 
+        protected string $description = "", 
+        protected int $price = 0, 
+        protected string $imgUrl = "")
+    {}
 
     /**
      * Get HTML code for a product
