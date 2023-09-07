@@ -13,38 +13,18 @@ class Products {
     use Controller;
     use Model;
 
-    // /**
-    //  * Entry function of the Products controller (control the Products main page). 
-    //  * 
-    //  * @access public
-    //  * @package PhpTraining2\controllers
-    //  */
+    /**
+     * Get an array of all the products from database. 
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @return array
+     */
 
-
-    // public function index() {
-    //     $products = $this->getAllProducts();
-    //     $content = [];
-
-    //     foreach($products as $item) {
-    //         $product = new Product($item->type, $item->name, $item->description, $item->price);
-    //         array_push($content, $product->getProductHtml());
-    //     }
-
-    //     $this->view("pages/products", $content);
-    // }
-
-    // /**
-    //  * Get an array of all the products from database. 
-    //  * 
-    //  * @access private
-    //  * @package PhpTraining2\controllers
-    //  * @return array
-    //  */
-
-    // private function getAllProducts() {
-    //     $products = $this->findAll();
-    //     return $products;
-    // }
+    protected function getAllProducts() {
+        $products = $this->findAll();
+        return $products;
+    }
     
 
     /**

@@ -7,7 +7,7 @@
            <a href="/public/shoes">Shoes</a>
        </li>
        <li>
-           <a href="/public/equipment">Equipment</a>
+           <a href="/public/equipments">Equipment</a>
        </li>
        <li>
            <a href="/public/products/add">Add a product</a>
