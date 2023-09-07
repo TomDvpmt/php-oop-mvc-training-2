@@ -10,28 +10,10 @@ final class Shoe extends Product {
         protected string $description, 
         protected int $price, 
         protected string $imgUrl, 
-        protected int $waterproof = 1, 
-        protected int $level = 1)
+        protected string $waterproof = "yes", 
+        protected string $level = "regular")
     {
         parent::__construct($name, $description, $price, $imgUrl);
-    }
-
-    /**
-     * Add a shoe item
-     * 
-     * @access public
-     * @package PhpTraining2\controllers
-     */
-
-     public function createShoe() {
-        $data = [
-            "name" => $this->name,
-            "description" => $this->description,
-            "price" => $this->price,
-            "waterproof" => $this->waterproof,
-            "level" => $this->level,
-            "img_url" => $this->imgUrl,
-        ];
-        $this->create($data);
+        $this->table = "shoes";
     }
 }

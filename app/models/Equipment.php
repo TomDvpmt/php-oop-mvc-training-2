@@ -14,23 +14,6 @@ final class Equipment extends Product {
         )
     {
         parent::__construct($name, $description, $price, $imgUrl);
-    }
-
-    /**
-     * Add an equipment item
-     * 
-     * @access public
-     * @package PhpTraining2\controllers
-     */
-
-     public function createEquipment() {
-        $data = [
-            "name" => $this->name,
-            "description" => $this->description,
-            "price" => $this->price,
-            "img_url" => $this->imgUrl,
-            "activity" => $this->activity,
-        ];
-        $this->create($data);
+        $this->table = "equipments";
     }
 }

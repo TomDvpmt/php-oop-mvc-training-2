@@ -10,7 +10,10 @@
            <a href="/public/equipments">Equipment</a>
        </li>
        <li>
-           <a href="/public/products/add">Add a product</a>
+           <a href="/public/shoes/add">Add a shoe item</a>
+       </li>
+       <li>
+           <a href="/public/equipments/add">Add an equipment item</a>
        </li>
        <!-- <li>
            <a href="/login">Log in</a>

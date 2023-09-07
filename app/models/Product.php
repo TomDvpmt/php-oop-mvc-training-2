@@ -30,21 +30,24 @@ abstract class Product {
         </article>";
     }
 
-    // /**
-    //  * Add a product
-    //  * 
-    //  * @access public
-    //  * @package PhpTraining2\controllers
-    //  */
+    /**
+     * Add a product
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
 
-    // public function createProduct() {
-    //     $data = [
-    //         "name" => $this->name,
-    //         "description" => $this->description,
-    //         "price" => $this->price
-    //     ];
-    //     $this->create($data);
-    // }
+    public function createProduct($specificData) {
+        $genericData = [
+            "name" => $this->name,
+            "description" => $this->description,
+            "price" => $this->price,
+            "img_url" => $this->imgUrl,
+        ];
+        $data = array_merge($genericData, $specificData);
+        show($data);
+        $this->create($data);
+    }
 
     
 

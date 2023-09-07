@@ -29,7 +29,6 @@ trait Model {
         $query = "SELECT * FROM $this->table ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
 
         $results = $this->getRows($query);
-        show($results);
         return $results;
     }
 

@@ -45,5 +45,41 @@ class Shoes extends Products {
 
         $this->view("pages/shoes", $content);
     }
+
+    /**
+     * Control the "Add a shoe item" form page. 
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
+
+    public function add() {
+
+        if(isset($_POST["product-name"])) {
+            
+            $name = htmlspecialchars($_POST["product-name"]);
+            $description = htmlspecialchars($_POST["product-description"]);
+            $price = htmlspecialchars($_POST["product-price"]);
+            $imgUrl = "";
+            $waterproof = htmlspecialchars($_POST["product-waterproof"]);
+            $level = htmlspecialchars($_POST["product-level"]);
+            
+            if(!empty($name) && !empty($description) && !empty($price) && !empty($waterproof) && !empty($level)  ) {
+
+                $waterproof = $waterproof === "yes" ? 1 : 0;
+
+                $shoe = new Shoe($name, $description, $price, $imgUrl, $waterproof, $level);
+                $shoe->createProduct(["waterproof" => $waterproof, "level" => $level]);
+                $successMessage = "Shoe added.";
+                $this->view("pages/shoe-add", [], null, $successMessage);
+                
+            } else {
+                $errorMessage = "Empty fields.";
+                $this->view("pages/shoe-add", [], $errorMessage, null);
+            }
+        }
+
+        $this->view("pages/shoe-add", [], null, null);
+    }
     
 }

@@ -5,6 +5,7 @@ namespace PhpTraining2\controllers;
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
 use PhpTraining2\models\Shoe;
+use PhpTraining2\models\Equipment;
 
 require_once MODELS_DIR . "Product.php";
 
@@ -27,42 +28,44 @@ class Products {
     }
     
 
-    /**
-     * Control the "add product" form page. 
-     * 
-     * @access public
-     * @package PhpTraining2\controllers
-     */
+    // /**
+    //  * Control the "add product" form page. 
+    //  * 
+    //  * @access public
+    //  * @package PhpTraining2\controllers
+    //  */
 
-    public function add() {
+    // public function add() {
 
-        if(isset($_POST["product-name"])) {
+    //     if(isset($_POST["product-name"])) {
             
-            $type = htmlspecialchars($_POST["product-type"]);
-            $name = htmlspecialchars($_POST["product-name"]);
-            $description = htmlspecialchars($_POST["product-description"]);
-            $price = htmlspecialchars($_POST["product-price"]);
-            $imgUrl = htmlspecialchars($_POST["product-imgUrl"]);
-            $waterproof = htmlspecialchars($_POST["product-waterproof"]);
-            $level = htmlspecialchars($_POST["product-level"]);
+    //         $type = htmlspecialchars($_POST["product-type"]);
+    //         $name = htmlspecialchars($_POST["product-name"]);
+    //         $description = htmlspecialchars($_POST["product-description"]);
+    //         $price = htmlspecialchars($_POST["product-price"]);
+    //         $imgUrl = htmlspecialchars($_POST["product-imgUrl"]);
+    //         $waterproof = htmlspecialchars($_POST["product-waterproof"]);
+    //         $level = htmlspecialchars($_POST["product-level"]);
+    //         $activity = htmlspecialchars($_POST["product-activity"]);
             
-            if(!empty($type) && !empty($name) && !empty($description) && !empty($price)) {
+    //         if(!empty($type) && !empty($name) && !empty($description) && !empty($price)) {
 
-                if($type === "shoe") {
-                    $shoe = new Shoe($name, $description, $price, $imgUrl, $waterproof, $level);
-                    $shoe->createShoe();
-                } elseif($type === "equipment") {
-                    //                    
-                }
-                $successMessage = "Product added.";
-                $this->view("pages/product-add", [], null, $successMessage);
+    //             if($type === "shoe") {
+    //                 $shoe = new Shoe($name, $description, $price, $imgUrl, $waterproof, $level);
+    //                 $shoe->createShoe();
+    //             } elseif($type === "equipment") {
+    //                 $shoe = new Equipment($name, $description, $price, $imgUrl, $activity);
+    //                 $shoe->createEquipment();                   
+    //             }
+    //             $successMessage = "Product added.";
+    //             $this->view("pages/product-add", [], null, $successMessage);
                 
-            } else {
-                $errorMessage = "Empty fields.";
-                $this->view("pages/product-add", [], $errorMessage, null);
-            }
-        }
+    //         } else {
+    //             $errorMessage = "Empty fields.";
+    //             $this->view("pages/product-add", [], $errorMessage, null);
+    //         }
+    //     }
 
-        $this->view("pages/product-add", [], null, null);
-    }
+    //     $this->view("pages/product-add", [], null, null);
+    // }
 }
