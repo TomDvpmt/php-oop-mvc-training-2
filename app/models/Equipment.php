@@ -26,7 +26,7 @@ final class Equipment extends Product {
      * @return string
      */
 
-    public function getSpecificHtml() {
+    public function getProductSpecificHtml() {
         ob_start();?>
             
         <p class="product__activity"><span>Activity : </span><?=$this->activity?></p>

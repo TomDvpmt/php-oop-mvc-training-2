@@ -6,10 +6,10 @@ use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
 use PhpTraining2\models\Equipment;
 
-require_once CTRL_DIR . "Products.ctrl.php";
+// require_once CTRL_DIR . "Products.ctrl.php";
 require_once MODELS_DIR . "Equipment.php";
 
-class Equipments extends Products {
+class Equipments {
 
     use Controller;
     use Model;
@@ -28,7 +28,7 @@ class Equipments extends Products {
 
 
     public function index() {
-        $equipments = parent::getAllProducts();
+        $equipments = $this->findAll();
         $content = [];
 
         foreach($equipments as $item) {
@@ -41,7 +41,7 @@ class Equipments extends Products {
                 $item->activity, 
             );
 
-            $specificHtml = $equipment->getSpecificHtml();
+            $specificHtml = $equipment->getProductSpecificHtml();
             
             array_push($content, $equipment->getProductHtml($specificHtml));
         }

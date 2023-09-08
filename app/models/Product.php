@@ -19,7 +19,7 @@ abstract class Product {
      * Get HTML code for a product
      * 
      * @access public
-     * @package PhpTraining2\controllers
+     * @package PhpTraining2\models
      * @param array product 
      * @return string
      */
@@ -36,7 +36,7 @@ abstract class Product {
      * Add a product
      * 
      * @access public
-     * @package PhpTraining2\controllers
+     * @package PhpTraining2\models
      */
 
     public function createProduct($specificData) {

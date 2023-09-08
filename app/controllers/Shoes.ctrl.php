@@ -6,10 +6,9 @@ use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
 use PhpTraining2\models\Shoe;
 
-require_once CTRL_DIR . "Products.ctrl.php";
 require_once MODELS_DIR . "Shoe.php";
 
-class Shoes extends Products {
+class Shoes {
 
     use Controller;
     use Model;
@@ -28,7 +27,7 @@ class Shoes extends Products {
 
 
     public function index() {
-        $shoes = parent::getAllProducts();
+        $shoes = $this->findAll();
         $content = [];
 
         foreach($shoes as $item) {
@@ -41,7 +40,7 @@ class Shoes extends Products {
                 $item->waterproof, 
                 $item->level
             );
-            $specificHtml = $shoe->getSpecificHtml();
+            $specificHtml = $shoe->getProductSpecificHtml();
             array_push($content, $shoe->getProductHtml($specificHtml));
         }
 

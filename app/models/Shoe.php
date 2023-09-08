@@ -27,7 +27,7 @@ final class Shoe extends Product {
      * @return string
      */
 
-    public function getSpecificHtml() {
+    public function getProductSpecificHtml() {
         ob_start();?>
             
         <p class="product__waterproof"><span>Waterproof : </span><?=$this->waterproof === 0 ? "no" : "yes"?></p>
