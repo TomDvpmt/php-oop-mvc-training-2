@@ -6,7 +6,6 @@ use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
 use PhpTraining2\models\Equipment;
 
-// require_once CTRL_DIR . "Products.ctrl.php";
 require_once MODELS_DIR . "Equipment.php";
 
 class Equipments {

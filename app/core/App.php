@@ -4,6 +4,8 @@ namespace PhpTraining2\core;
 
 class App {
 
+    use Database;
+
     private string $controller = "Home"; // default value
     private string $method = "index";
 
