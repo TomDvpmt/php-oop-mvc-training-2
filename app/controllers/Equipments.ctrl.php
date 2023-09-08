@@ -33,13 +33,17 @@ class Equipments extends Products {
 
         foreach($equipments as $item) {
             $equipment = new Equipment(
+                $item->id,
                 $item->name, 
                 $item->description, 
                 $item->price, 
                 $item->img_url, // beware of difference between SQL column name (img_url) and php variable (imgUrl)
                 $item->activity, 
             );
-            array_push($content, $equipment->getProductHtml());
+
+            $specificHtml = $equipment->getSpecificHtml();
+            
+            array_push($content, $equipment->getProductHtml($specificHtml));
         }
 
         $this->view("pages/equipments", $content);
@@ -56,11 +60,11 @@ class Equipments extends Products {
 
         if(isset($_POST["product-name"])) {
             
-            $name = htmlspecialchars($_POST["product-name"]);
-            $description = htmlspecialchars($_POST["product-description"]);
-            $price = htmlspecialchars($_POST["product-price"]);
+            $name = strip_tags($_POST["product-name"]);
+            $description = strip_tags($_POST["product-description"]);
+            $price = $_POST["product-price"];
             $imgUrl = "";
-            $activity = htmlspecialchars($_POST["product-activity"]);
+            $activity = $_POST["product-activity"];
             
             if(!empty($name) && !empty($description) && !empty($price) && !empty($activity)) {
 

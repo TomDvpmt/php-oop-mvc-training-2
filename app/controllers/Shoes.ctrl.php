@@ -33,6 +33,7 @@ class Shoes extends Products {
 
         foreach($shoes as $item) {
             $shoe = new Shoe(
+                $item->id,
                 $item->name, 
                 $item->description, 
                 $item->price, 
@@ -40,11 +41,13 @@ class Shoes extends Products {
                 $item->waterproof, 
                 $item->level
             );
-            array_push($content, $shoe->getProductHtml());
+            $specificHtml = $shoe->getSpecificHtml();
+            array_push($content, $shoe->getProductHtml($specificHtml));
         }
 
         $this->view("pages/shoes", $content);
     }
+  
 
     /**
      * Control the "Add a shoe item" form page. 
@@ -57,12 +60,12 @@ class Shoes extends Products {
 
         if(isset($_POST["product-name"])) {
             
-            $name = htmlspecialchars($_POST["product-name"]);
-            $description = htmlspecialchars($_POST["product-description"]);
-            $price = htmlspecialchars($_POST["product-price"]);
+            $name = strip_tags($_POST["product-name"]);
+            $description = strip_tags($_POST["product-description"]);
+            $price = $_POST["product-price"];
             $imgUrl = "";
-            $waterproof = htmlspecialchars($_POST["product-waterproof"]);
-            $level = htmlspecialchars($_POST["product-level"]);
+            $waterproof = $_POST["product-waterproof"];
+            $level = $_POST["product-level"];
             
             if(!empty($name) && !empty($description) && !empty($price) && !empty($waterproof) && !empty($level)  ) {
 

@@ -8,6 +8,7 @@ abstract class Product {
     use Model;
     
     public function __construct(
+        protected int $id,
         protected string $name = "", 
         protected string $description = "", 
         protected int $price = 0, 
@@ -23,11 +24,12 @@ abstract class Product {
      * @return string
      */
 
-    public function getProductHtml() {
-        return "<article class='product'>
-        <h2 class='product__name'>" . strip_tags($this->name) . "</h2>
-        <p class='product__price'>$ " . strip_tags($this->price) . "</p>
-        </article>";
+    public function getProductHtml($specificHtml) {
+        ob_start();
+        require VIEWS_DIR . "partials/product-card.php";
+        $html = ob_get_clean();
+
+        return $html;
     }
 
     /**
@@ -45,7 +47,6 @@ abstract class Product {
             "img_url" => $this->imgUrl,
         ];
         $data = array_merge($genericData, $specificData);
-        show($data);
         $this->create($data);
     }
 

@@ -10,7 +10,7 @@ trait Model {
 
     // default values
     protected string $table = "users";
-    protected int $limit = 10;
+    protected int $limit = 20;
     protected int $offset = 0;
     protected string $orderColumn = "id";
     protected string $orderType = "desc";

@@ -6,6 +6,7 @@ require_once "Product.php";
 final class Shoe extends Product {
 
     public function __construct(
+        protected int $id,
         protected string $name, 
         protected string $description, 
         protected int $price, 
@@ -13,7 +14,26 @@ final class Shoe extends Product {
         protected string $waterproof = "yes", 
         protected string $level = "regular")
     {
-        parent::__construct($name, $description, $price, $imgUrl);
+        parent::__construct($id, $name, $description, $price, $imgUrl);
         $this->table = "shoes";
+    }
+
+
+    /**
+     * Get specific shoe html
+     * 
+     * @access public
+     * @package PhpTraning2/models
+     * @return string
+     */
+
+    public function getSpecificHtml() {
+        ob_start();?>
+            
+        <p class="product__waterproof"><span>Waterproof : </span><?=$this->waterproof === 0 ? "no" : "yes"?></p>
+        <p class="product__level"><span>Practice level : </span><?=$this->level?></p>
+        
+        <?php $specificHtml = ob_get_clean();
+        return $specificHtml;
     }
 }
