@@ -7,6 +7,7 @@ final class Equipment extends Product {
     
     public function __construct(
         protected int $id,
+        protected string $type,
         protected string $name, 
         protected string $description, 
         protected int $price, 
@@ -14,7 +15,7 @@ final class Equipment extends Product {
         protected string $activity = "",
         )
     {
-        parent::__construct($id, $name, $description, $price, $imgUrl);
+        parent::__construct($id, $type, $name, $description, $price, $imgUrl);
         $this->table = "equipments";
     }
 
@@ -34,4 +35,5 @@ final class Equipment extends Product {
         <?php $specificHtml = ob_get_clean();
         return $specificHtml;
     }
+
 }

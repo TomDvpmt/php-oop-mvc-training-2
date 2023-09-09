@@ -8,7 +8,8 @@ abstract class Product {
     use Model;
     
     public function __construct(
-        protected int $id,
+        protected int $id = 0,
+        protected string $type = "", 
         protected string $name = "", 
         protected string $description = "", 
         protected int $price = 0, 
@@ -33,21 +34,35 @@ abstract class Product {
     }
 
     /**
-     * Add a product
+     * Add an item to the "products" table and return its id
      * 
      * @access public
      * @package PhpTraining2\models
+     * @return int
      */
 
-    public function createProduct($specificData) {
+    public function createGenericProduct() {
+        $this->table = "products";
         $genericData = [
+            "type" => $this->type,
             "name" => $this->name,
             "description" => $this->description,
             "price" => $this->price,
             "img_url" => $this->imgUrl,
         ];
-        $data = array_merge($genericData, $specificData);
-        $this->create($data);
+        $this->create($genericData);   
+        $id = $this->getLastInsertId();
+        return $id;
+    }
+
+    public function createSpecificProduct($data) {
+        $id = $this->createGenericProduct();
+
+        $this->table = $this->type . "s";
+        $this->orderColumn = "product_id";
+        $specificData = array_merge(["product_id" => $id], $data);
+
+        $this->create($specificData);
     }
 
     

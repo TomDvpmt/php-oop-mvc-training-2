@@ -6,26 +6,26 @@ ob_start(); ?>
 
 <form method="POST" class="form">
     <div class="form__field">
-        <label for="product-name">Name :</label>
-        <input type="text" name="product-name" />
+        <label for="name">Name :</label>
+        <input type="text" name="name" />
     </div>
     <div class="form__field">
-        <label for="product-description">Description :</label>
-        <input type="text" name="product-description" />
+        <label for="description">Description :</label>
+        <input type="text" name="description" />
     </div>
     <div class="form__field">
-        <label for="product-price">Price :</label>
-        <input type="number" name="product-price" min="0" />
+        <label for="price">Price :</label>
+        <input type="number" name="price" min="0" />
     </div>
     <div class="form__field">
-        <select name="product-waterproof" id="product-waterproof">
+        <select name="waterproof" id="waterproof">
             <option value="">-- Is the shoe waterproof? --</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
         </select>
     </div>
     <div class="form__field">
-        <select name="product-level" id="product-level">
+        <select name="level" id="level">
             <option value="">-- What is the practice level of this shoe? --</option>
             <option value="occasional">Occasional</option>
             <option value="regular">Regular</option>

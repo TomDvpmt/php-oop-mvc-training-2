@@ -39,6 +39,7 @@ trait Database {
         $productsQuery = "
             CREATE TABLE IF NOT EXISTS products (
                 id INT AUTO_INCREMENT PRIMARY KEY,
+                type VARCHAR(50),
                 name VARCHAR(255),
                 description VARCHAR(5000),
                 price INT DEFAULT 0,
@@ -72,37 +73,5 @@ trait Database {
         } catch(Exception $e) {
             die("Error : " . $e->getMessage());
         }
-    }
-
-    /**
-     * Gets a list of rows from the database.
-     * 
-     * @access public
-     * @package PhpTraining2\core
-     * @param string $query The SQL query string
-     * @param array $params The optional parameters to the query
-     * @return mixed
-     */
-
-     public function getRows($query, $params = []) {
-        $pdo = $this->connect();
-
-        try {
-            $statement = $pdo->prepare($query);
-            $check = $statement->execute($params);
-            if($check) {
-                $result = $statement->fetchAll(PDO::FETCH_OBJ);
-                if(is_array($result) && count($result)) {
-                    return $result;
-                }
-            }
-            $statement = null;
-            $pdo = null;
-            return false;
-
-        } catch(Exception $e) {
-            die("Error : " . $e->getMessage());
-        }
-    }
-    
+    }    
 }

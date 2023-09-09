@@ -7,6 +7,7 @@ final class Shoe extends Product {
 
     public function __construct(
         protected int $id,
+        protected string $type, 
         protected string $name, 
         protected string $description, 
         protected int $price, 
@@ -14,7 +15,7 @@ final class Shoe extends Product {
         protected string $waterproof = "yes", 
         protected string $level = "regular")
     {
-        parent::__construct($id, $name, $description, $price, $imgUrl);
+        parent::__construct($id, $type, $name, $description, $price, $imgUrl);
         $this->table = "shoes";
     }
 

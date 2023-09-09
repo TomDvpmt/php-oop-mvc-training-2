@@ -21,4 +21,17 @@ trait Controller {
         } 
         require_once $filename;
     }
+
+    /**
+     * Check if the form has empty fields
+     * 
+     * @access public
+     * @package PhpTraining2/controllers
+     * @return bool
+     */
+
+     public function hasEmptyFields($required) {
+        $hasEmptyFields = array_reduce($required, fn($acc, $item) => $acc || empty($_POST[$item]), false );
+        return $hasEmptyFields;
+    }
 }

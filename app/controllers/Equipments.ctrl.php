@@ -15,7 +15,10 @@ class Equipments {
 
     public function __construct()
     {
-        $this->table = "equipments";
+        $this->table = "
+            products p JOIN equipments e
+            WHERE p.id = e.product_id
+        ";
     }
 
     /**
@@ -25,14 +28,30 @@ class Equipments {
      * @package PhpTraining2\controllers
      */
 
-
     public function index() {
-        $equipments = $this->findAll();
+        $content = $this->getPageContent();
+        $this->view("pages/equipments", $content);
+    }
+
+
+    /**
+     * Get the page's html content
+     * 
+     * @access private
+     * @package PhpTraining2/controllers
+     * @return array
+     */
+
+    private function getPageContent() {
+        $this->columns = "id, name, description, price, img_url, activity";
+        $equipments = $this->find();
+        
         $content = [];
 
         foreach($equipments as $item) {
             $equipment = new Equipment(
                 $item->id,
+                "equipment",
                 $item->name, 
                 $item->description, 
                 $item->price, 
@@ -44,8 +63,7 @@ class Equipments {
             
             array_push($content, $equipment->getProductHtml($specificHtml));
         }
-
-        $this->view("pages/equipments", $content);
+        return $content;
     }
 
     /**
@@ -57,24 +75,31 @@ class Equipments {
 
     public function add() {
 
-        if(isset($_POST["product-name"])) {
-            
-            $name = strip_tags($_POST["product-name"]);
-            $description = strip_tags($_POST["product-description"]);
-            $price = $_POST["product-price"];
-            $imgUrl = "";
-            $activity = $_POST["product-activity"];
-            
-            if(!empty($name) && !empty($description) && !empty($price) && !empty($activity)) {
+        if(isset($_POST["submit"])) {
 
-                $equipment = new Equipment($name, $description, $price, $imgUrl, $activity);
-                $equipment->createProduct(["activity" => $activity]);
-                $successMessage = "Equipment added.";
-                $this->view("pages/equipment-add", [], null, $successMessage);
-                
-            } else {
+            $required = ["name", "description", "price", "activity"];
+
+            if($this->hasEmptyFields($required)) {
                 $errorMessage = "Empty fields.";
                 $this->view("pages/equipment-add", [], $errorMessage, null);
+            } else {
+                $id = 0;
+                $type = "equipment";
+                $name = strip_tags($_POST["name"]);
+                $description = strip_tags($_POST["description"]);
+                $price = $_POST["price"];
+                $imgUrl = "";
+                $activity = $_POST["activity"];
+
+                $equipment = new Equipment($id, $type, $name, $description, $price, $imgUrl, $activity);
+                $specificData = [
+                    "activity" => $activity,
+                ];
+
+                $equipment->createSpecificProduct($specificData);
+
+                $successMessage = "Equipment added.";
+                $this->view("pages/equipment-add", [], null, $successMessage);
             }
         }
 
