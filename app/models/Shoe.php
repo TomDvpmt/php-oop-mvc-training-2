@@ -12,7 +12,7 @@ final class Shoe extends Product {
         protected string $description, 
         protected int $price, 
         protected string $imgUrl, 
-        protected string $waterproof = "yes", 
+        protected int $waterproof = 0, 
         protected string $level = "regular")
     {
         parent::__construct($id, $type, $name, $description, $price, $imgUrl);
@@ -31,7 +31,7 @@ final class Shoe extends Product {
     public function getProductSpecificHtml() {
         ob_start();?>
             
-        <p class="product__waterproof"><span>Waterproof : </span><?=$this->waterproof === 0 ? "no" : "yes"?></p>
+        <p class="product__waterproof"><span>Waterproof : </span><?=$this->waterproof === 0 ? "no" : "yes" ?></p>
         <p class="product__level"><span>Practice level : </span><?=$this->level?></p>
         
         <?php $specificHtml = ob_get_clean();

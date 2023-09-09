@@ -105,9 +105,10 @@ trait Model {
 
     }
 
-    public function delete($id) 
+    public function delete(string $key, string $value) 
     {
-
+        $query = "DELETE FROM $this->table WHERE $key = $value";
+        $this->executeQuery($query);
     }
     
 }

@@ -36,39 +36,55 @@ trait Database {
     public function initializeDB() {
         $pdo = $this->connect();
 
-        $productsQuery = "
-            CREATE TABLE IF NOT EXISTS products (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                type VARCHAR(50),
-                name VARCHAR(255),
-                description VARCHAR(5000),
-                price INT DEFAULT 0,
-                img_url VARCHAR(255)
-            );
-        ";
-        $shoesQuery = "
-            CREATE TABLE IF NOT EXISTS shoes (
-                shoe_id INT AUTO_INCREMENT PRIMARY KEY,
-                product_id INT,
-                waterproof BOOL DEFAULT 1,
-                level VARCHAR(50) DEFAULT 'regular',
-                FOREIGN KEY (product_id) REFERENCES products(id)
-            );
-        ";
-        $equipmentsQuery = "
-            CREATE TABLE IF NOT EXISTS equipments (
-                equipment_id INT AUTO_INCREMENT PRIMARY KEY,
-                product_id INT, 
-                activity VARCHAR(255),
-                FOREIGN KEY (product_id) REFERENCES products(id)
-            );
-        ";
+        $queries = [
+            "
+                CREATE TABLE IF NOT EXISTS products (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    type VARCHAR(50),
+                    name VARCHAR(255),
+                    description VARCHAR(5000),
+                    price INT DEFAULT 0,
+                    img_url VARCHAR(255)
+                );
+            ",
+                "
+                CREATE TABLE IF NOT EXISTS shoes (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    product_id INT,
+                    waterproof BOOL DEFAULT 1,
+                    level VARCHAR(50) DEFAULT 'regular',
+                    FOREIGN KEY (product_id) REFERENCES products(id)
+                );
+            ",
+            "
+                CREATE TABLE IF NOT EXISTS equipments (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    product_id INT, 
+                    activity VARCHAR(255),
+                    FOREIGN KEY (product_id) REFERENCES products(id)
+                );
+            ",
+            "
+                CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_shoe
+                AFTER DELETE 
+                ON shoes FOR EACH ROW
+                DELETE FROM products
+                WHERE id = old.product_id;
+            ",
+            "
+                CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_equipment
+                AFTER DELETE 
+                ON equipments FOR EACH ROW
+                DELETE FROM products
+                WHERE id = old.product_id;
+            "
+        ];
 
         try {
-            $statement = $pdo->query($productsQuery);
-            $statement = $pdo->query($shoesQuery);
-            $statement = $pdo->query($equipmentsQuery);
-            $statement = null;
+            foreach ($queries as $query) {
+                $statement = $pdo->query($query);
+                $statement = null;
+            }
             $pdo = null;
         } catch(Exception $e) {
             die("Error : " . $e->getMessage());

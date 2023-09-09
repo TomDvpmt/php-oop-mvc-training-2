@@ -13,14 +13,6 @@ class Shoes {
     use Controller;
     use Model;
 
-    public function __construct()
-    {
-        $this->table = "
-            products p JOIN shoes s
-            WHERE p.id = s.product_id
-        ";
-    }
-
     /**
      * Entry function of the Shoes controller (control the Shoes main page). 
      * 
@@ -29,6 +21,10 @@ class Shoes {
      */
 
     public function index() {
+        $this->table = "
+            products p JOIN shoes s
+            WHERE p.id = s.product_id
+        ";
         $content = $this->getPageContent();
         $this->view("pages/shoes", $content);
     }
@@ -43,25 +39,32 @@ class Shoes {
      */
 
      private function getPageContent() {
-        $this->columns = "id, name, description, price, img_url, waterproof, level";
+        $this->columns = "p.id as id, name, description, price, img_url, waterproof, level";
         $shoes = $this->find();
 
         $content = [];
 
-        foreach($shoes as $item) {
-            $shoe = new Shoe(
-                $item->id,
-                "shoe",
-                $item->name, 
-                $item->description, 
-                $item->price, 
-                $item->img_url, // beware of difference between SQL column name (img_url) and php variable (imgUrl)
-                $item->waterproof, 
-                $item->level
-            );
-            $specificHtml = $shoe->getProductSpecificHtml();
-            array_push($content, $shoe->getProductHtml($specificHtml));
+        if(!$shoes) {
+            $content = [
+                "<p>No shoe found.</p>"
+            ];
+        } else {
+            foreach($shoes as $item) {
+                $shoe = new Shoe(
+                    $item->id,
+                    "shoe",
+                    $item->name, 
+                    $item->description, 
+                    $item->price, 
+                    $item->img_url, // beware of difference between SQL column name (img_url) and php variable (imgUrl)
+                    $item->waterproof, 
+                    $item->level
+                );
+                $specificHtml = $shoe->getProductSpecificHtml();
+                array_push($content, $shoe->getProductHtml($specificHtml));
+            }
         }
+
         return $content;
      }
   
@@ -106,6 +109,21 @@ class Shoes {
         }
 
         $this->view("pages/shoe-add", [], null, null);
+    }
+
+    /**
+     * Removes a shoe
+     * 
+     * @access public
+     * @package PhpTraining2/controllers
+     */
+
+    public function remove() {
+        $id = strip_tags($_GET["id"]);
+        $this->table = "shoes";
+        $this->delete("product_id", $id);
+
+        $this->index();
     }
 
     

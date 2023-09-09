@@ -13,14 +13,6 @@ class Equipments {
     use Controller;
     use Model;
 
-    public function __construct()
-    {
-        $this->table = "
-            products p JOIN equipments e
-            WHERE p.id = e.product_id
-        ";
-    }
-
     /**
      * Entry function of the Equipments controller (control the Equipments main page). 
      * 
@@ -29,6 +21,10 @@ class Equipments {
      */
 
     public function index() {
+        $this->table = "
+            products p JOIN equipments e
+            WHERE p.id = e.product_id
+        ";
         $content = $this->getPageContent();
         $this->view("pages/equipments", $content);
     }
@@ -43,26 +39,32 @@ class Equipments {
      */
 
     private function getPageContent() {
-        $this->columns = "id, name, description, price, img_url, activity";
+        $this->columns = "p.id as id, name, description, price, img_url, activity";
         $equipments = $this->find();
         
         $content = [];
-
-        foreach($equipments as $item) {
-            $equipment = new Equipment(
-                $item->id,
-                "equipment",
-                $item->name, 
-                $item->description, 
-                $item->price, 
-                $item->img_url, // beware of difference between SQL column name (img_url) and php variable (imgUrl)
-                $item->activity, 
-            );
-
-            $specificHtml = $equipment->getProductSpecificHtml();
-            
-            array_push($content, $equipment->getProductHtml($specificHtml));
+        if(!$equipments) {
+            $content = [
+                "<p>No equipment found.</p>"
+            ];
+        } else {
+            foreach($equipments as $item) {
+                $equipment = new Equipment(
+                    $item->id,
+                    "equipment",
+                    $item->name, 
+                    $item->description, 
+                    $item->price, 
+                    $item->img_url, // beware of difference between SQL column name (img_url) and php variable (imgUrl)
+                    $item->activity, 
+                );
+    
+                $specificHtml = $equipment->getProductSpecificHtml();
+                
+                array_push($content, $equipment->getProductHtml($specificHtml));
+            }   
         }
+        
         return $content;
     }
 
@@ -104,6 +106,21 @@ class Equipments {
         }
 
         $this->view("pages/equipment-add", [], null, null);
+    }
+
+    /**
+     * Removes an equipment
+     * 
+     * @access public
+     * @package PhpTraining2/controllers
+     */
+
+     public function remove() {
+        $id = strip_tags($_GET["id"]);
+        $this->table = "equipments";
+        $this->delete("product_id", $id);
+
+        $this->index();
     }
     
 }
