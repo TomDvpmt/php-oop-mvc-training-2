@@ -22,14 +22,14 @@ trait Model {
     /**
      * Gets a list of rows from the database.
      * 
-     * @access public
+     * @access protected
      * @package PhpTraining2\core
      * @param string $query The SQL query string
-     * @param array $params The optional parameters of the query
+     * @param array $params The parameters of the query
      * @return mixed
      */
 
-     public function executeQuery($query, $params = []) {
+     protected function executeQuery($query, $params = []) {
         $pdo = $this->connect();
 
         try {
@@ -53,12 +53,12 @@ trait Model {
     /**
      * Get id of last item added to table
      * 
-     * @access public
+     * @access protected
      * @package PhpTraining/core
      * @return int
      */
 
-    public function getLastInsertId() {
+    protected function getLastInsertId() {
         $this->orderColumn = "id";
         $this->limit = 1;
         $result = $this->find();
@@ -70,12 +70,12 @@ trait Model {
     /**
      * Select entries in a table (or several joined tables)
      * 
-     * @access public
+     * @access protected
      * @package PhpTraining2\core
      * @return array
      */
 
-    public function find() 
+    protected function find() 
     {
         $query = "SELECT $this->columns FROM $this->table ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
         $results = $this->executeQuery($query);
@@ -86,29 +86,52 @@ trait Model {
     /**
      * Add an entry in a table
      * 
-     * @access public
+     * @access protected
      * @package PhpTraining2\core
      * @param array $data
      */
 
-    public function create($data) 
+    protected function create($data) 
     {
-        $columns = array_keys($data);
-        $values = array_map(fn($item) => "'" . $item . "'", array_values($data));
-        $query = "INSERT INTO $this->table (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $values) . ")";
+        $columns = implode(",", array_keys($data));
+        $values = implode(",", array_map(fn($item) => ":" . $item, array_keys($data)));
+        $query = "INSERT INTO $this->table ($columns) VALUES ($values);";
         
-        $this->executeQuery($query);
+        $this->executeQuery($query, $data);
     }
 
-    public function update($id, $data) 
-    {
+    /**
+     * Update an item in a table
+     * 
+     * @access protected
+     * @package PhpTraining2\core
+     * @param string $selectorKey The item selector's key (i.e. : "id")
+     * @param string $selectorValue The item selector's value
+     * @param array $data An associative array of columns (keys) and values to update
+     */
 
+    protected function update($selectorKey, $selectorValue, $data) 
+    {
+        $updates = implode(array_map(fn($key) => "$key = :$key", array_keys($data)));
+        $query = "UPDATE $this->table SET $updates WHERE $selectorKey = :$selectorKey";
+        $data = array_merge($data, [$selectorKey => $selectorValue]);
+
+        $this->executeQuery($query, $data);
     }
 
-    public function delete(string $key, string $value) 
+    /**
+     * Delete an item in a table
+     * 
+     * @access protected
+     * @package PhpTraining2\core
+     * @param string $selectorKey The item selector's key (i.e. : "id")
+     * @param string $selectorValue The item selector's value
+     */
+
+    protected function delete($selectorKey, $selectorValue) 
     {
-        $query = "DELETE FROM $this->table WHERE $key = $value";
-        $this->executeQuery($query);
+        $query = "DELETE FROM $this->table WHERE $selectorKey = :$selectorKey";
+        $this->executeQuery($query, [$selectorKey => $selectorValue]);
     }
     
 }

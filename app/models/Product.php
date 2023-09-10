@@ -21,11 +21,10 @@ abstract class Product {
      * 
      * @access public
      * @package PhpTraining2\models
-     * @param array product 
      * @return string
      */
 
-    public function getProductHtml($specificHtml) {
+    public function getProductHtml(string $specificHtml) {
         ob_start();
         require VIEWS_DIR . "partials/product-card.php";
         $html = ob_get_clean();
@@ -36,12 +35,12 @@ abstract class Product {
     /**
      * Add an item to the "products" table and return its id
      * 
-     * @access public
+     * @access protected
      * @package PhpTraining2\models
      * @return int
      */
 
-    public function createGenericProduct() {
+    protected function createGenericProduct() {
         $this->table = "products";
         $genericData = [
             "type" => $this->type,
@@ -55,7 +54,14 @@ abstract class Product {
         return $id;
     }
 
-    public function createSpecificProduct($data) {
+    /**
+     * Add an item to a child table of "products" table ("shoes", "equipments", etc.)
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+
+    public function createSpecificProduct(array $data) {
         $id = $this->createGenericProduct();
 
         $this->table = $this->type . "s";
@@ -67,11 +73,11 @@ abstract class Product {
 
     
 
-    public function updateProduct($id, $updateData) {
+    protected function updateProduct($id, $updateData) {
         //
     }
 
-    public function deleteProduct($id) {
+    protected function deleteProduct($id) {
         //
     }
 }

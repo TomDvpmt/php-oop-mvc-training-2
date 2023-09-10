@@ -83,7 +83,6 @@ trait Database {
         try {
             foreach ($queries as $query) {
                 $statement = $pdo->query($query);
-                $statement = null;
             }
             $pdo = null;
         } catch(Exception $e) {
