@@ -75,10 +75,10 @@ trait Model {
      * @return array
      */
 
-    protected function find() 
+    protected function find($data = []) 
     {
         $query = "SELECT $this->columns FROM $this->table ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
-        $results = $this->executeQuery($query);
+        $results = $this->executeQuery($query, $data);
         return $results;
     }
 

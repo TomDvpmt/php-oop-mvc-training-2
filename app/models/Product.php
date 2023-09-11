@@ -24,7 +24,7 @@ abstract class Product {
      * @return string
      */
 
-    public function getProductHtml(string $specificHtml) {
+    public function getProductCardHtml(string $specificHtml): string {
         ob_start();
         require VIEWS_DIR . "partials/product-card.php";
         $html = ob_get_clean();
@@ -40,7 +40,7 @@ abstract class Product {
      * @return int
      */
 
-    protected function createGenericProduct() {
+    protected function createGenericProduct(): int {
         $this->table = "products";
         $genericData = [
             "type" => $this->type,
@@ -61,7 +61,7 @@ abstract class Product {
      * @package PhpTraining2\models
      */
 
-    public function createSpecificProduct(array $data) {
+    public function createSpecificProduct(array $data): void {
         $id = $this->createGenericProduct();
 
         $this->table = $this->type . "s";
@@ -74,10 +74,6 @@ abstract class Product {
     
 
     protected function updateProduct($id, $updateData) {
-        //
-    }
-
-    protected function deleteProduct($id) {
         //
     }
 }

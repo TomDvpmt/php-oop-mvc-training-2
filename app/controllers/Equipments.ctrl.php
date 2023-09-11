@@ -14,13 +14,13 @@ class Equipments {
     use Model;
 
     /**
-     * Entry function of the Equipments controller (control the Equipments main page). 
+     * Entry method of the Equipments controller (control the Equipments main page). 
      * 
      * @access public
      * @package PhpTraining2\controllers
      */
 
-    public function index() {
+    public function index(): void {
         $this->table = "
             products p JOIN equipments e
             WHERE p.id = e.product_id
@@ -38,7 +38,7 @@ class Equipments {
      * @return array
      */
 
-    private function getPageContent() {
+    private function getPageContent(): array {
         $this->columns = "p.id as id, name, description, price, img_url, activity";
         $equipments = $this->find();
         
@@ -59,9 +59,9 @@ class Equipments {
                     $item->activity, 
                 );
     
-                $specificHtml = $equipment->getProductSpecificHtml();
+                $specificHtml = $equipment->getProductCardSpecificHtml();
                 
-                array_push($content, $equipment->getProductHtml($specificHtml));
+                array_push($content, $equipment->getProductCardHtml($specificHtml));
             }   
         }
         
@@ -75,7 +75,7 @@ class Equipments {
      * @package PhpTraining2\controllers
      */
 
-    public function add() {
+    public function add(): void {
 
         if(isset($_POST["submit"])) {
 
@@ -115,7 +115,7 @@ class Equipments {
      * @package PhpTraining2/controllers
      */
 
-     public function remove() {
+     public function remove(): void {
         $id = strip_tags($_GET["id"]);
         $this->table = "equipments";
         $this->delete("product_id", $id);

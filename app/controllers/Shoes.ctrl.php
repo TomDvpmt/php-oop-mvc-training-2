@@ -14,7 +14,7 @@ class Shoes {
     use Model;
 
     /**
-     * Entry function of the Shoes controller (control the Shoes main page). 
+     * Entry method of the Shoes controller (control the Shoes main page). 
      * 
      * @access public
      * @package PhpTraining2\controllers
@@ -60,8 +60,8 @@ class Shoes {
                     $item->waterproof, 
                     $item->level
                 );
-                $specificHtml = $shoe->getProductSpecificHtml();
-                array_push($content, $shoe->getProductHtml($specificHtml));
+                $specificHtml = $shoe->getProductCardSpecificHtml();
+                array_push($content, $shoe->getProductCardHtml($specificHtml));
             }
         }
 

@@ -5,8 +5,8 @@ $title = "Shoes";
 ob_start(); ?>
 
 <div class="products">
-    <div class="products__sidebar"></div>
-    <div class='products__grid'><?= implode($data) ?></div>
+    <section class="products__sidebar"></section>
+    <section class='products__grid'><?= implode($data) ?></section>
 </div>
 
 <?php 
