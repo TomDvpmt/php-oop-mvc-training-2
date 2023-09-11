@@ -15,7 +15,7 @@ class App {
      * @return array
      */
 
-    private function splitUrl() {
+    private function splitUrl(): array {
 
         $URL = $_GET["url"] ?? "home";
         $URL = explode("/", $URL);
@@ -23,20 +23,20 @@ class App {
     }
 
     /**
-     * Loads the controller based on the first part of the url collected in GET superglobal.
+     * Router (loads the controller based on the first part of the url collected in $_GET and the 'action' property in $_GET)
      */
 
-    public function loadController() {
+    public function router() {
         $URL = $this->splitUrl();
 
         /** Select controller **/
         $filename = ucfirst($URL[0]);
-        $filepath = "../app/controllers/" . $filename . ".ctrl.php";
+        $filepath = CTRL_DIR . $filename . ".ctrl.php";
 
         $this->controller = $filename;
 
         if(!file_exists($filepath)) {
-            $filepath = "../app/controllers/Error404.ctrl.php";
+            $filepath = CTRL_DIR . "Error404.ctrl.php";
             $this->controller = "Error404";
         } 
         require_once $filepath;
@@ -45,17 +45,18 @@ class App {
         $controller = new $controllerFullName;
 
         /** Select method **/
-        if(!empty($URL[1])) {
-            if(method_exists($controller, $URL[1])) {
-                $this->method = $URL[1];
-                unset($URL[1]);
+        
+        if(!empty($_GET["action"])) {
+            $method = strip_tags($_GET["action"]);
+            if(method_exists($controller, $method)) {
+                $this->method = $method;
+                unset($method);
             }
         }
-        // if(!empty($_GET["method"])) {
-        //     $method = strip_tags($_GET["method"]);
-        //     if(method_exists($controller, $method)) {
-        //         $this->method = $method;
-        //         unset($method);
+        // if(!empty($URL[1])) {
+        //     if(method_exists($controller, $URL[1])) {
+        //         $this->method = $URL[1];
+        //         unset($URL[1]);
         //     }
         // }
 

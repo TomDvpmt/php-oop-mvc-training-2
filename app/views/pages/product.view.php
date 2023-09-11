@@ -26,7 +26,7 @@ $specific = $shoeSpecific . $equipmentSpecific;
 
 ob_start();?>
 
-<div class="product"  id="<?=$this->id?>">
+<div class="page__content product" id="<?=$this->id?>">
     <img src="<?=$data["img_url"]?>" alt="<?=$data["name"]?>">
     <h2 class="product-card__name"><?=$data["name"]?></h2>
     <p class="product-card__description"><?=$data["description"]?></p>

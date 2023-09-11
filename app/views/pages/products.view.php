@@ -1,6 +1,6 @@
 <?php 
 
-$title = "Equipment";
+$title = $this->title;
 
 ob_start(); ?>
 

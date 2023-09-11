@@ -10,4 +10,4 @@ require "../app/core/init.php";
 
 $app = new App;
 $app->initializeDB();
-$app->loadController();
+$app->router();

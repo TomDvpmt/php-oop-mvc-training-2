@@ -7,6 +7,6 @@
     <div class="product-card__controls">
         <a href="<?= ROOT . "product&type=$this->type&id=$this->id" ?>">See details</a>
         <br />
-        <a href="<?= ROOT . $this->type . "s/remove?id=" . $this->id ?>">Delete</a>
+        <a href="<?= ROOT . $this->type . "s?action=remove&id=" . $this->id ?>">Delete</a>
     </div>
 </article>
