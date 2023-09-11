@@ -4,16 +4,13 @@
            <a href="/public">Home</a>
        </li>
        <li>
-           <a href="/public/shoes">Shoes</a>
+           <a href="/public/products?type=shoe">Shoes</a>
        </li>
        <li>
-           <a href="/public/equipments">Equipment</a>
+           <a href="/public/products?type=equipment">Equipment</a>
        </li>
        <li>
-           <a href="/public/shoes?action=add">Add a shoe item</a>
-       </li>
-       <li>
-           <a href="/public/equipments?action=add">Add an equipment item</a>
+           <a href="/public/products?action=add">Add a product</a>
        </li>
        <!-- <li>
            <a href="/login">Log in</a>

@@ -5,6 +5,8 @@ $title = $data["name"];
 $shoeSpecific = "";
 $equipmentSpecific = "";
 
+/** Specific html **/
+
 switch ($this->type) {
     case 'shoe':
         ob_start();?>
@@ -22,23 +24,24 @@ switch ($this->type) {
         break;
 }
 
+
+/** Full html **/
+
 $specific = $shoeSpecific . $equipmentSpecific;
 
 ob_start();?>
-
 <div class="page__content product" id="<?=$this->id?>">
     <img src="<?=$data["img_url"]?>" alt="<?=$data["name"]?>">
     <h2 class="product-card__name"><?=$data["name"]?></h2>
     <p class="product-card__description"><?=$data["description"]?></p>
-    <div class="specific">
+    <div class="product-card__specific">
         <?= $specific ?>
     </div>
     <p class="product-card__price">$ <?=$data["price"]?></p>
     <div class="product-card__controls">
-        <a href="<?= ROOT . $this->type . "s/remove?id=" . $this->id ?>">Delete</a>
+        <a href="<?= ROOT . "products?action=remove&type=$this->type&id=$this->id"?>">Delete</a>
     </div>
 </div>
-
 <?php $content = ob_get_clean();
 
 require_once VIEWS_DIR . "/layout.php";
