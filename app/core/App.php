@@ -53,12 +53,6 @@ class App {
                 unset($method);
             }
         }
-        // if(!empty($URL[1])) {
-        //     if(method_exists($controller, $URL[1])) {
-        //         $this->method = $URL[1];
-        //         unset($URL[1]);
-        //     }
-        // }
 
         // call_user_func_array : the first parameter is an array with the class of the function and its name, the second is an array of arguments for the function
         call_user_func_array([$controller, $this->method], []); 

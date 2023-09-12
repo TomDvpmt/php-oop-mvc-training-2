@@ -10,17 +10,17 @@ class Product {
     use Model;
 
     private int $id;
-    private string $type;
+    private string $category;
 
     public function __construct()
     {
         $this->id = intval(strip_tags($_GET["id"]));
-        $this->type = strip_tags($_GET["type"]);
+        $this->category = strip_tags($_GET["category"]);
     }
 
 
     /**
-     * Entry method of the Product controller
+     * Default method of the controller
      * 
      * @access public
      * @package PhpTraining2\controllers
@@ -52,7 +52,7 @@ class Product {
 
 
     /**
-     * Get the product's specific data (depending on its type)
+     * Get the product's specific data (depending on its category)
      * 
      * @access private
      * @package PhpTraining2\controllers
@@ -61,7 +61,7 @@ class Product {
 
     private function getProductSpecificData(): array {
         $this->columns = "*";
-        $this->table = $this->type . "s WHERE product_id= :product_id";
+        $this->table = $this->category . "s WHERE product_id= :product_id";
         $data = (array) $this->find(["product_id" => $this->id])[0];
         $specificData = array_filter($data, fn($key) => !in_array($key, ["id", "product_id"]), ARRAY_FILTER_USE_KEY);
         return $specificData;

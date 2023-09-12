@@ -7,7 +7,7 @@ $equipmentSpecific = "";
 
 /** Specific html **/
 
-switch ($this->type) {
+switch ($this->category) {
     case 'shoe':
         ob_start();?>
         <p class="product-card__waterproof">Waterproof : <?= $data["waterproof"] === 0 ? "no" : "yes" ?></p>
@@ -39,7 +39,8 @@ ob_start();?>
     </div>
     <p class="product-card__price">$ <?=$data["price"]?></p>
     <div class="product-card__controls">
-        <a href="<?= ROOT . "products?action=remove&type=$this->type&id=$this->id"?>">Delete</a>
+        <a href="<?= ROOT . "products?action=addToCart&category=$this->category&id=$this->id" ?>">Add to cart</a>
+        <a href="<?= ROOT . "products?action=remove&category=$this->category&id=$this->id"?>">Delete</a>
     </div>
 </div>
 <?php $content = ob_get_clean();

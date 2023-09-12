@@ -9,12 +9,13 @@ abstract class Product {
     
     public function __construct(
         protected int $id = 0,
-        protected string $type = "", 
+        protected string $category = "", 
         protected string $name = "", 
         protected string $description = "", 
         protected int $price = 0, 
-        protected string $imgUrl = "")
-    {}
+        protected string $imgUrl = "",
+        protected array $reviews = []
+    ) {}
 
     /**
      * Get HTML code for a product
@@ -43,7 +44,7 @@ abstract class Product {
     protected function createGenericProduct(): int {
         $this->table = "products";
         $genericData = [
-            "type" => $this->type,
+            "category" => $this->category,
             "name" => $this->name,
             "description" => $this->description,
             "price" => $this->price,
@@ -64,7 +65,7 @@ abstract class Product {
     public function createSpecificProduct(array $data): void {
         $id = $this->createGenericProduct();
 
-        $this->table = $this->type . "s";
+        $this->table = $this->category . "s";
         $this->orderColumn = "product_id";
         $specificData = array_merge(["product_id" => $id], $data);
 

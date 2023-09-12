@@ -29,7 +29,7 @@ trait Model {
      * @return mixed
      */
 
-     protected function executeQuery($query, $params = []) {
+     protected function query($query, $params = []): mixed {
         $pdo = $this->connect();
 
         try {
@@ -58,7 +58,7 @@ trait Model {
      * @return int
      */
 
-    protected function getLastInsertId() {
+    protected function getLastInsertId(): int {
         $this->orderColumn = "id";
         $this->limit = 1;
         $result = $this->find();
@@ -75,10 +75,10 @@ trait Model {
      * @return array
      */
 
-    protected function find($data = []) 
+    protected function find(array $data = []): array 
     {
         $query = "SELECT $this->columns FROM $this->table ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
-        $results = $this->executeQuery($query, $data);
+        $results = $this->query($query, $data);
         return $results;
     }
 
@@ -91,13 +91,13 @@ trait Model {
      * @param array $data
      */
 
-    protected function create($data) 
+    protected function create(array $data): void 
     {
         $columns = implode(",", array_keys($data));
         $values = implode(",", array_map(fn($item) => ":" . $item, array_keys($data)));
         $query = "INSERT INTO $this->table ($columns) VALUES ($values);";
         
-        $this->executeQuery($query, $data);
+        $this->query($query, $data);
     }
 
     /**
@@ -110,13 +110,13 @@ trait Model {
      * @param array $data An associative array of columns (keys) and values to update
      */
 
-    protected function update($selectorKey, $selectorValue, $data) 
+    protected function update(string $selectorKey, string $selectorValue, array $data): void 
     {
         $updates = implode(array_map(fn($key) => "$key = :$key", array_keys($data)));
         $query = "UPDATE $this->table SET $updates WHERE $selectorKey = :$selectorKey";
         $data = array_merge($data, [$selectorKey => $selectorValue]);
 
-        $this->executeQuery($query, $data);
+        $this->query($query, $data);
     }
 
     /**
@@ -128,10 +128,10 @@ trait Model {
      * @param string $selectorValue The item selector's value
      */
 
-    protected function delete($selectorKey, $selectorValue) 
+    protected function delete(string $selectorKey, string $selectorValue): void 
     {
         $query = "DELETE FROM $this->table WHERE $selectorKey = :$selectorKey";
-        $this->executeQuery($query, [$selectorKey => $selectorValue]);
+        $this->query($query, [$selectorKey => $selectorValue]);
     }
     
 }

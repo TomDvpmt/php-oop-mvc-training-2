@@ -7,7 +7,7 @@ $equipmentSpecific = "";
 
 /** Specific HTML **/
 
-switch ($this->productType) {
+switch ($this->productCategory) {
     case 'shoe':
         ob_start()?>
         <div class="form__field">
@@ -82,16 +82,16 @@ ob_start(); ?>
     <form action="" method="GET" class="form">
         <input type="hidden" name="action" value="add"/>  
         <div class="form__field">
-            <label for="type">Product type :</label>
-            <select name="type" id="type" required>
-                <option value="">-- Choose a product type --</option>
-                <option value="shoe" <?= $this->productType === "shoe" ? "selected" : null?>>Shoe</option>
-                <option value="equipment" <?= $this->productType === "equipment" ? "selected" : null?>>Equipment</option>
+            <label for="category">Product category :</label>
+            <select name="category" id="category" required>
+                <option value="">-- Choose a product category --</option>
+                <option value="shoe" <?= $this->productCategory === "shoe" ? "selected" : null?>>Shoe</option>
+                <option value="equipment" <?= $this->productCategory === "equipment" ? "selected" : null?>>Equipment</option>
             </select>
         </div>
         <input type="submit" value="Validate">
     </form>
-    <?= !empty($_GET["type"]) ? $mainForm : null ?>
+    <?= !empty($_GET["category"]) ? $mainForm : null ?>
 </div>
 <?php $content = ob_get_clean();
 
