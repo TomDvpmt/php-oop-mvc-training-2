@@ -8,21 +8,21 @@ use PhpTraining2\core\Model;
 require_once MODELS_DIR . "Shoe.php";
 require_once MODELS_DIR . "Equipment.php";
 
-class Products {
+class ProductsController {
 
     use Controller;
     use Model;
 
-    private string $productCategory;
+    private string $category;
     private string $model;
     private array $specificProperties;
 
     public function __construct()
     {
-        $this->productCategory = strip_tags($_GET["category"] ?? "");
-        $this->model = "PhpTraining2\\models\\" . ucfirst($this->productCategory);
+        $this->category = strip_tags($_GET["category"] ?? "");
+        $this->model = "PhpTraining2\\models\\" . ucfirst($this->category);
         
-        switch ($this->productCategory) {
+        switch ($this->category) {
             case 'shoe':
                 $this->specificProperties = ["waterproof", "level"];
                 break;
@@ -43,19 +43,28 @@ class Products {
      */
 
     public function index(): void {
-        if($this->productCategory === "") {
-            $this->showCategories();
-        } else {
-            $table = $this->productCategory . "s";
-            $designator = substr($this->productCategory, 0, 1);
-            $this->table = "
-                products p JOIN $table $designator
-                WHERE p.id = $designator.product_id
-            ";
-            $content = $this->getPageContent();
-            $this->view("pages/products", $content);
-        }
+        $this->category === "" ? $this->showCategories() : $this->showProductsOfCategory();
     }
+
+
+    /**
+     * Show all the products of a specific category
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     */
+
+    private function showProductsOfCategory(): void {
+        $table = $this->category . "s";
+        $designator = substr($this->category, 0, 1);
+        $this->table = "
+            products p JOIN $table $designator
+            WHERE p.id = $designator.product_id
+        ";
+        $content = $this->getPageContent();
+        $this->view("pages/products", $content);
+    }
+
 
     /**
      * Show products categories if no category is specified
@@ -70,22 +79,22 @@ class Products {
 
 
     /**
-      * Get the values of the specific properties of this product category
-      * 
-      * @access private
-      * @package PhpTraining2\controllers
-      * @return array
-      */
+     * Get the values of the specific properties of this product category
+    * 
+    * @access private
+    * @package PhpTraining2\controllers
+    * @return array
+    */
 
-      private function getSpecificValues(): array {
-        $specificValues = array_map(function($property) {
-            if($property === "waterproof") {
-                return strip_tags($_POST["waterproof"]) === "yes" ? 1 : 0;
-            } else return strip_tags($_POST[$property]);
-        }, $this->specificProperties);
+    private function getSpecificValues(): array {
+    $specificValues = array_map(function($property) {
+        if($property === "waterproof") {
+            return strip_tags($_POST["waterproof"]) === "yes" ? 1 : 0;
+        } else return strip_tags($_POST[$property]);
+    }, $this->specificProperties);
 
-        return $specificValues;
-     }
+    return $specificValues;
+    }
 
 
 
@@ -106,7 +115,7 @@ class Products {
 
         $product = new ($this->model)(
             $data->id,
-            $this->productCategory,
+            $this->category,
             $data->name, 
             $data->description, 
             $data->price, 
@@ -169,7 +178,7 @@ class Products {
                 $this->view("pages/product-add", [], $errorMessage, null);
             } else {
                 $id = 0;
-                $category = $this->productCategory;
+                $category = $this->category;
                 $name = strip_tags($_POST["name"]);
                 $description = strip_tags($_POST["description"]);
                 $price = intval($_POST["price"]);
@@ -198,7 +207,7 @@ class Products {
 
     public function remove(): void {
         $id = strip_tags($_GET["id"]);
-        $this->table = $this->productCategory . "s";
+        $this->table = $this->category . "s";
         $this->delete("product_id", $id);
 
         $this->index();

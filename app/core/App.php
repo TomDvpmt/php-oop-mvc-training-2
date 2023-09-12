@@ -6,7 +6,7 @@ class App {
 
     use Database;
 
-    private string $controller = "Home"; // default value
+    private string $controller = "HomeController"; // default value
     private string $method = "index";
 
     /**
@@ -31,13 +31,13 @@ class App {
 
         /** Select controller **/
         $filename = ucfirst($URL[0]);
-        $filepath = CTRL_DIR . $filename . ".ctrl.php";
+        $filepath = CTRL_DIR . $filename . "Controller.php";
 
-        $this->controller = $filename;
+        $this->controller = $filename . "Controller";
 
         if(!file_exists($filepath)) {
-            $filepath = CTRL_DIR . "Error404.ctrl.php";
-            $this->controller = "Error404";
+            $filepath = CTRL_DIR . "Error404Controller.php";
+            $this->controller = "Error404Controller";
         } 
         require_once $filepath;
 

@@ -4,7 +4,7 @@ namespace PhpTraining2\models;
 
 use PhpTraining2\core\Model;
 
-abstract class Product {
+class Product {
     use Model;
     
     public function __construct(
@@ -18,19 +18,35 @@ abstract class Product {
     ) {}
 
     /**
-     * Get HTML code for a product
+     * Get the product's generic data (id, name, description, price, image url)
      * 
      * @access public
-     * @package PhpTraining2\models
-     * @return string
+     * @package PhpTraining2\controllers
+     * @return array
      */
 
-    public function getProductCardHtml(string $specificHtml): string {
-        ob_start();
-        require VIEWS_DIR . "partials/product-card.php";
-        $html = ob_get_clean();
+     public function getProductGenericData(): array {
+        $this->columns = "id, name, description, price, img_url";
+        $this->table = "products WHERE id = :id";
+        $genericData = (array) $this->find(["id" => $this->id])[0];
+        return $genericData;
+    }
 
-        return $html;
+
+    /**
+     * Get the product's specific data (depending on its category)
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     * @return array
+     */
+
+    public function getProductSpecificData(): array {
+        $this->columns = "*";
+        $this->table = $this->category . "s WHERE product_id= :product_id";
+        $data = (array) $this->find(["product_id" => $this->id])[0];
+        $specificData = array_filter($data, fn($key) => !in_array($key, ["id", "product_id"]), ARRAY_FILTER_USE_KEY);
+        return $specificData;
     }
 
     /**
@@ -72,9 +88,20 @@ abstract class Product {
         $this->create($specificData);
     }
 
-    
 
-    protected function updateProduct($id, $updateData) {
-        //
+    /**
+     * Get HTML code for a product
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     * @return string
+     */
+
+     public function getProductCardHtml(string $specificHtml): string {
+        ob_start();
+        require VIEWS_DIR . "partials/product-card.php";
+        $html = ob_get_clean();
+        
+        return $html;
     }
 }

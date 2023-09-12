@@ -7,7 +7,7 @@ $equipmentSpecific = "";
 
 /** Specific HTML **/
 
-switch ($this->productCategory) {
+switch ($this->category) {
     case 'shoe':
         ob_start()?>
         <div class="form__field">
@@ -85,8 +85,8 @@ ob_start(); ?>
             <label for="category">Product category :</label>
             <select name="category" id="category" required>
                 <option value="">-- Choose a product category --</option>
-                <option value="shoe" <?= $this->productCategory === "shoe" ? "selected" : null?>>Shoe</option>
-                <option value="equipment" <?= $this->productCategory === "equipment" ? "selected" : null?>>Equipment</option>
+                <option value="shoe" <?= $this->category === "shoe" ? "selected" : null?>>Shoe</option>
+                <option value="equipment" <?= $this->category === "equipment" ? "selected" : null?>>Equipment</option>
             </select>
         </div>
         <input type="submit" value="Validate">

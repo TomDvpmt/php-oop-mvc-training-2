@@ -1,5 +1,5 @@
 <?php 
-$category = $this->productCategory;
+$category = $this->category;
 $title = $category === "" ? "All our products" : ucfirst($category) . "s";
 
 ob_start();?>

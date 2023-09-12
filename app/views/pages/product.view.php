@@ -39,7 +39,7 @@ ob_start();?>
     </div>
     <p class="product-card__price">$ <?=$data["price"]?></p>
     <div class="product-card__controls">
-        <a href="<?= ROOT . "products?action=addToCart&category=$this->category&id=$this->id" ?>">Add to cart</a>
+        <a href="<?= ROOT . "cart?action=addToCart&category=$this->category&id=$this->id" ?>">Add to cart</a>
         <a href="<?= ROOT . "products?action=remove&category=$this->category&id=$this->id"?>">Delete</a>
     </div>
 </div>
