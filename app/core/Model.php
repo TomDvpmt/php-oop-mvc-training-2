@@ -134,4 +134,34 @@ trait Model {
         $this->query($query, [$selectorKey => $selectorValue]);
     }
     
+
+
+    /**
+     * Create a variable in $_SESSION
+     * 
+     * @access public
+     * @package PhpTraining2\core
+     * @param array $array
+     */
+
+    public function createInSession(array $array): void {
+        foreach($array as $property => $value) {
+            if(empty($_SESSION($property))) {
+                $_SESSION[$property] = $value;
+            }
+        }
+    }
+
+    /**
+     * Update a variable in $_SESSION
+     * 
+     * @access public
+     * @package PhpTraining2\core
+     * @param mixed $property
+     * @param mixed $newValue
+     */
+
+    public function updateInSession(mixed $property, mixed $newValue) {
+        $_SESSION[$property] = $newValue;
+    }
 }

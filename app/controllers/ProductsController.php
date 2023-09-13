@@ -108,8 +108,8 @@ class ProductsController {
      */
 
     private function instantiateProduct(object $data): object {
-        $specific = array_map(
-            fn(string $specificProperty): mixed => $data->$specificProperty, 
+        $specificData = array_map(
+            fn(string $specificProperty) => $data->$specificProperty, 
             $this->specificProperties
         );
 
@@ -120,7 +120,7 @@ class ProductsController {
             $data->description, 
             $data->price, 
             $data->img_url, // beware of difference between SQL column name (img_url) and php variable (imgUrl)
-            ...$specific
+            ...$specificData
         );
 
         return $product;

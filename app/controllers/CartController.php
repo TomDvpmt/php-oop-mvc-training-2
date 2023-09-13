@@ -4,8 +4,11 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\controllers\ProductController;
+use PhpTraining2\models\Cart;
+use PhpTraining2\models\Product;
 
 require_once CTRL_DIR . "ProductController.php";
+require_once MODELS_DIR . "Cart.php";
 
 class CartController {
     use Controller;
@@ -25,22 +28,9 @@ class CartController {
      */
 
     public function index() {
-        $this->initializeCart();
-        $this->view("pages/cart");
-    }
-
-
-    /**
-     * Initialize the cartItems array in $_SESSION
-     * 
-     * @access private
-     * @package PhpTraining2\controllers
-     */
-
-    private function initializeCart(): void {
-        if(empty($_SESSION["cartItems"])) {
-            $_SESSION["cartItems"] = [];
-        }
+        $cart = new Cart($this->userId, $this->cartItems);
+        $items = $cart->getAllItems();
+        $this->view("pages/cart", $items);
     }
 
 
@@ -51,14 +41,22 @@ class CartController {
      * @package PhpTraining2\controllers
      */
 
-    public function addToCart(): void {
-        $this->initializeCart();
-        
-        $productController = new ProductController();
-        $data = $productController->getProductData();
+    public function add(): void {
+        $cart = new Cart($this->userId, $this->cartItems);
+        $product = new Product();
+        $data = $product->getProductData();
         //
         // TODO : check if item already in cart + manage quantity
         //
-        array_push($_SESSION["cartItems"], $data);
+        $cart->addItem($data);
+        $this->index();
+    }
+
+
+    public function remove() {
+        $cart = new Cart($this->userId, $this->cartItems);
+        $productId = strip_tags($_GET["id"]);
+        $cart->removeItem($productId);
+        $this->index();
     }
 }

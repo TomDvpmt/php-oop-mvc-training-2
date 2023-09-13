@@ -15,13 +15,36 @@ class Product {
         protected int $price = 0, 
         protected string $imgUrl = "",
         protected array $reviews = []
-    ) {}
+    ) {
+        if(isset($_GET["id"])) {
+            $this->id = intval(strip_tags($_GET["id"]));
+        }
+        if(isset($_GET["category"])) {
+            $this->category = strip_tags($_GET["category"]);
+        }
+    }
+
+    /**
+     * Get the product's full data (generic + specific)
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     * @return array
+     */
+
+     public function getProductData(): array {
+        
+        $genericData = $this->getProductGenericData();
+        $specificData = $this->getProductSpecificData();
+        $data = array_merge($genericData, $specificData);
+        return $data;
+    }
 
     /**
      * Get the product's generic data (id, name, description, price, image url)
      * 
      * @access public
-     * @package PhpTraining2\controllers
+     * @package PhpTraining2\models
      * @return array
      */
 
@@ -37,7 +60,7 @@ class Product {
      * Get the product's specific data (depending on its category)
      * 
      * @access public
-     * @package PhpTraining2\controllers
+     * @package PhpTraining2\models
      * @return array
      */
 
@@ -100,8 +123,8 @@ class Product {
      public function getProductCardHtml(string $specificHtml): string {
         ob_start();
         require VIEWS_DIR . "partials/product-card.php";
-        $html = ob_get_clean();
+        $cardHtml = ob_get_clean();
         
-        return $html;
+        return $cardHtml;
     }
 }

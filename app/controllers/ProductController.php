@@ -31,20 +31,8 @@ class ProductController {
      */
 
     public function index(): void {
-        $data = $this->getProductData();
-        $this->view("pages/product", $data);
-    }
-
-
-    /**
-     * Get the product's full data (generic + specific)
-     */
-
-    public function getProductData(): array {
         $product = new Product($this->id, $this->category);
-        $genericData = $product->getProductGenericData();
-        $specificData = $product->getProductSpecificData();
-        $data = array_merge($genericData, $specificData);
-        return $data;
+        $data = $product->getProductData();
+        $this->view("pages/product", $data);
     }
 };
