@@ -46,13 +46,15 @@ class Cart {
     /**
      * Remove an item from the cart
      * 
-     * 
+     * @access public
+     * @package PhpTraining2\models
+     * @param int $productId
      */
 
-    public function removeItem(int $id) {
+    public function removeItem(int $productId) {
         $items = $this->getAllItems();
-        $targetPos = array_search(["id" => $id], $items);
-        array_splice($_SESSION["cartItems"], $targetPos, 1);
+        $newItems = array_filter($items, fn($item) => $item["id"] != $productId);
+        $_SESSION["cartItems"] = $newItems;
     }
 
 }

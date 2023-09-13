@@ -52,10 +52,16 @@ class CartController {
         $this->index();
     }
 
+    /**
+     * Remove an item from the cart
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
 
     public function remove() {
-        $cart = new Cart($this->userId, $this->cartItems);
         $productId = strip_tags($_GET["id"]);
+        $cart = new Cart($this->userId, $this->cartItems);
         $cart->removeItem($productId);
         $this->index();
     }
