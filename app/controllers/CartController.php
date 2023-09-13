@@ -30,7 +30,8 @@ class CartController {
     public function index() {
         $cart = new Cart($this->userId, $this->cartItems);
         $items = $cart->getAllItems();
-        $this->view("pages/cart", $items);
+        $totalPrice = $cart->getTotalPrice();
+        $this->view("pages/cart", ["items" => $items, "totalPrice" => $totalPrice]);
     }
 
 
@@ -45,12 +46,25 @@ class CartController {
         $cart = new Cart($this->userId, $this->cartItems);
         $product = new Product();
         $data = $product->getProductData();
-        //
-        // TODO : check if item already in cart + manage quantity
-        //
-        $cart->addItem($data);
+        if($cart->getOneItem($data["id"])) {
+            // error message or quantity + 1 ?
+        } else {
+            $cart->addItem([...$data, "quantity" => 1]);
+        }
         $this->index();
     }
+
+    
+    public function updateQuantity(): void {
+        $productId = strip_tags($_GET["id"]);
+        $newQuantity = strip_tags($_POST["quantity"]);
+        $cart = new Cart($this->userId, $this->cartItems);
+        $cart->updateItemQuantity($productId, $newQuantity);
+        $this->index();
+    }
+
+
+
 
     /**
      * Remove an item from the cart

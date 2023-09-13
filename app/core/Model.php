@@ -72,10 +72,10 @@ trait Model {
      * 
      * @access protected
      * @package PhpTraining2\core
-     * @return array
+     * @return mixed
      */
 
-    protected function find(array $data = []): array 
+    protected function find(array $data = []): mixed 
     {
         $query = "SELECT $this->columns FROM $this->table ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
         $results = $this->query($query, $data);
@@ -133,7 +133,6 @@ trait Model {
         $query = "DELETE FROM $this->table WHERE $selectorKey = :$selectorKey";
         $this->query($query, [$selectorKey => $selectorValue]);
     }
-    
 
 
     /**

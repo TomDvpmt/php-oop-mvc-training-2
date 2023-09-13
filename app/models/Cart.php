@@ -18,7 +18,7 @@ class Cart {
     }
 
     /**
-     * Get all cart items from $_SESSION
+     * Get all cart items
      *
      * @access public
      * @package PhpTraining2\models
@@ -27,6 +27,20 @@ class Cart {
 
     public function getAllItems(): array {
         return $_SESSION["cartItems"];
+    }
+
+
+    /**
+     * Get a cart item's data
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     * @param int $id
+     * @return array
+     */
+
+    public function getOneItem(int $id): array {
+        return array_filter($_SESSION["cartItems"], fn($item) => $item["id"] === $id);
     }
 
 
@@ -40,6 +54,32 @@ class Cart {
 
     public function addItem(array $data): void {
         $this->updateInSession("cartItems", [...$_SESSION["cartItems"], $data]);
+    }
+
+
+    /**
+     * Update cart item's quantity
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     * @param int $id The item's id
+     * @param int $newQuantity
+     */
+
+    public function updateItemQuantity(int $id, int $newQuantity): void {
+        $allItems = $this->getAllItems();
+        foreach($allItems as $key => $item) {
+            if($item["id"] === $id) {
+                $_SESSION["cartItems"][$key]["quantity"] = $newQuantity;
+                return;
+            }
+        }
+    }
+
+    public function getTotalPrice(): int {
+        $allItems = $this->getAllItems();
+        $totalPrice = array_sum(array_map(fn($item) => $item["price"] * $item["quantity"], $allItems));
+        return $totalPrice;
     }
 
 

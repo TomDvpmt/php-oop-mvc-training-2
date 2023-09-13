@@ -37,33 +37,43 @@ trait Database {
         $pdo = $this->connect();
 
         $queries = [
+            // tables
+            "
+                CREATE TABLE IF NOT EXISTS users (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    email VARCHAR(200) NOT NULL,
+                    password_hash VARCHAR(500) NOT NULL,
+                    is_admin BOOL DEFAULT 0 NOT NULL
+                );
+            ",
             "
                 CREATE TABLE IF NOT EXISTS products (
                     id INT AUTO_INCREMENT PRIMARY KEY,
-                    category VARCHAR(50),
-                    name VARCHAR(255),
-                    description VARCHAR(5000),
-                    price INT DEFAULT 0,
-                    img_url VARCHAR(255)
+                    category VARCHAR(50) NOT NULL,
+                    name VARCHAR(255) NOT NULL,
+                    description VARCHAR(5000) NOT NULL,
+                    price INT DEFAULT 0 NOT NULL DEFAULT 0,
+                    img_url VARCHAR(255) NOT NULL
                 );
             ",
                 "
                 CREATE TABLE IF NOT EXISTS shoes (
                     id INT AUTO_INCREMENT PRIMARY KEY,
-                    product_id INT,
-                    waterproof BOOL DEFAULT 1,
-                    level VARCHAR(50) DEFAULT 'regular',
+                    product_id INT NOT NULL,
+                    waterproof BOOL DEFAULT 1 NOT NULL,
+                    level VARCHAR(50) DEFAULT 'regular' NOT NULL,
                     FOREIGN KEY (product_id) REFERENCES products(id)
                 );
             ",
             "
                 CREATE TABLE IF NOT EXISTS equipments (
                     id INT AUTO_INCREMENT PRIMARY KEY,
-                    product_id INT, 
-                    activity VARCHAR(255),
+                    product_id INT NOT NULL, 
+                    activity VARCHAR(255) DEFAULT 'hiking' NOT NULL,
                     FOREIGN KEY (product_id) REFERENCES products(id)
                 );
             ",
+            // triggers
             "
                 CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_shoe
                 AFTER DELETE 
@@ -82,7 +92,7 @@ trait Database {
 
         try {
             foreach ($queries as $query) {
-                $statement = $pdo->query($query);
+                $pdo->query($query);
             }
             $pdo = null;
         } catch(Exception $e) {

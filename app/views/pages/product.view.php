@@ -10,14 +10,14 @@ $equipmentSpecific = "";
 switch ($this->category) {
     case 'shoe':
         ob_start();?>
-        <p class="product-card__waterproof">Waterproof : <?= $data["waterproof"] === 0 ? "no" : "yes" ?></p>
-        <p class="product-card__level">Level : <?= $data["level"] ?></p>
+        <p class="product-card__waterproof">Waterproof: <?= $data["waterproof"] === 0 ? "no" : "yes" ?></p>
+        <p class="product-card__level">Level: <?= $data["level"] ?></p>
         <?php $shoeSpecific = ob_get_clean();
         break;
 
     case 'equipment':
         ob_start();?>
-        <p class="product-card__activity">Activity : <?= $data["activity"] ?></p>
+        <p class="product-card__activity">Activity: <?= $data["activity"] ?></p>
         <?php $equipmentSpecific = ob_get_clean();
     
     default:
