@@ -7,13 +7,10 @@ use PhpTraining2\core\Model;
 class Cart {
     use Model;
 
-    public function __construct(private int $userId = 0, private array $cartItems = [])
+    public function __construct(private array $cartItems = [])
     {
-        if(!isset($_SESSION["userId"])) {
-            $_SESSION["userId"] = $this->userId;
-        }
-        if(!isset($_SESSION["cartItems"])) {
-            $_SESSION["cartItems"] = $this->cartItems;
+        if(!isset($_SESSION["cart"])) {
+            $_SESSION["cart"] = $this->cartItems;
         }
     }
 
@@ -26,7 +23,7 @@ class Cart {
      */
 
     public function getAllItems(): array {
-        return $_SESSION["cartItems"];
+        return $_SESSION["cart"];
     }
 
 
@@ -40,7 +37,7 @@ class Cart {
      */
 
     public function getOneItem(int $id): array {
-        return array_filter($_SESSION["cartItems"], fn($item) => $item["id"] === $id);
+        return array_filter($_SESSION["cart"], fn($item) => $item["id"] === $id);
     }
 
 
@@ -53,7 +50,7 @@ class Cart {
      */
 
     public function addItem(array $data): void {
-        $this->updateInSession("cartItems", [...$_SESSION["cartItems"], $data]);
+        $this->updateInSession("cart", [...$_SESSION["cart"], $data]);
     }
 
 
@@ -70,16 +67,10 @@ class Cart {
         $allItems = $this->getAllItems();
         foreach($allItems as $key => $item) {
             if($item["id"] === $id) {
-                $_SESSION["cartItems"][$key]["quantity"] = $newQuantity;
+                $_SESSION["cart"][$key]["quantity"] = $newQuantity;
                 return;
             }
         }
-    }
-
-    public function getTotalPrice(): int {
-        $allItems = $this->getAllItems();
-        $totalPrice = array_sum(array_map(fn($item) => $item["price"] * $item["quantity"], $allItems));
-        return $totalPrice;
     }
 
 
@@ -94,7 +85,21 @@ class Cart {
     public function removeItem(int $productId) {
         $items = $this->getAllItems();
         $newItems = array_filter($items, fn($item) => $item["id"] != $productId);
-        $_SESSION["cartItems"] = $newItems;
+        $_SESSION["cart"] = $newItems;
+    }
+
+
+    /**
+     * Get the cart's total price
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+
+     public function getTotalPrice(): int {
+        $allItems = $this->getAllItems();
+        $totalPrice = array_sum(array_map(fn($item) => $item["price"] * $item["quantity"], $allItems));
+        return $totalPrice;
     }
 
 }

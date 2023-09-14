@@ -17,6 +17,7 @@ ob_start(); ?>
     <div class="cart__total">
         <span>TOTAL: </span><span><?="$ " . $data["totalPrice"] ?></span>
     </div>
+    <button><a href="<?= ROOT . "order?action=billing" ?>">Order</a></button>
 </div>
 <?php $content = ob_get_clean();
 

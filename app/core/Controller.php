@@ -27,11 +27,23 @@ trait Controller {
      * 
      * @access public
      * @package PhpTraining2/controllers
+     * @param array $required
      * @return bool
      */
 
-     public function hasEmptyFields($required) {
+     public function hasEmptyFields(array $required) {
         $hasEmptyFields = array_reduce($required, fn($acc, $item) => $acc || empty($_POST[$item]), false );
         return $hasEmptyFields;
+    }
+
+
+    public function isUserLoggedIn(): bool {
+        return $_SESSION["user"]["id"];
+    }
+
+
+    public function sendToLoginPage(string $redirectionAfter = "") {
+        $_SESSION["redirectionAfter"] = $redirectionAfter;
+        header("Location : " . ROOT . "user?action=login");
     }
 }

@@ -16,19 +16,18 @@ class App {
      */
 
     private function splitUrl(): array {
-
         $URL = $_GET["url"] ?? "home";
         $URL = explode("/", $URL);
         return $URL;
     }
-
+    
     /**
      * Router (loads the controller based on the first part of the url collected in $_GET and the 'action' property in $_GET)
      */
 
     public function router() {
         $URL = $this->splitUrl();
-
+        
         /** Select controller **/
         $filename = ucfirst($URL[0]);
         $filepath = CTRL_DIR . $filename . "Controller.php";

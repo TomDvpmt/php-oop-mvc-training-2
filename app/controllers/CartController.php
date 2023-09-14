@@ -15,8 +15,8 @@ class CartController {
 
     public function __construct(private int $userId = 0, private array $cartItems = [])
     {
-        if(!empty($_SESSION["userId"])) {
-            $this->userId = $_SESSION["userId"];
+        if(!empty($_SESSION["user"]["id"])) {
+            $this->userId = $_SESSION["user"]["id"];
         }
     }
 
@@ -28,7 +28,7 @@ class CartController {
      */
 
     public function index() {
-        $cart = new Cart($this->userId, $this->cartItems);
+        $cart = new Cart($this->cartItems);
         $items = $cart->getAllItems();
         $totalPrice = $cart->getTotalPrice();
         $this->view("pages/cart", ["items" => $items, "totalPrice" => $totalPrice]);
@@ -43,27 +43,31 @@ class CartController {
      */
 
     public function add(): void {
-        $cart = new Cart($this->userId, $this->cartItems);
+        $cart = new Cart($this->cartItems);
         $product = new Product();
         $data = $product->getProductData();
         if($cart->getOneItem($data["id"])) {
-            // error message or quantity + 1 ?
+            $this->index(); // TODO : error message
         } else {
             $cart->addItem([...$data, "quantity" => 1]);
+            $this->index();
         }
-        $this->index();
     }
 
+    /**
+     * Update an item's quantity
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
     
     public function updateQuantity(): void {
         $productId = strip_tags($_GET["id"]);
         $newQuantity = strip_tags($_POST["quantity"]);
-        $cart = new Cart($this->userId, $this->cartItems);
+        $cart = new Cart($this->cartItems);
         $cart->updateItemQuantity($productId, $newQuantity);
         $this->index();
     }
-
-
 
 
     /**
@@ -75,7 +79,7 @@ class CartController {
 
     public function remove() {
         $productId = strip_tags($_GET["id"]);
-        $cart = new Cart($this->userId, $this->cartItems);
+        $cart = new Cart($this->cartItems);
         $cart->removeItem($productId);
         $this->index();
     }

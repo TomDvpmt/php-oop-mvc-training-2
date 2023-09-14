@@ -10,7 +10,7 @@
     <?= $specificHtml?>
     <p class="product-card__price">$ <?=$this->price?></p>
     <div class="product-card__controls">
-        <a href="<?= ROOT . "product&category=$this->category&id=$this->id" ?>">See details</a>
+        <a href="<?= ROOT . "product?category=$this->category&id=$this->id" ?>">See details</a>
         <br />
         <a href="<?= ROOT . "cart?action=add&category=$this->category&id=$this->id" ?>">Add to cart</a>
         <?= $deleteLink ?>
