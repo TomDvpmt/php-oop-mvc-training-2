@@ -1,25 +1,25 @@
 <nav class="navbar">
     <ul>
        <li>
-           <a href="/public">Home</a>
+           <a href="<?=ROOT?>">Home</a>
        </li>
        <li>
-           <a href="/public/products?category=shoe">Shoes</a>
+           <a href="<?=ROOT?>products?category=shoe">Shoes</a>
        </li>
        <li>
-           <a href="/public/products?category=equipment">Equipment</a>
+           <a href="<?=ROOT?>products?category=equipment">Equipment</a>
        </li>
        <li>
-           <a href="/public/products?action=add">Add a product</a>
+           <a href="<?=ROOT?>products?action=add">Add a product</a>
        </li>
        <li>
-           <a href="/public/cart">Cart</a>
-       </li>
-       <!-- <li>
-           <a href="/login">Log in</a>
+           <a href="<?=ROOT?>cart">Cart</a>
        </li>
        <li>
-           <a href="/register">Register</a>
-       </li>  -->
+           <a href="<?=ROOT?>user?action=login">Log in</a>
+       </li>
+       <li>
+           <a href="<?=ROOT?>user?action=register">Register</a>
+       </li> 
     </ul>
 </nav>

@@ -53,15 +53,15 @@ ob_start()?>
 <form method="POST" class="form">
     <div class="form__field">
         <label for="name">Name :</label>
-        <input type="text" name="name" />
+        <input type="text" name="name" id="name"/>
     </div>
     <div class="form__field">
         <label for="description">Description :</label>
-        <input type="text" name="description" />
+        <input type="text" name="description" id="description"/>
     </div>
     <div class="form__field">
         <label for="price">Price :</label>
-        <input type="number" name="price" min="0" />
+        <input type="number" name="price" min="0" id="price"/>
     </div>
     <div class="form__specific-fields">
         <?= $specific ?>
