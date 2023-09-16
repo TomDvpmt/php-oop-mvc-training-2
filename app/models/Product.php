@@ -8,19 +8,20 @@ class Product {
     use Model;
     
     public function __construct(
-        protected int $id = 0,
-        protected string $category = "", 
-        protected string $name = "", 
-        protected string $description = "", 
-        protected int $price = 0, 
-        protected string $imgUrl = "",
-        protected array $reviews = []
+        protected array $genericData = [
+            "id" => 0,
+            "category" => "", 
+            "name" => "", 
+            "description" => "", 
+            "price" => 0, 
+            "img_url" => ""
+        ],
     ) {
         if(isset($_GET["id"])) {
-            $this->id = intval(strip_tags($_GET["id"]));
+            $this->genericData["id"] = intval(strip_tags($_GET["id"]));
         }
         if(isset($_GET["category"])) {
-            $this->category = strip_tags($_GET["category"]);
+            $this->genericData["category"] = strip_tags($_GET["category"]);
         }
     }
 
@@ -51,7 +52,7 @@ class Product {
      public function getProductGenericData(): array {
         $this->columns = "id, name, description, price, img_url";
         $this->table = "products WHERE id = :id";
-        $genericData = (array) $this->find(["id" => $this->id])[0];
+        $genericData = (array) $this->find(["id" => $this->genericData["id"]])[0];
         return $genericData;
     }
 
@@ -66,8 +67,8 @@ class Product {
 
     public function getProductSpecificData(): array {
         $this->columns = "*";
-        $this->table = $this->category . "s WHERE product_id= :product_id";
-        $data = (array) $this->find(["product_id" => $this->id])[0];
+        $this->table = $this->genericData["category"] . "s WHERE product_id= :product_id";
+        $data = (array) $this->find(["product_id" => $this->genericData["id"]])[0];
         $specificData = array_filter($data, fn($key) => !in_array($key, ["id", "product_id"]), ARRAY_FILTER_USE_KEY);
         return $specificData;
     }
@@ -83,11 +84,11 @@ class Product {
     protected function createGenericProduct(): int {
         $this->table = "products";
         $genericData = [
-            "category" => $this->category,
-            "name" => $this->name,
-            "description" => $this->description,
-            "price" => $this->price,
-            "img_url" => $this->imgUrl,
+            "category" => $this->genericData["category"],
+            "name" => $this->genericData["name"],
+            "description" => $this->genericData["description"],
+            "price" => $this->genericData["price"],
+            "img_url" => "",
         ];
         $this->create($genericData);   
         $id = $this->getLastInsertId();
@@ -104,7 +105,7 @@ class Product {
     public function createSpecificProduct(array $data): void {
         $id = $this->createGenericProduct();
 
-        $this->table = $this->category . "s";
+        $this->table = $this->genericData["category"] . "s";
         $this->orderColumn = "product_id";
         $specificData = array_merge(["product_id" => $id], $data);
 

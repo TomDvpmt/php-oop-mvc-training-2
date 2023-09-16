@@ -6,16 +6,10 @@ require_once "Product.php";
 final class Equipment extends Product {
     
     public function __construct(
-        protected int $id,
-        protected string $category,
-        protected string $name, 
-        protected string $description, 
-        protected int $price, 
-        protected string $imgUrl, 
-        protected string $activity = "",
-        )
+        protected array $genericData = [],
+        protected array $specificData = ["activity" => ""])
     {
-        parent::__construct($id, $category, $name, $description, $price, $imgUrl);
+        parent::__construct($genericData);
         $this->table = "equipments";
     }
 
@@ -30,7 +24,7 @@ final class Equipment extends Product {
     public function getProductCardSpecificHtml() {
         ob_start();?>
             
-        <p class="product__activity"><span>Activity : </span><?=$this->activity?></p>
+        <p class="product__activity"><span>Activity : </span><?=$this->specificData["activity"]?></p>
         
         <?php $specificHtml = ob_get_clean();
         return $specificHtml;

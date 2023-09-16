@@ -4,9 +4,11 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
+use PhpTraining2\models\Form;
 
 require_once MODELS_DIR . "Shoe.php";
 require_once MODELS_DIR . "Equipment.php";
+require_once MODELS_DIR . "Form.php";
 
 class ProductsController {
 
@@ -15,7 +17,8 @@ class ProductsController {
 
     private string $category;
     private string $model;
-    private array $specificProperties;
+    private array $genericProperties = ["name", "description", "price", "img_url"];
+    private array $specificProperties = [];
 
     public function __construct()
     {
@@ -48,6 +51,18 @@ class ProductsController {
 
 
     /**
+     * Show products categories if no category is specified
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     */
+
+     private function showCategories(): void {
+        $this->view("pages/products");
+    }
+
+
+    /**
      * Show all the products of a specific category
      * 
      * @access private
@@ -65,66 +80,6 @@ class ProductsController {
         $this->view("pages/products", $content);
     }
 
-
-    /**
-     * Show products categories if no category is specified
-     * 
-     * @access private
-     * @package PhpTraining2\controllers
-     */
-
-    private function showCategories(): void {
-        $this->view("pages/products");
-    }
-
-
-    /**
-     * Get the values of the specific properties of this product category
-    * 
-    * @access private
-    * @package PhpTraining2\controllers
-    * @return array
-    */
-
-    private function getSpecificValues(): array {
-    $specificValues = array_map(function($property) {
-        if($property === "waterproof") {
-            return strip_tags($_POST["waterproof"]) === "yes" ? 1 : 0;
-        } else return strip_tags($_POST[$property]);
-    }, $this->specificProperties);
-
-    return $specificValues;
-    }
-
-
-
-    /**
-     * Instantiate the Product class
-     * 
-     * @access private
-     * @package PhpTraining2\controllers
-     * @param object $data i.e. a result (row) of a find() query
-     * @return object
-     */
-
-    private function instantiateProduct(object $data): object {
-        $specificData = array_map(
-            fn(string $specificProperty) => $data->$specificProperty, 
-            $this->specificProperties
-        );
-
-        $product = new ($this->model)(
-            $data->id,
-            $this->category,
-            $data->name, 
-            $data->description, 
-            $data->price, 
-            $data->img_url, // beware of difference between SQL column name (img_url) and php variable (imgUrl)
-            ...$specificData
-        );
-
-        return $product;
-    }
 
 
     /**
@@ -158,7 +113,34 @@ class ProductsController {
         return $content;
      }
 
-  
+
+
+    /**
+     * Instantiate the Product class
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @param object $data i.e. a result (row) of a find() query
+     * @return object
+     */
+
+    private function instantiateProduct(object $data): object {
+        $specificData = array_filter((array) $data, fn($key) => in_array($key, $this->specificProperties), ARRAY_FILTER_USE_KEY);
+
+        $product = new ($this->model)(
+            [
+                "id" => $data->id,
+                "category" => $this->category,
+                "img_url" => $data->img_url,
+                "name" => $data->name, 
+                "description" => $data->description, 
+                "price" => $data->price, 
+            ],
+            $specificData
+        );
+        return $product;
+    }
+      
 
     /**
      * Control the "Add a product" form page. 
@@ -171,24 +153,33 @@ class ProductsController {
 
         if(isset($_POST["submit"])) {
             
-            $required = ["name", "description", "price", ...$this->specificProperties];
+            $form = new Form();
+            $form->setRequired(array_merge($this->genericProperties, $this->specificProperties));
             
-            if($this->hasEmptyFields($required)) {
+            if($form->hasEmptyFields()) {
                 $errorMessage = "Empty fields.";
                 $this->view("pages/product-add", [], $errorMessage, null);
             } else {
-                $id = 0;
-                $category = $this->category;
-                $name = strip_tags($_POST["name"]);
-                $description = strip_tags($_POST["description"]);
-                $price = intval($_POST["price"]);
-                $imgUrl = "";
-
-                $specificValues = $this->getSpecificValues();
-                $specificData = array_combine($this->specificProperties, $specificValues);
+                $genericData = [
+                    "id" => 0,
+                    "category" => $this->category,
+                    "name" => ["type" => "text", "value" => $_POST["name"], "name" => "name"],
+                    "description" => ["type" => "text", "value" => $_POST["description"], "name" => "description"],
+                    "price" => ["type" => "number", "value" => $_POST["price"], "name" => "price"],
+                    "img_url" => ""
+                ];
+                $specificData = $form->getSpecificData($this->specificProperties);
+                $data = array_merge($genericData, $specificData);
                 
-                $product = new ($this->model)($id, $category, $name, $description, $price, $imgUrl, ...$specificValues);
-                $product->createSpecificProduct($specificData);
+                $dataToValidate = array_filter($data, fn($key) => !in_array($key, ["id", "category", "img_url"]), ARRAY_FILTER_USE_KEY);
+                $validated = $form->validate($dataToValidate);
+
+                if(!$validated) {
+                    //
+                }
+
+                // $product = new ($this->model)();
+                // $product->createSpecificProduct($specificData);
 
                 $successMessage = "Product added.";
                 $this->view("pages/product-add", [], null, $successMessage);
@@ -197,6 +188,7 @@ class ProductsController {
 
         $this->view("pages/product-add", [], null, null);
     }
+
 
     /**
      * Removes a product

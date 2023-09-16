@@ -37,6 +37,7 @@ class App {
         if(!file_exists($filepath)) {
             $filepath = CTRL_DIR . "Error404Controller.php";
             $this->controller = "Error404Controller";
+            http_response_code(404);
         } 
         require_once $filepath;
 

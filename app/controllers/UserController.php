@@ -42,6 +42,7 @@ class UserController {
                 $form->addValidationError("hasEmptyFields");
             }
 
+            
 
             // $user = new User(...$validatedData);
             // show($user);
