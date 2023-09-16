@@ -155,38 +155,48 @@ class ProductsController {
             
             $form = new Form();
             $form->setRequired(array_merge($this->genericProperties, $this->specificProperties));
+            $_POST["img_url"] = "test.jpg"; // TODO
             
             if($form->hasEmptyFields()) {
+                show("hasEmptyFields");
                 $errorMessage = "Empty fields.";
                 $this->view("pages/product-add", [], $errorMessage, null);
             } else {
-                $genericData = [
-                    "id" => 0,
-                    "category" => $this->category,
+                $genericToValidate = [
                     "name" => ["type" => "text", "value" => $_POST["name"], "name" => "name"],
                     "description" => ["type" => "text", "value" => $_POST["description"], "name" => "description"],
                     "price" => ["type" => "number", "value" => $_POST["price"], "name" => "price"],
-                    "img_url" => ""
                 ];
-                $specificData = $form->getSpecificData($this->specificProperties);
-                $data = array_merge($genericData, $specificData);
-                
-                $dataToValidate = array_filter($data, fn($key) => !in_array($key, ["id", "category", "img_url"]), ARRAY_FILTER_USE_KEY);
-                $validated = $form->validate($dataToValidate);
-
-                if(!$validated) {
-                    //
+                $genericValidated = $form->validate($genericToValidate);
+                $specificToValidate = $form->getSpecificData($this->specificProperties);
+                $specificValidated = $form->validate($specificToValidate);
+                if(in_array("waterproof", array_keys($specificValidated))) {
+                    $specificValidated["waterproof"] = $specificValidated["waterproof"] === "yes" ? 1 : 0;
                 }
+                
+                if(!$genericValidated || !$specificValidated) {
+                    show("There are errors !"); // TODO : deal with errors
+                }
+                
+                $genericData = [
+                    "id" => 0,
+                    "category" => $this->category,
+                    "img_url" => "test.jpg",
+                    "name" => $genericValidated["name"],
+                    "description" => $genericValidated["description"],
+                    "price" => $genericValidated["price"],
+                ];
 
-                // $product = new ($this->model)();
-                // $product->createSpecificProduct($specificData);
+                $product = new ($this->model)($genericData);
+                $product->createSpecificProduct($specificValidated);
 
                 $successMessage = "Product added.";
                 $this->view("pages/product-add", [], null, $successMessage);
             }
+        } else {
+            $this->view("pages/product-add", [], null, null);
         }
 
-        $this->view("pages/product-add", [], null, null);
     }
 
 
