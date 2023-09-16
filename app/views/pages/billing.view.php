@@ -4,7 +4,7 @@ $title = "Billing info";
 
 ob_start();?>
 <div class="page__content billing">
-    <form action="<?= ROOT . "order?action=recap" ?>" method="POST">
+    <form class="billing__form form" action="<?= ROOT . "order?action=recap" ?>" method="POST">
         <div class="form__field">
             <label for="name">Name: </label>
             <input type="text" name="name" id="name"><!-- TODO : required -->

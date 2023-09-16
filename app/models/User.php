@@ -9,18 +9,19 @@ class User {
 
     public function __construct(
         private int $id = 0, 
+        private int $isAdmin = 0,
         private string $firstName = "", 
         private string $lastName = "", 
-        private string $email, 
-        private string $password,
-        private string $passwordConfirm,
-        private int $isAdmin = 0
+        private string $email = "", 
+        private string $password = "",
     )
     {
         if(isset($_SESSION["user"]["id"])) {
             $this->id = $_SESSION["user"]["id"];
         }
     }
+
+
 
     public function createUser() {
         

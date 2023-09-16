@@ -155,12 +155,11 @@ class ProductsController {
             
             $form = new Form();
             $form->setRequired(array_merge($this->genericProperties, $this->specificProperties));
-            $_POST["img_url"] = "test.jpg"; // TODO
+            $_POST["img_url"] = "test.jpg"; // TODO : file upload
             
             if($form->hasEmptyFields()) {
-                show("hasEmptyFields");
-                $errorMessage = "Empty fields.";
-                $this->view("pages/product-add", [], $errorMessage, null);
+                $form->setEmptyFieldsError();
+                // show form with already filled values and error message
             } else {
                 $genericToValidate = [
                     "name" => ["type" => "text", "value" => $_POST["name"], "name" => "name"],
@@ -168,6 +167,7 @@ class ProductsController {
                     "price" => ["type" => "number", "value" => $_POST["price"], "name" => "price"],
                 ];
                 $genericValidated = $form->validate($genericToValidate);
+                
                 $specificToValidate = $form->getSpecificData($this->specificProperties);
                 $specificValidated = $form->validate($specificToValidate);
                 if(in_array("waterproof", array_keys($specificValidated))) {
@@ -175,7 +175,8 @@ class ProductsController {
                 }
                 
                 if(!$genericValidated || !$specificValidated) {
-                    show("There are errors !"); // TODO : deal with errors
+                    show("There are errors !"); 
+                    // TODO : deal with errors
                 }
                 
                 $genericData = [
@@ -186,13 +187,14 @@ class ProductsController {
                     "description" => $genericValidated["description"],
                     "price" => $genericValidated["price"],
                 ];
-
+    
                 $product = new ($this->model)($genericData);
                 $product->createSpecificProduct($specificValidated);
-
+    
                 $successMessage = "Product added.";
                 $this->view("pages/product-add", [], null, $successMessage);
             }
+
         } else {
             $this->view("pages/product-add", [], null, null);
         }

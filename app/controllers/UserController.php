@@ -20,32 +20,71 @@ class UserController {
      * @package PhpTraining2\controllers
      */
 
-    public function index(): void {
-        $this->view("pages/register");
+    public function index(array $data): void {
+        $this->view("pages/register", $data);
     }
 
+    /**
+     * Register a new user
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
+
     public function register() {
-        if(isset($_POST["submit"])) {            
-            $data = [
-                "id" => 0, 
-                "firstName" => $_POST["firstName"], 
-                "lastName" => $_POST["lastName"], 
-                "email" => $_POST["email"], 
-                "password" => $_POST["password"], 
-                "passwordConfirm" => $_POST["passwordConfirm"], 
-                "isAdmin" => 0
-            ];
-            $required = ["email", "password", "passwordConfirm"];
+        if(isset($_POST["submit"])) { 
+            $form = new Form();
+            $form->setRequired($form::REGISTER_REQUIRED);
+            $dataInSession = $form->setFormDataInSession();
             
-            $form = new Form($data);
-            if($form->hasEmptyFields($required)) {
-                $form->addValidationError("hasEmptyFields");
+            if($form->hasEmptyFields()) {
+                $form->setEmptyFieldsError();
+                show("hasEmptyFields"); // TODO
+                $this->index($dataInSession);
             }
 
-            
+            if($_POST["password"] !== $_POST["passwordConfirm"]) {
+                $form->addValidationError(("passwordsDontMatch"));
+                $this->index($dataInSession);
+            }
 
-            // $user = new User(...$validatedData);
-            // show($user);
+            $data = [ // beware of properties order, must match class User constructor
+                "notToValidate" => [
+                    "id" => 0,                 
+                    "isAdmin" => 0,
+                ],
+                "toValidate" => [
+                    "firstName" => [
+                        "type" => "text", 
+                        "value" => $_POST["firstName"], 
+                        "name" => "firstName"
+                    ],
+                    "lastName" => [
+                        "type" => "text", 
+                        "value" => $_POST["lastName"], 
+                        "name" => "lastName"
+                    ],
+                    "email" => [
+                        "type" => "email", 
+                        "value" => $_POST["email"], 
+                        "name" => "email"
+                    ],
+                ],
+                "password" => [
+                    "password" => password_hash($_POST["password"], PASSWORD_DEFAULT)
+                ]
+            ];
+            
+            $validated = $form->validate($data["toValidate"]);
+            
+            if(!$validated) {
+                // TODO
+            } else {
+                show("success");
+                $fullData = array_merge($data["notToValidate"], $validated, $data["password"]);
+                show($fullData);
+                $user = new User(...$fullData);
+            }
         }
         $this->view("pages/register");
     }

@@ -31,7 +31,7 @@ class ProductController {
      */
 
     public function index(): void {
-        $product = new Product($this->id, $this->category);
+        $product = new Product();
         $data = $product->getProductData();
         $this->view("pages/product", $data);
     }

@@ -4,8 +4,25 @@ namespace PhpTraining2\models;
 
 class Form {
 
-    public function __construct(private array $inputs = [], private array $required = [], private array $validationErrors = [])
+    const REGISTER_TO_VALIDATE = ["firstName", "lastName", "email"];
+    const REGISTER_REQUIRED = ["email", "password", "passwordConfirm"];
+
+    public function __construct(private array $inputsToValidate = [], private array $required = [], private array $validationErrors = [])
     {}
+
+    
+    /**
+     * Get an array of form validation errors
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     * @return array
+     */
+    
+    public function getValidationErrors(): array {
+        return $this->validationErrors;
+    }
+
 
     /**
      * Set the required fields array
@@ -17,6 +34,20 @@ class Form {
 
     public function setRequired(array $required) {
         $this->required = $required;
+    }
+
+    /**
+     * Set from data in $_SESSION
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     * @return array
+     */
+
+    public function setFormDataInSession(): array {
+        $dataToStore = array_merge(...array_map(fn($property) => [$property => $_POST[$property]], $this::REGISTER_TO_VALIDATE));
+        $_SESSION["formData"] = $dataToStore;
+        return $dataToStore;
     }
 
     /**
@@ -62,14 +93,23 @@ class Form {
                     break;
             }
             return $data;
-            // if($property === "waterproof") {
-            //     return $_POST["waterproof"] === "yes" ? 1 : 0;
-            // } else return $_POST[$property];
         }, $specificProperties);
     
         return $specificValues;
     }
 
+    /**
+     * Set an error message all the required fields have not been filled
+     * 
+     * @access public
+     * @package PhpTraining2/models
+     */
+
+    public function setEmptyFieldsError(): void {
+        if($this->hasEmptyFields()) {
+            $this->addValidationError("hasEmptyFields");
+        }
+    }
 
 
     /**
@@ -158,6 +198,9 @@ class Form {
             case "url":
                 $sanitized = filter_var($input["value"], FILTER_SANITIZE_URL);
                 break;
+            case "password":
+                $sanitized = $input["value"];
+                break;
             default:
                 $sanitized = null;
                 break;
@@ -189,6 +232,8 @@ class Form {
             case "price":
                 array_push($this->validationErrors, ["price" => "The price must be a number."]);
                 break;
+            case "passwordsDontMatch": 
+                array_push($this->validationErrors, ["passwordsDontMatch" => "Passwords don't match."]);
             default:
                 break;
         }
