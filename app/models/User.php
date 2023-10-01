@@ -16,26 +16,37 @@ class User {
         private string $password = "",
     )
     {
+        $this->table = "users";
         if(isset($_SESSION["user"]["id"])) {
             $this->id = $_SESSION["user"]["id"];
         }
     }
 
+    public function findOne() {
+        $this->setWhere("email = :email");
+        $result = $this->find(["email" => $this->email]);
+        return $result;
+    }
 
 
-    public function createUser() {
-        
+    public function createOne() {
+        $this->create([
+            "first_name" => $this->firstName,
+            "last_name" => $this->lastName,
+            "email" => $this->email,
+            "password" => $this->password,
+        ]);
     }
 
     public function login() {
         //
     }
 
-    public function updateUser() {
+    public function updateOne() {
         //
     }
 
-    public function deleteUser() {
+    public function deleteOne() {
         //
     }
 

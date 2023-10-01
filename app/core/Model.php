@@ -13,10 +13,20 @@ trait Model {
     // default values
     protected string $table = "users";
     protected string $columns = "*";
+    protected string $where = "";
     protected int $limit = 20;
     protected int $offset = 0;
     protected string $orderColumn = "id";
     protected string $orderType = "desc";
+
+
+    public function setTable($newTable) {
+        $this->table = $newTable;
+    }
+
+    public function setWhere($where) {
+        $this->where = "WHERE $where";
+    }
 
 
     /**
@@ -72,12 +82,13 @@ trait Model {
      * 
      * @access protected
      * @package PhpTraining2\core
+     * @param array $data
      * @return mixed
      */
 
     protected function find(array $data = []): mixed 
     {
-        $query = "SELECT $this->columns FROM $this->table ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
+        $query = "SELECT $this->columns FROM $this->table $this->where ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
         $results = $this->query($query, $data);
         return $results;
     }

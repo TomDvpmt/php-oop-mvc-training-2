@@ -10,7 +10,8 @@ ob_start();?>
         <div class="form__field">
             <label for="email">* Email:</label> 
             <input type="email" name="email" id="email" value="<?=$formData["email"] ?? ""?>" required/>
-            <?= !empty($errors["email"]) ? "<p class='error'>" . $errors["email"] . "</p>" : null ?>
+            <?= !empty($errors["emailInvalid"]) ? "<p class='error'>" . $errors["emailInvalid"] . "</p>" : null ?>
+            <?= !empty($errors["emailAlreadyUsed"]) ? "<p class='error'>" . $errors["emailAlreadyUsed"] . "</p>" : null ?>
         </div>
         <div class="form__field">
             <label for="password">* Password:</label> 

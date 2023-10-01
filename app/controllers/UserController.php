@@ -75,23 +75,31 @@ class UserController {
             ];
             
             $validated = $form->validate($data["toValidate"]);
+
+            $inputData = [
+                "email" => $_POST["email"],
+                "firstName" => $_POST["firstName"],
+                "lastName" => $_POST["lastName"],
+                "password" => $_POST["password"],
+                "passwordConfirm" => $_POST["passwordConfirm"],
+            ];
             
             if(!$validated) {
                 $validationErrors = $form->getValidationErrors();
-                $inputData = [
-                        "email" => $_POST["email"],
-                        "firstName" => $_POST["firstName"],
-                        "lastName" => $_POST["lastName"],
-                        "password" => $_POST["password"],
-                        "passwordConfirm" => $_POST["passwordConfirm"],
-                    ];
                 $this->view("pages/register", ["formData" => $inputData, "validationErrors" => $validationErrors]);
             } else {
-                show("success");
                 $fullData = array_merge($data["notToValidate"], $validated, $data["password"]);
-                show($fullData);
                 $user = new User(...$fullData);
-                // TODO
+                show($user->findOne());
+                
+                if(!empty($user->findOne())) {
+                    $form->addValidationError("emailAlreadyUsed");
+                    $validationErrors = $form->getValidationErrors();
+                    $this->view("pages/register", ["formData" => $inputData, "validationErrors" => $validationErrors]);
+                } else {
+                    show("success");
+                    $user->createOne();
+                };
             }
         }
         $this->view("pages/register");

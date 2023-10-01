@@ -187,7 +187,8 @@ class Form {
         $sanitized = null;
         switch($input["type"]) {
             case "email":
-                $sanitized = filter_var($input["value"], FILTER_SANITIZE_EMAIL);
+                // $sanitized = filter_var($input["value"], FILTER_SANITIZE_EMAIL);
+                $sanitized = $input["value"];
                 break;
             case "text":
                 $sanitized = htmlspecialchars($input["value"], ENT_NOQUOTES);
@@ -215,7 +216,7 @@ class Form {
      * 
      * @access public
      * @package PhpTraining2\models
-     * @param string $name Error name: hasEmptyFields, email, password, price
+     * @param string $name Error name: hasEmptyFields, emailInvalid, emailAlreadyUsed, password, price, passwordsDontMatch
      */
 
     public function addValidationError(string $name): void {
@@ -223,8 +224,11 @@ class Form {
             case "hasEmptyFields":
                 $this->validationErrors["hasEmptyFields"] = "All required fields must be filled.";
                 break;
-            case 'email':
-                $this->validationErrors["email"] = "Invalid email.";
+            case 'emailInvalid':
+                $this->validationErrors["emailInvalid"] = "Invalid email.";
+                break;
+            case 'emailAlreadyUsed':
+                $this->validationErrors["emailAlreadyUsed"] = "This email address is already used, please choose another one.";
                 break;
             case "password":
                 $this->validationErrors["password"] = "Password must be at least 8 characters long.";
