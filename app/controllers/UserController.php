@@ -21,7 +21,7 @@ class UserController {
      */
 
     public function index(array $data): void {
-        $this->view("pages/register", $data);
+        //
     }
 
     /**
@@ -39,11 +39,10 @@ class UserController {
             
             if($form->hasEmptyFields()) {
                 $form->setEmptyFieldsError();
-                show("hasEmptyFields"); // TODO
                 $this->index($dataInSession);
             }
 
-            if($_POST["password"] !== $_POST["passwordConfirm"]) {
+            if(!empty($_POST["passwordConfirm"]) && $_POST["password"] !== $_POST["passwordConfirm"]) {
                 $form->addValidationError(("passwordsDontMatch"));
                 $this->index($dataInSession);
             }
@@ -78,12 +77,21 @@ class UserController {
             $validated = $form->validate($data["toValidate"]);
             
             if(!$validated) {
-                // TODO
+                $validationErrors = $form->getValidationErrors();
+                $inputData = [
+                        "email" => $_POST["email"],
+                        "firstName" => $_POST["firstName"],
+                        "lastName" => $_POST["lastName"],
+                        "password" => $_POST["password"],
+                        "passwordConfirm" => $_POST["passwordConfirm"],
+                    ];
+                $this->view("pages/register", ["formData" => $inputData, "validationErrors" => $validationErrors]);
             } else {
                 show("success");
                 $fullData = array_merge($data["notToValidate"], $validated, $data["password"]);
                 show($fullData);
                 $user = new User(...$fullData);
+                // TODO
             }
         }
         $this->view("pages/register");

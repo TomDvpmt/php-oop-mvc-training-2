@@ -221,19 +221,19 @@ class Form {
     public function addValidationError(string $name): void {
         switch ($name) {
             case "hasEmptyFields":
-                array_push($this->validationErrors, ["hasEmptyFields" => "All required fields must be filled."]);
+                $this->validationErrors["hasEmptyFields"] = "All required fields must be filled.";
                 break;
             case 'email':
-                array_push($this->validationErrors, ["email" => "Invalid email."]);
+                $this->validationErrors["email"] = "Invalid email.";
                 break;
             case "password":
-                array_push($this->validationErrors, ["password" => "Password must be at least 8 characters long."]);
+                $this->validationErrors["password"] = "Password must be at least 8 characters long.";
                 break;
             case "price":
-                array_push($this->validationErrors, ["price" => "The price must be a number."]);
+                $this->validationErrors["price"] = "The price must be a number.";
                 break;
             case "passwordsDontMatch": 
-                array_push($this->validationErrors, ["passwordsDontMatch" => "Passwords don't match."]);
+                $this->validationErrors["passwordsDontMatch"] = "Passwords don't match.";
             default:
                 break;
         }
