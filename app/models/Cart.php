@@ -4,14 +4,19 @@ namespace PhpTraining2\models;
 
 use PhpTraining2\core\Model;
 
+require_once MODELS_DIR . "Order.php";
+
 class Cart {
     use Model;
+
+    private int $totalPrice;
 
     public function __construct(private array $cartItems = [])
     {
         if(!isset($_SESSION["cart"])) {
             $_SESSION["cart"] = $this->cartItems;
         }
+        $this->totalPrice = array_sum(array_map(fn($item) => $item["price"] * $item["quantity"], $_SESSION["cart"]));
     }
 
     /**
@@ -82,10 +87,35 @@ class Cart {
      * @param int $productId
      */
 
-    public function removeItem(int $productId) {
+    public function removeItem(int $productId): void {
         $items = $this->getAllItems();
         $newItems = array_filter($items, fn($item) => $item["id"] != $productId);
         $_SESSION["cart"] = $newItems;
+    }
+
+    
+    /**
+     * Remove all items from cart
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+
+    public function removeAllItems() {
+        $_SESSION["cart"] = [];
+    }
+
+
+    /**
+     * Set the cart's total price
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+
+     public function setTotalPrice(): void {
+        $allItems = $this->getAllItems();
+        $this->totalPrice = array_sum(array_map(fn($item) => $item["price"] * $item["quantity"], $allItems));
     }
 
 
@@ -94,12 +124,11 @@ class Cart {
      * 
      * @access public
      * @package PhpTraining2\models
+     * @return int
      */
 
      public function getTotalPrice(): int {
-        $allItems = $this->getAllItems();
-        $totalPrice = array_sum(array_map(fn($item) => $item["price"] * $item["quantity"], $allItems));
-        return $totalPrice;
+        return $this->totalPrice;
     }
 
 }

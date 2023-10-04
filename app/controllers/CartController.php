@@ -3,12 +3,13 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
-use PhpTraining2\controllers\ProductController;
 use PhpTraining2\models\Cart;
 use PhpTraining2\models\Product;
+use PhpTraining2\models\Order;
 
 require_once CTRL_DIR . "ProductController.php";
 require_once MODELS_DIR . "Cart.php";
+require_once MODELS_DIR . "Order.php";
 
 class CartController {
     use Controller;
@@ -28,6 +29,8 @@ class CartController {
      */
 
     public function index() {
+        (new Order)->removeIdFromSession();
+
         $cart = new Cart($this->cartItems);
         $items = $cart->getAllItems();
         $totalPrice = $cart->getTotalPrice();

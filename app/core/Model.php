@@ -10,7 +10,6 @@ trait Model {
     
     use Database;
 
-    // default values
     protected string $table = "users";
     protected string $columns = "*";
     protected string $where = "";
@@ -19,12 +18,13 @@ trait Model {
     protected string $orderColumn = "id";
     protected string $orderType = "desc";
 
+    
 
-    public function setTable($newTable) {
+    protected function setTable($newTable) {
         $this->table = $newTable;
     }
 
-    public function setWhere($where) {
+    protected function setWhere($where) {
         $this->where = "WHERE $where";
     }
 

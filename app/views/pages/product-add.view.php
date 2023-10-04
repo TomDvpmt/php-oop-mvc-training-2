@@ -76,7 +76,6 @@ ob_start()?>
 
 /** Full HTML **/
 
-
 ob_start(); ?>
 <div class="page__content add-product">
     <form action="" method="GET" class="form">

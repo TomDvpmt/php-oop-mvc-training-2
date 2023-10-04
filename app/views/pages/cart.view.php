@@ -11,13 +11,15 @@ foreach($data["items"] as $item) {
     array_push($grid, $card);
 }
 
+$hasItems = !empty($data["items"]);
+
 ob_start(); ?>
 <div class="page__content cart">
     <div class="cart__grid"><?= !empty($grid) ? implode("", $grid) : "No product in cart." ?></div>
     <div class="cart__total">
         <span>TOTAL: </span><span><?="$ " . $data["totalPrice"] ?></span>
     </div>
-    <button><a href="<?= ROOT . "order?action=billing" ?>">Order</a></button>
+    <button <?= $hasItems ? null : "disabled" ?>><a href="<?= $hasItems ? ROOT . "order?action=billing" : "" ?>">Order</a></button>
 </div>
 <?php $content = ob_get_clean();
 

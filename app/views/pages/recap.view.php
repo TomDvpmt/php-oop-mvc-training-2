@@ -12,7 +12,7 @@ foreach($data["billingInfo"] as $key => $value) {
     array_push($billingGrid, $field);
 }
 
-foreach($data["cart"] as $item) {
+foreach($data["items"] as $item) {
     ob_start();
     require VIEWS_DIR . "partials/recap-card.php";
     $card = ob_get_clean();
@@ -33,7 +33,7 @@ ob_start();?>
         <?= implode("", $itemsGrid) ?>
         <p class="recap__cart__total">Total: $ <?=$data["totalPrice"]?></p>
     </section>
-    <button><a href="<?= ROOT . "order?action=pay"?>">Pay</a></button>
+    <button><a href="<?= ROOT . "order?action=confirm"?>">Pay</a></button>
 </div>
 <?php $content = ob_get_clean();
 

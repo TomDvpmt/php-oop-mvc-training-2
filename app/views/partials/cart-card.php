@@ -6,7 +6,7 @@
     <form method="POST" action="<?= ROOT . "cart?action=updateQuantity&id=" . $item["id"]?>" class="cart-card__quantity">
         <label for="quantity">Quantity: </label>
         <input type="number" name="quantity" id="quantity" min="1" value="<?= $item["quantity"]?>">
-        <input type="submit" value="Validate">
+        <input type="submit" value="Update">
     </form>
     <p class="cart-card__total">Total: $ <?= $item["price"] * $item["quantity"] ?></p> <!-- Total to be upgraded with JavaScript -->
     <div class="cart-card__controls">
