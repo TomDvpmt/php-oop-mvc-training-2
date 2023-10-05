@@ -20,7 +20,7 @@ class UserController {
      * @package PhpTraining2\controllers
      */
 
-    public function index(array $data): void {
+    public function index(): void {
         //
     }
 
