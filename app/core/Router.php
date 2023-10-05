@@ -6,7 +6,7 @@ class Router {
 
     use Database;
 
-    private string $controller = "HomeController"; // default value
+    private string $controllerName = "HomeController"; // default value
     private string $method = "index";
 
 
@@ -21,7 +21,7 @@ class Router {
 
      public function create() {
          
-        $controller = $this->getControllerObject();
+        $controller = $this->getController();
 
         if(!empty($_GET["action"])) {
             $method = strip_tags($_GET["action"]);
@@ -35,43 +35,45 @@ class Router {
     }
 
     /**
-     * Get controller object 
+     * Get controller object
      * 
      * @access private
      * @package PhpTraining2\core
      * @return object The controller
      */
 
-    private function getControllerObject(): object {
+    private function getController(): object {
         $URL = $this->splitUrl();
         $filename = ucfirst($URL[0]);
-        $this->setController($filename . "Controller");
+
+        $controllerName = $filename . "Controller";
+        $this->setControllerName($controllerName);
         
-        $filepath = CTRL_DIR . $filename . "Controller.php";
+        $filepath = CTRL_DIR . $controllerName . ".php";
 
         if(!file_exists($filepath)) {
             $filepath = CTRL_DIR . "Error404Controller.php";
-            $this->setController("Error404Controller");
+            $this->setControllerName("Error404Controller");
             http_response_code(404);
         } 
 
         require_once $filepath;
 
-        $controllerFullName = "\\PhpTraining2\\controllers\\" . $this->controller;
+        $controllerFullName = "\\PhpTraining2\\controllers\\" . $this->controllerName;
         return new $controllerFullName;
     }
 
 
     /**
-     * Set controller
+     * Set controller's name
      * 
      * @access private
      * @package PhpTraining2\core
      * @param string $controllerName (without file extension)
      */
 
-     private function setController(string $controllerName) {
-        $this->controller = $controllerName;
+     private function setControllerName(string $controllerName) {
+        $this->controllerName = $controllerName;
     }
 
 

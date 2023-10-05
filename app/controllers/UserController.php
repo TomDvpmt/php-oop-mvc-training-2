@@ -90,14 +90,12 @@ class UserController {
             } else {
                 $fullData = array_merge($data["notToValidate"], $validated, $data["password"]);
                 $user = new User(...$fullData);
-                show($user->findOne());
                 
                 if(!empty($user->findOne())) {
                     $form->addValidationError("emailAlreadyUsed");
                     $validationErrors = $form->getValidationErrors();
                     $this->view("pages/register", ["formData" => $inputData, "validationErrors" => $validationErrors]);
                 } else {
-                    show("success");
                     $user->createOne();
                 };
             }
