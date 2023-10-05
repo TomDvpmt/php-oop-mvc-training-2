@@ -159,7 +159,7 @@ class ProductsController {
             
             if($form->hasEmptyFields()) {
                 $form->setEmptyFieldsError();
-                // show form with already filled values and error message
+                // TODO : show form with already filled values and error message
             } else {
                 $genericToValidate = [
                     "name" => ["type" => "text", "value" => $_POST["name"], "name" => "name"],

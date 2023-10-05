@@ -107,19 +107,6 @@ class Cart {
 
 
     /**
-     * Set the cart's total price
-     * 
-     * @access public
-     * @package PhpTraining2\models
-     */
-
-     public function setTotalPrice(): void {
-        $allItems = $this->getAllItems();
-        $this->totalPrice = array_sum(array_map(fn($item) => $item["price"] * $item["quantity"], $allItems));
-    }
-
-
-    /**
      * Get the cart's total price
      * 
      * @access public

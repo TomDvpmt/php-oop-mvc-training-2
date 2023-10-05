@@ -7,7 +7,11 @@ class Form {
     const REGISTER_TO_VALIDATE = ["firstName", "lastName", "email"];
     const REGISTER_REQUIRED = ["email", "password", "passwordConfirm"];
 
-    public function __construct(private array $inputsToValidate = [], private array $required = [], private array $validationErrors = [])
+    public function __construct(
+        private array $inputsToValidate = [], 
+        private array $required = [], 
+        private array $validationErrors = []
+        )
     {}
 
     
