@@ -24,6 +24,7 @@ class UserController {
         //
     }
 
+
     /**
      * Register a new user
      * 
@@ -47,7 +48,7 @@ class UserController {
                 $this->index($dataInSession);
             }
 
-            $data = [ // beware of properties order, must match class User constructor
+            $data = [ // beware of properties order, must match class User constructor (TODO : find a better way to do this)
                 "notToValidate" => [
                     "id" => 0,                 
                     "isAdmin" => 0,

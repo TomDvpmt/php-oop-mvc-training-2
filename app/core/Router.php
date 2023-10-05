@@ -2,11 +2,30 @@
 
 namespace PhpTraining2\core;
 
-require_once "Route.php";
-
 class Router {
 
-    public function createRoute(): void {
+    /**
+     * Call a route
+     * 
+     * @access public
+     * @package PhpTraining2\core
+     */
+
+    public function callRoute(): void {
+        $route = $this->createRoute();
+        $route->callController();
+    }
+
+
+    /**
+     * Create a route
+     * 
+     * @access private
+     * @package PhpTraining2\core
+     * @return object
+     */
+
+    private function createRoute(): object {
 
         $path = $_GET["url"] ?? "home";
         
@@ -16,6 +35,6 @@ class Router {
         //TODO : sanitize $path & $params
 
         $route = new Route($path, $params);
-        $route->callController();
+        return $route;
     }
 }

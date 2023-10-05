@@ -12,6 +12,6 @@ class App {
 
     public function loadRouter() {
         $router = new Router();
-        $router->createRoute();
+        $router->callRoute();
     }
 }

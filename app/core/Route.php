@@ -82,7 +82,7 @@ class Route {
 
     private function getMethodFromParams(): string {
         $action = $this->params["action"] ?? null;
-        return empty($action) ? "index" : strip_tags($action);
+        return empty($action) ? "index" : strip_tags($action); // TODO : sanitize params in Router
         
     }
 
@@ -92,7 +92,7 @@ class Route {
      * 
      * @access private
      * @package PhpTraining2\core
-     * @param object $controller
+     * @param string $method
      */
 
      private function setMethod(string $method) {
