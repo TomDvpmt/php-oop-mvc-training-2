@@ -6,6 +6,7 @@
 @import "./layout/navbar";
 @import "./layout//footer";
 @import "./components/button";
+@import "./components//category-card";
 @import "./components/disclaimer";
 @import "./components/form";
 @import "./components/message-error";
@@ -13,5 +14,6 @@
 @import "./components/product";
 @import "./components//product-card";
 @import "./pages/error404";
-@import "./pages/products";
+@import "./pages/categories";
+@import "./pages/category";
 @import "./pages/cart";

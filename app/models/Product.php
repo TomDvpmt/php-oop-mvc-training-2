@@ -25,7 +25,7 @@ class Product {
             $this->genericData["category"] = strip_tags($_GET["category"]);
         }
 
-        $this->setRandomImgUrl();
+        if(empty($this->genericData["img_url"])) $this->setRandomImgUrl();
     }
 
     /**
@@ -70,7 +70,7 @@ class Product {
 
     public function getProductSpecificData(): array {
         $this->columns = "*";
-        $this->table = $this->genericData["category"] . "s WHERE product_id= :product_id";
+        $this->table = $this->genericData["category"] . " WHERE product_id= :product_id";
         $data = (array) $this->find(["product_id" => $this->genericData["id"]])[0];
         $specificData = array_filter($data, fn($key) => !in_array($key, ["id", "product_id"]), ARRAY_FILTER_USE_KEY);
         return $specificData;
@@ -91,7 +91,7 @@ class Product {
             "name" => $this->genericData["name"],
             "description" => $this->genericData["description"],
             "price" => $this->genericData["price"],
-            "img_url" => "",
+            "img_url" => $this->genericData["img_url"],
         ];
         $this->create($genericData);   
         $id = $this->getLastInsertId();
@@ -99,7 +99,7 @@ class Product {
     }
 
     /**
-     * Add an item to a child table of "products" table ("shoes", "equipments", etc.)
+     * Add an item to a child table of "products" table ("shoes", "equipment", etc.)
      * 
      * @access public
      * @package PhpTraining2\models
@@ -108,7 +108,7 @@ class Product {
     public function createSpecificProduct(array $data): void {
         $id = $this->createGenericProduct();
 
-        $this->table = $this->genericData["category"] . "s";
+        $this->table = $this->genericData["category"];
         $this->orderColumn = "product_id";
         $specificData = array_merge(["product_id" => $id], $data);
 
@@ -141,7 +141,7 @@ class Product {
      */
 
     private function setRandomImgUrl() {
-        $category = $this->genericData["category"] . "s";
+        $category = $this->genericData["category"];
         $productDir = "assets/images/$category/";
 
         if(empty($this->genericData["img_url"] && !empty($category))) {

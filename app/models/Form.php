@@ -88,7 +88,7 @@ class Form {
     private function getSpecificValues(array $specificProperties): array {
         $specificValues = array_map(function($property) {
             switch ($property) {
-                /* Shoe */
+                /* Shoes */
                 case 'waterproof':
                     $data = ["type" => "text", "name" => "waterproof", "value" => $_POST["waterproof"]];
                     break;

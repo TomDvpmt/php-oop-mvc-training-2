@@ -68,7 +68,7 @@ trait Database {
                 );
             ",
             "
-                CREATE TABLE IF NOT EXISTS equipments (
+                CREATE TABLE IF NOT EXISTS equipment (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     product_id INT NOT NULL, 
                     activity VARCHAR(255) DEFAULT 'hiking' NOT NULL,
@@ -86,7 +86,7 @@ trait Database {
             "
                 CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_equipment
                 AFTER DELETE 
-                ON equipments FOR EACH ROW
+                ON equipment FOR EACH ROW
                 DELETE FROM products
                 WHERE id = old.product_id;
             "

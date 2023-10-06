@@ -4,7 +4,7 @@
            <a href="<?=ROOT?>">Home</a>
        </li>
        <li>
-           <a href="<?=ROOT?>products?category=shoe">Shoes</a>
+           <a href="<?=ROOT?>products?category=shoes">Shoes</a>
        </li>
        <li>
            <a href="<?=ROOT?>products?category=equipment">Equipment</a>

@@ -23,10 +23,13 @@ class ProductsController {
     public function __construct()
     {
         $this->category = strip_tags($_GET["category"] ?? "");
-        $this->model = "PhpTraining2\\models\\" . ucfirst($this->category);
+
+        // Remove the final "s" of the category name if it has one, to get the model name (shoes => Shoe)
+        $model = substr($this->category, -1) === "s" ? substr($this->category, 0, -1) : $this->category;
+        $this->model = "PhpTraining2\\models\\" . ucfirst($model);
         
         switch ($this->category) {
-            case 'shoe':
+            case 'shoes':
                 $this->specificProperties = ["waterproof", "level"];
                 break;
             case 'equipment':
@@ -58,7 +61,7 @@ class ProductsController {
      */
 
      private function showCategories(): void {
-        $this->view("pages/products");
+        $this->view("pages/categories");
     }
 
 
@@ -70,14 +73,14 @@ class ProductsController {
      */
 
     private function showProductsOfCategory(): void {
-        $table = $this->category . "s";
+        $table = $this->category;
         $designator = substr($this->category, 0, 1);
         $this->table = "
             products p JOIN $table $designator
             WHERE p.id = $designator.product_id
         ";
         $content = $this->getPageContent();
-        $this->view("pages/products", $content);
+        $this->view("pages/category", $content);
     }
 
 
@@ -182,7 +185,7 @@ class ProductsController {
                 $genericData = [
                     "id" => 0,
                     "category" => $this->category,
-                    "img_url" => "test.jpg",
+                    "img_url" => "",
                     "name" => $genericValidated["name"],
                     "description" => $genericValidated["description"],
                     "price" => $genericValidated["price"],
@@ -211,7 +214,7 @@ class ProductsController {
 
     public function remove(): void {
         $id = strip_tags($_GET["id"]);
-        $this->table = $this->category . "s";
+        $this->table = $this->category;
         $this->delete("product_id", $id);
 
         $this->index();

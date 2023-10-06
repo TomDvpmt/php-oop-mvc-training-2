@@ -2,13 +2,13 @@
 
 $title = "Add a product";
 
-$shoeSpecific = "";
+$shoesSpecific = "";
 $equipmentSpecific = "";
 
 /** Specific HTML **/
 
 switch ($this->category) {
-    case 'shoe':
+    case 'shoes':
         ob_start()?>
         <div class="form__field">
             <select name="waterproof" id="waterproof">
@@ -25,7 +25,7 @@ switch ($this->category) {
                 <option value="intensive">Intensive</option>
             </select>
         </div>
-        <?php $shoeSpecific = ob_get_clean();
+        <?php $shoesSpecific = ob_get_clean();
         break;
 
     case 'equipment':
@@ -46,7 +46,7 @@ switch ($this->category) {
 
 /** Main form HTML **/
 
-$specific = $shoeSpecific . $equipmentSpecific;
+$specific = $shoesSpecific . $equipmentSpecific;
 
 ob_start()?>
 
@@ -84,7 +84,7 @@ ob_start(); ?>
             <label for="category">Product category :</label>
             <select name="category" id="category" required>
                 <option value="">-- Choose a product category --</option>
-                <option value="shoe" <?= $this->category === "shoe" ? "selected" : null?>>Shoe</option>
+                <option value="shoes" <?= $this->category === "shoes" ? "selected" : null?>>Shoes</option>
                 <option value="equipment" <?= $this->category === "equipment" ? "selected" : null?>>Equipment</option>
             </select>
         </div>

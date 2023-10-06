@@ -4,17 +4,17 @@ $title = $data["name"];
 
 show($data);
 
-$shoeSpecific = "";
+$shoesSpecific = "";
 $equipmentSpecific = "";
 
 /** Specific html **/
 
 switch ($this->category) {
-    case 'shoe':
+    case 'shoes':
         ob_start();?>
         <p class="product-card__waterproof">Waterproof: <?= $data["waterproof"] === 0 ? "no" : "yes" ?></p>
         <p class="product-card__level">Level: <?= $data["level"] ?></p>
-        <?php $shoeSpecific = ob_get_clean();
+        <?php $shoesSpecific = ob_get_clean();
         break;
 
     case 'equipment':
@@ -29,7 +29,7 @@ switch ($this->category) {
 
 /** Full html **/
 
-$specific = $shoeSpecific . $equipmentSpecific;
+$specific = $shoesSpecific . $equipmentSpecific;
 
 ob_start();?>
 <div class="page__content product" id="<?=$this->id?>">
