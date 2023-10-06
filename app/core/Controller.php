@@ -16,11 +16,6 @@ trait Controller {
      */
 
     public function view(string $name, array $data = [], string $errorMessage = null, string $successMessage = null): void {
-        if($name === "pages/home") {
-            if(!isset($_SESSION["homeCount"])) $_SESSION["homeCount"] = 0;
-            $_SESSION["homeCount"]++;
-            $this->toggleHomeDisclaimer();
-        }
         $filename = "../app/views/" . $name . ".view.php";
         if(!file_exists($filename)) {
             $filename = "../app/views/pages/error404.view.php";
@@ -38,16 +33,5 @@ trait Controller {
     public function sendToLoginPage(string $redirectionAfter = ""): void {
         $_SESSION["redirectionAfter"] = $redirectionAfter;
         header("Location : " . ROOT . "user?action=login");
-    }
-
-    /**
-     * Toggle disclaimer on home page
-     * 
-     * @access private
-     * @package PhpTraining2\core
-     */
-
-    private function toggleHomeDisclaimer() {
-        $_SESSION["disclaimer"] = $_SESSION["homeCount"] <= 1;
     }
 }

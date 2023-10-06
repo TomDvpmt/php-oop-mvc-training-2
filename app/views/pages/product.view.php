@@ -2,6 +2,8 @@
 
 $title = $data["name"];
 
+show($data);
+
 $shoeSpecific = "";
 $equipmentSpecific = "";
 
@@ -31,14 +33,14 @@ $specific = $shoeSpecific . $equipmentSpecific;
 
 ob_start();?>
 <div class="page__content product" id="<?=$this->id?>">
-    <img src="<?=$data["img_url"]?>" alt="<?=$data["name"]?>">
-    <h2 class="product-card__name"><?=$data["name"]?></h2>
-    <p class="product-card__description"><?=$data["description"]?></p>
-    <div class="product-card__specific">
+    <img class="product__img" src="<?=$data["img_url"]?>" alt="<?=$data["name"]?>">
+    <h2 class="product__name"><?=$data["name"]?></h2>
+    <p class="product__description"><?=$data["description"]?></p>
+    <div class="product__specific">
         <?= $specific ?>
     </div>
-    <p class="product-card__price">$ <?=$data["price"]?></p>
-    <div class="product-card__controls">
+    <p class="product__price">$ <?=$data["price"]?></p>
+    <div class="product__controls">
         <a href="<?= ROOT . "cart?action=add&category=$this->category&id=$this->id" ?>">Add to cart</a>
         <a href="<?= ROOT . "products?action=remove&category=$this->category&id=$this->id"?>">Delete product</a>
     </div>

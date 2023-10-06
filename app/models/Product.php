@@ -4,6 +4,7 @@ namespace PhpTraining2\models;
 
 use PhpTraining2\core\Model;
 
+
 class Product {
     use Model;
     
@@ -23,6 +24,8 @@ class Product {
         if(isset($_GET["category"])) {
             $this->genericData["category"] = strip_tags($_GET["category"]);
         }
+
+        $this->setRandomImgUrl();
     }
 
     /**
@@ -127,5 +130,30 @@ class Product {
         $cardHtml = ob_get_clean();
         
         return $cardHtml;
+    }
+
+    
+    /**
+     * Assign a random img to a product
+     * 
+     * @access private
+     * @package PhpTraining2\models
+     */
+
+    private function setRandomImgUrl() {
+        $category = $this->genericData["category"] . "s";
+        $productDir = "assets/images/$category/";
+
+        if(empty($this->genericData["img_url"] && !empty($category))) {
+            $IMG_URLS = scandir($productDir);
+            array_splice($IMG_URLS, 0, 2);
+
+            $imgUrl = "";
+            if(!empty($IMG_URLS)) {
+                $randImgKey = array_rand($IMG_URLS);
+                $imgUrl = $productDir . $IMG_URLS[$randImgKey];
+            }
+            $this->genericData["img_url"] = $imgUrl;
+        }
     }
 }
