@@ -1,0 +1,36 @@
+.disclaimer {
+    position: absolute;
+    z-index: 3;
+    background-color: $color-background-secondary;
+    max-width: 600px;
+    padding: 1rem;
+    display: none;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    border-bottom-right-radius: 1rem;
+
+    &__content__title {
+        font-weight: 700;
+        padding-bottom: 0.5rem;
+    }
+
+    &__close {
+        border: none;
+        background-color: $color-background-secondary;
+        transition: opacity ease 200ms;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        & i {
+            font-size: large;
+        }
+    }
+}
+
+.visible {
+    display: flex;
+}

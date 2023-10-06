@@ -7,7 +7,10 @@ class App {
     use Database;
     
     /**
-     * Create
+     * Load the app's router
+     * 
+     * @access public
+     * @package PhpTraining2\core
      */
 
     public function loadRouter() {

@@ -12,6 +12,13 @@ function show($data) {
     echo "</pre>";
 }
 
+/**
+ * Generate a random alphanumeric id 
+ * 
+ * Characters range : digits + lower letters + upper letters
+ * 
+ * @return string A concatenated string of 1 timestamp & 3 chunks of 10 random characters, all separated with dashes
+ */
 
 function generateRandomId() {
     $chars = implode(array_merge(range(0, 9), range("a", "z"), range("A", "Z")));

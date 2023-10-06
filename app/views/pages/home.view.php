@@ -2,6 +2,9 @@
 
 $location = "home";
 $title = "Home view";
+$jsFiles = [
+    ROOT . "assets/js/disclaimer.js"
+];
 
 ob_start();?>
 
@@ -11,5 +14,5 @@ ob_start();?>
 
 <?php $content = ob_get_clean();
 
-
+if($_SESSION["disclaimer"] === true) require_once VIEWS_DIR . "partials/disclaimer.php";
 require_once VIEWS_DIR . "/layout.php";

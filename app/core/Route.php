@@ -42,7 +42,6 @@ class Route {
 
     private function getController(): object {
         $controllerName = $this->getControllerName();
-        show($controllerName);
         
         $filepath = CTRL_DIR . $controllerName . ".php";
 

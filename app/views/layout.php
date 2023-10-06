@@ -5,6 +5,8 @@
         <meta name="viewsport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/public/assets/css/style.css">
 
+        <script src="https://kit.fontawesome.com/81b6c8a65c.js" crossorigin="anonymous"></script>
+        
         <?php if(!empty($jsFiles)) {
             foreach($jsFiles as $jsFile) {
                 echo "<script src='$jsFile' defer></script>";
