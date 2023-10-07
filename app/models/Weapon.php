@@ -24,7 +24,7 @@ final class Weapon extends Product {
     public function getProductCardSpecificHtml() {
         ob_start();?>
             
-        <p class="product__ideal-range"><span>Range: </span><?=$this->specificData["ideal_range"]?></p>
+        <p class="product__ideal_range"><span>Range: </span><?=$this->specificData["ideal_range"]?></p>
         
         <?php $specificHtml = ob_get_clean();
         return $specificHtml;

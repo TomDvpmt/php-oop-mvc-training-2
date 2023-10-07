@@ -53,9 +53,9 @@ trait Database {
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     category VARCHAR(50) NOT NULL,
                     name VARCHAR(255) NOT NULL,
-                    description VARCHAR(5000) DEFAULT '' NOT NULL,
-                    special_features VARCHAR(5000) DEFAULT '' NOT NULL,
-                    limitations VARCHAR(5000) DEFAULT '' NOT NULL,
+                    description VARCHAR(5000) NOT NULL,
+                    special_features VARCHAR(5000) NOT NULL,
+                    limitations VARCHAR(5000) NOT NULL,
                     price INT DEFAULT 0 NOT NULL DEFAULT 0,
                     img_url VARCHAR(255) NOT NULL
                 );

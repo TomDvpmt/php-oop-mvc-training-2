@@ -18,11 +18,11 @@ switch ($this->category) {
         <div class="form__field">
             <select name="genre" id="genre">
                 <option value="">-- Which genre better defines this book? --</option>
-                <option value="based-on-true-events">Based on true events</option>
+                <option value="based on true events">Based on true events</option>
                 <option value="fantasy">Fantasy</option>
                 <option value="myth">Myth</option>
                 <option value="science-fiction">Science-fiction</option>
-                <option value="hard-to-say">It's a blend</option>
+                <option value="it's a blend">It's a blend</option>
             </select>
         </div>
         <?php $specifics["books"] = ob_get_clean();
@@ -36,16 +36,16 @@ switch ($this->category) {
                 <option value="helmet">Helmet</option>
                 <option value="armor">Armor</option>
                 <option value="clothing">Clothing</option>
-                <option value="plot-armor">Plot armor</option>
-                <option value="hard-to-say">It's hard to say</option>
+                <option value="plot armor">Plot armor</option>
+                <option value="it's hard to say">It's hard to say</option>
             </select>
         </div>
         <div class="form__field">
             <select name="resistance" id="resistance">
                 <option value="">-- How resistant is it? --</option>
-                <option value="weak">The dangerously weak kind</option>
+                <option value="the dangerously weak kind">The dangerously weak kind</option>
                 <option value="medium">Medium</option>
-                <option value="strong">It's an impenetrable wall</option>
+                <option value="it's an impenetrable wall">It's an impenetrable wall</option>
             </select>
         </div>
         <?php $specifics["protection"] = ob_get_clean();
@@ -76,17 +76,17 @@ switch ($this->category) {
         <div class="form__field">
             <select name="airborne" id="airborne">
                 <option value="">-- Can it fly? --</option>
-                <option value="no">Don't try it!</option>
+                <option value="don't try it!">Don't try it!</option>
                 <option value="occasionally">Occasionally</option>
-                <option value="yes">Oh yeah</option>
+                <option value="oh yeah">Oh yeah</option>
             </select>
         </div>
         <div class="form__field">
             <select name="aquatic" id="aquatic">
                 <option value="">-- Is it aquatic? --</option>
-                <option value="no">We don't know, you should try it! (no refund)</option>
-                <option value="regular">Reasonnably</option>
-                <option value="intensive">Definitely</option>
+                <option value="we don't know, you should try it! (no refund)">We don't know, you should try it! (no refund)</option>
+                <option value="reasonnably">Reasonnably</option>
+                <option value="definitely">Definitely</option>
             </select>
         </div>
         <?php $specifics["vehicles"] = ob_get_clean();
@@ -95,11 +95,11 @@ switch ($this->category) {
     case 'weapons':
         ob_start()?>
         <div class="form__field">
-            <select name="ideal-range" id="ideal-range">
+            <select name="ideal_range" id="ideal_range">
                 <option value="">-- What is the ideal range for this weapon? --</option>
-                <option value="short">Way too short</option>
+                <option value="way too short">Way too short</option>
                 <option value="medium">Mid-range</option>
-                <option value="long-distance">A cowardly yet comfortable long distance</option>
+                <option value="a cowardly yet comfortable long distance">A cowardly yet comfortable long distance</option>
             </select>
         </div>
         <?php $specifics["weapons"] = ob_get_clean();
@@ -115,6 +115,7 @@ $specific = implode("", array_values($specifics));
 ob_start()?>
 
 <form method="POST" class="form">
+    <?php echo isset($errorMessage) ? "<p class='error'>" . $errorMessage . "</p>" : null ?>
     <div class="form__field">
         <label for="name">Name:</label>
         <input type="text" name="name" id="name"/>
@@ -139,8 +140,6 @@ ob_start()?>
         <?= $specific ?>
     </div>
     <button class="button" type="submit" name="submit">Add product</button>
-    <?php echo isset($errorMessage) ? "<p class='error'>" . $errorMessage . "</p>" : null ?>
-    <?php echo isset($successMessage) ? "<p class='success'>" . $successMessage . "</p>" : null ?>
 </form>
 
 <?php $mainForm = ob_get_clean();
@@ -151,6 +150,7 @@ ob_start()?>
 ob_start(); ?>
 <div class="page__content add-product">
     <form action="" method="GET" class="form">
+        <?php echo isset($successMessage) ? "<p class='success'>" . $successMessage . "</p>" : null ?>
         <!-- <input type="hidden" name="action" value="add"/>   -->
         <div class="form__field">
             <label for="category">Product category :</label>

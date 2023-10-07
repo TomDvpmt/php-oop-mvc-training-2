@@ -4,8 +4,8 @@
         <div class="footer__section__content">
             <ul>
                 <li><a href="<?=ROOT?>"><i class="fa fa-home"></i></a></li>
-                <li><a href="#">Shop</a></li>
-                <li><a href="#">About us</a></li>
+                <li><a href="products">Shop</a></li>
+                <li><a href="about">About us</a></li>
             </ul>
         </div>
     </div>
