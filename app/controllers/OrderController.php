@@ -40,7 +40,7 @@ class OrderController {
     public function billing(): void {
         // TO ADD TO ALL PUBLIC FUNCTIONS ?
         // if(!$this->isUserLoggedIn()) {
-        //     $this->sendToLoginPage("order?action=billing");
+        //     $this->sendToSigninPage("order?action=billing");
         // }
         $this->view("pages/billing");
     }
@@ -73,7 +73,7 @@ class OrderController {
         $order = new Order();
         $orderId = $order->getId();
 
-        // register order in DB
+        // Register order in DB
 
         $this->view("pages/confirmation", ["orderId" => $orderId]);
     }

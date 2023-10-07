@@ -5,12 +5,12 @@ namespace PhpTraining2\models;
 class Form {
 
     /**
-     * The fields that need to be validated in the register form.
+     * The fields that need to be validated in the signup form.
      */
     const REGISTER_TO_VALIDATE = ["firstName", "lastName", "email"];
 
     /**
-     * The required fields in the register form. 
+     * The required fields in the signup form. 
      */
     const REGISTER_REQUIRED = ["email", "password", "passwordConfirm"];
 

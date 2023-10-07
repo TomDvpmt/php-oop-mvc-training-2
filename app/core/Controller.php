@@ -24,14 +24,14 @@ trait Controller {
     }
 
     /**
-     * Send user to the login page
+     * Send user to the signin page
      * 
      * @access public
      * @package PhpTraining2\core
      */
 
-    public function sendToLoginPage(string $redirectionAfter = ""): void {
+    public function sendToSigninPage(string $redirectionAfter = ""): void {
         $_SESSION["redirectionAfter"] = $redirectionAfter;
-        header("Location : " . ROOT . "user?action=login");
+        header("Location : " . ROOT . "user?action=signin");
     }
 }

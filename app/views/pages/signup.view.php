@@ -1,12 +1,12 @@
 <?php
 
-$title = "Register";
+$title = "Sign up";
 $formData = $data["formData"] ?? [];
 $errors = $data["validationErrors"] ?? [];
 
 ob_start();?>
-<div class="page__content register">
-    <form method="POST" class="register__form form" novalidate>
+<div class="page__content signup">
+    <form method="POST" class="signup__form form" novalidate>
         <div class="form__field">
             <label for="email">* Email:</label> 
             <input type="email" name="email" id="email" value="<?=$formData["email"] ?? ""?>" required/>
@@ -33,9 +33,9 @@ ob_start();?>
             <input type="text" name="lastName" id="lastName" value="<?=$formData["lastName"] ?? ""?>"/>
             <?= !empty($errors["lastName"]) ? "<p class='error'>" . $errors["lastName"] . "</p>" : null ?>
         </div>
-        <button class="button" type="submit" name="submit">Register</button>
+        <button class="button" type="submit" name="submit">Sign up</button>
         <?= !empty($errors["hasEmptyFields"]) ? "<p class='error'>" . $errors["hasEmptyFields"] . "</p>" : null ?>
-        <p class="has-account">Already have an account? <a href="<?=ROOT?>login">Log in</a></p>
+        <p class="has-account">Already have an account? <a href="<?=ROOT?>signin">Sign in</a></p>
     </form>
 </div>
 <?php $content = ob_get_clean();

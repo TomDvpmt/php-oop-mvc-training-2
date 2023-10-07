@@ -38,7 +38,7 @@ class User {
         ]);
     }
 
-    public function login() {
+    public function signin() {
         //
     }
 

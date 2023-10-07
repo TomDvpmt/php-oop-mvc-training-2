@@ -26,13 +26,13 @@ class UserController {
 
 
     /**
-     * Register a new user
+     * Sign a new user up
      * 
      * @access public
      * @package PhpTraining2\controllers
      */
 
-    public function register() {
+    public function signup() {
         if(isset($_POST["submit"])) { 
             $form = new Form();
             $form->setRequired($form::REGISTER_REQUIRED);
@@ -87,7 +87,7 @@ class UserController {
             
             if(!$validated) {
                 $validationErrors = $form->getValidationErrors();
-                $this->view("pages/register", ["formData" => $inputData, "validationErrors" => $validationErrors]);
+                $this->view("pages/signup", ["formData" => $inputData, "validationErrors" => $validationErrors]);
             } else {
                 $fullData = array_merge($data["notToValidate"], $validated, $data["password"]);
                 $user = new User(...$fullData);
@@ -95,17 +95,17 @@ class UserController {
                 if(!empty($user->findOne())) {
                     $form->addValidationError("emailAlreadyUsed");
                     $validationErrors = $form->getValidationErrors();
-                    $this->view("pages/register", ["formData" => $inputData, "validationErrors" => $validationErrors]);
+                    $this->view("pages/signup", ["formData" => $inputData, "validationErrors" => $validationErrors]);
                 } else {
                     $user->createOne();
                 };
             }
         }
-        $this->view("pages/register");
+        $this->view("pages/signup");
     }
 
-    public function login() {
-        $this->view("pages/login");
+    public function signin() {
+        $this->view("pages/signin");
     }
 
     

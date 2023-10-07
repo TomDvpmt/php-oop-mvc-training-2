@@ -1,10 +1,10 @@
 <?php
 
-$title = "Log in";
+$title = "Sign in";
 
 ob_start();?>
-<div class="page__content login">
-    <p>Awesome login form</p>
+<div class="page__content signin">
+    <p>Awesome signin form</p>
 </div>
 <?php $content = ob_get_clean();
 
