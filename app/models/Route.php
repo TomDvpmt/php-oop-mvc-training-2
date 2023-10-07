@@ -78,20 +78,6 @@ class Route {
 
 
     /**
-     * Get method name from url action parameter
-     * 
-     * @access private
-     * @package PhpTraining2\core
-     * @return string
-     */
-
-    private function getMethodFromParams(): string {
-        $action = $this->params["action"] ?? null;
-        return empty($action) ? "index" : strip_tags($action); // TODO : sanitize params in Router
-    }
-
-
-    /**
      * Set method
      * 
      * @access private

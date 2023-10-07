@@ -33,6 +33,8 @@ ob_start();?>
     <img class="product__img" src="<?=$data["img_url"]?>" alt="<?=$data["name"]?>">
     <h2 class="product__name"><?=$data["name"]?></h2>
     <p class="product__description"><?=$data["description"]?></p>
+    <p class="product__special_features">Special features: <?=$data["special_features"]?></p>
+    <p class="product__limitations">Limitations: <?=$data["limitations"]?></p>
     <div class="product__specific">
         <?= $specific ?>
     </div>

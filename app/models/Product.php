@@ -14,6 +14,8 @@ class Product {
             "category" => "", 
             "name" => "", 
             "description" => "", 
+            "special_features" => "",
+            "limitations" => "",
             "price" => 0, 
             "img_url" => ""
         ],
@@ -44,7 +46,7 @@ class Product {
     }
 
     /**
-     * Get the product's generic data (id, name, description, price, image url)
+     * Get the product's generic data (id, name, description, special_features, limitations, price, image url)
      * 
      * @access public
      * @package PhpTraining2\models
@@ -52,7 +54,7 @@ class Product {
      */
 
      public function getProductGenericData(): array {
-        $this->columns = "id, name, description, price, img_url";
+        $this->columns = "id, name, description, special_features, limitations, price, img_url";
         $this->table = "products";
         $this->where = "id = :id";
         $genericData = (array) $this->find(["id" => $this->genericData["id"]])[0];
@@ -91,6 +93,8 @@ class Product {
             "category" => $this->genericData["category"],
             "name" => $this->genericData["name"],
             "description" => $this->genericData["description"],
+            "special_features" => $this->genericData["special_features"],
+            "limitations" => $this->genericData["limitations"],
             "price" => $this->genericData["price"],
             "img_url" => $this->genericData["img_url"],
         ];
@@ -100,7 +104,7 @@ class Product {
     }
 
     /**
-     * Add an item to a child table of "products" table ("shoes", "equipment", etc.)
+     * Add an item to a child table of "products" table ("books", "shoes", etc.)
      * 
      * @access public
      * @package PhpTraining2\models

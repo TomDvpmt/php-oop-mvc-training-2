@@ -2,12 +2,55 @@
 
 $title = "Add a product";
 
-$shoesSpecific = "";
-$equipmentSpecific = "";
+$specifics = [
+    "books" => "",
+    "protection" => "",
+    "shoes" => "",
+    "vehicules" => "",
+    "weapons" => ""
+];
 
 /** Specific HTML **/
 
 switch ($this->category) {
+    case 'books':
+        ob_start()?>
+        <div class="form__field">
+            <select name="genre" id="genre">
+                <option value="">-- Which genre better defines this book? --</option>
+                <option value="based-on-true-events">Based on true events</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="myth">Myth</option>
+                <option value="science-fiction">Science-fiction</option>
+                <option value="hard-to-say">It's a blend</option>
+            </select>
+        </div>
+        <?php $specifics["books"] = ob_get_clean();
+        break;
+
+    case 'protection':
+        ob_start()?>
+        <div class="form__field">
+            <select name="type" id="type">
+                <option value="">-- What kind of protection is this beauty? --</option>
+                <option value="helmet">Helmet</option>
+                <option value="armor">Armor</option>
+                <option value="clothing">Clothing</option>
+                <option value="plot-armor">Plot armor</option>
+                <option value="hard-to-say">It's hard to say</option>
+            </select>
+        </div>
+        <div class="form__field">
+            <select name="resistance" id="resistance">
+                <option value="">-- How resistant is it? --</option>
+                <option value="weak">The dangerously weak kind</option>
+                <option value="medium">Medium</option>
+                <option value="strong">It's an impenetrable wall</option>
+            </select>
+        </div>
+        <?php $specifics["protection"] = ob_get_clean();
+        break;
+
     case 'shoes':
         ob_start()?>
         <div class="form__field">
@@ -25,42 +68,71 @@ switch ($this->category) {
                 <option value="intensive">Intensive</option>
             </select>
         </div>
-        <?php $shoesSpecific = ob_get_clean();
-        break;
-
-    case 'equipment':
-        ob_start();?>
-        <div class="form__field">
-            <select name="activity" id="activity">
-                <option value="">-- What is the activity domain of this equipment? --</option>
-                <option value="hiking">Hiking</option>
-                <option value="trail">Trail</option>
-            </select>
-        </div>
-        <?php $equipmentSpecific = ob_get_clean();
+        <?php $specifics["shoes"] = ob_get_clean();
         break;
     
+    case 'vehicles':
+        ob_start()?>
+        <div class="form__field">
+            <select name="airborne" id="airborne">
+                <option value="">-- Can it fly? --</option>
+                <option value="no">Don't try it!</option>
+                <option value="occasionally">Occasionally</option>
+                <option value="yes">Oh yeah</option>
+            </select>
+        </div>
+        <div class="form__field">
+            <select name="aquatic" id="aquatic">
+                <option value="">-- Is it aquatic? --</option>
+                <option value="no">We don't know, you should try it! (no refund)</option>
+                <option value="regular">Reasonnably</option>
+                <option value="intensive">Definitely</option>
+            </select>
+        </div>
+        <?php $specifics["vehicles"] = ob_get_clean();
+        break;
+
+    case 'weapons':
+        ob_start()?>
+        <div class="form__field">
+            <select name="ideal-range" id="ideal-range">
+                <option value="">-- What is the ideal range for this weapon? --</option>
+                <option value="short">Way too short</option>
+                <option value="medium">Mid-range</option>
+                <option value="long-distance">A cowardly yet comfortable long distance</option>
+            </select>
+        </div>
+        <?php $specifics["weapons"] = ob_get_clean();
+        break;
     default:
         break;
 }
 
 /** Main form HTML **/
 
-$specific = $shoesSpecific . $equipmentSpecific;
+$specific = implode("", array_values($specifics));
 
 ob_start()?>
 
 <form method="POST" class="form">
     <div class="form__field">
-        <label for="name">Name :</label>
+        <label for="name">Name:</label>
         <input type="text" name="name" id="name"/>
     </div>
     <div class="form__field">
-        <label for="description">Description :</label>
+        <label for="description">Description:</label>
         <input type="text" name="description" id="description"/>
     </div>
     <div class="form__field">
-        <label for="price">Price :</label>
+        <label for="special_features">Special features:</label>
+        <input type="text" name="special_features" id="special_features"/>
+    </div>
+    <div class="form__field">
+        <label for="limitations">Limitations:</label>
+        <input type="text" name="limitations" id="limitations"/>
+    </div>
+    <div class="form__field">
+        <label for="price">Price:</label>
         <input type="number" name="price" min="0" id="price"/>
     </div>
     <div class="form__specific-fields">
@@ -84,8 +156,11 @@ ob_start(); ?>
             <label for="category">Product category :</label>
             <select name="category" id="category" required>
                 <option value="">-- Choose a product category --</option>
-                <option value="shoes" <?= $this->category === "shoes" ? "selected" : null?>>Shoes</option>
-                <option value="equipment" <?= $this->category === "equipment" ? "selected" : null?>>Equipment</option>
+                <option value="books" <?= $this->category === "books" ? "selected" : null?>>Book</option>
+                <option value="protection" <?= $this->category === "protection" ? "selected" : null?>>Protection</option>
+                <option value="shoes" <?= $this->category === "shoes" ? "selected" : null?>>Shoe</option>
+                <option value="vehicles" <?= $this->category === "vehicles" ? "selected" : null?>>Vehicle</option>
+                <option value="weapons" <?= $this->category === "weapons" ? "selected" : null?>>Weapon</option>
             </select>
         </div>
         <input type="submit" value="Validate">

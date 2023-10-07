@@ -53,12 +53,31 @@ trait Database {
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     category VARCHAR(50) NOT NULL,
                     name VARCHAR(255) NOT NULL,
-                    description VARCHAR(5000) NOT NULL,
+                    description VARCHAR(5000) DEFAULT '' NOT NULL,
+                    special_features VARCHAR(5000) DEFAULT '' NOT NULL,
+                    limitations VARCHAR(5000) DEFAULT '' NOT NULL,
                     price INT DEFAULT 0 NOT NULL DEFAULT 0,
                     img_url VARCHAR(255) NOT NULL
                 );
             ",
-                "
+            "
+                CREATE TABLE IF NOT EXISTS books (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    product_id INT NOT NULL, 
+                    genre VARCHAR(255) DEFAULT 'fantasy' NOT NULL,
+                    FOREIGN KEY (product_id) REFERENCES products(id)
+                );
+            ",
+            "
+                CREATE TABLE IF NOT EXISTS protection (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    product_id INT NOT NULL,
+                    type VARCHAR(255) NOT NULL,
+                    resistance VARCHAR(255) DEFAULT 'medium' NOT NULL,
+                    FOREIGN KEY (product_id) REFERENCES products(id)
+                );
+            ",
+            "
                 CREATE TABLE IF NOT EXISTS shoes (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     product_id INT NOT NULL,
@@ -68,14 +87,38 @@ trait Database {
                 );
             ",
             "
-                CREATE TABLE IF NOT EXISTS equipment (
+                CREATE TABLE IF NOT EXISTS vehicles (
                     id INT AUTO_INCREMENT PRIMARY KEY,
-                    product_id INT NOT NULL, 
-                    activity VARCHAR(255) DEFAULT 'hiking' NOT NULL,
+                    product_id INT NOT NULL,
+                    airborne VARCHAR(50) DEFAULT 'no' NOT NULL,
+                    aquatic VARCHAR(50) DEFAULT 'no' NOT NULL,
                     FOREIGN KEY (product_id) REFERENCES products(id)
                 );
             ",
+            "
+                CREATE TABLE IF NOT EXISTS weapons (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    product_id INT NOT NULL,
+                    ideal_range VARCHAR(255) DEFAULT 'close' NOT NULL,
+                    FOREIGN KEY (product_id) REFERENCES products(id)
+                );
+            ",
+            
             // triggers
+            "
+                CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_book
+                AFTER DELETE 
+                ON books FOR EACH ROW
+                DELETE FROM products
+                WHERE id = old.product_id;
+            ",
+            "
+                CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_protection
+                AFTER DELETE 
+                ON protection FOR EACH ROW
+                DELETE FROM products
+                WHERE id = old.product_id;
+            ",
             "
                 CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_shoe
                 AFTER DELETE 
@@ -84,12 +127,19 @@ trait Database {
                 WHERE id = old.product_id;
             ",
             "
-                CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_equipment
+                CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_vehicle
                 AFTER DELETE 
-                ON equipment FOR EACH ROW
+                ON vehicles FOR EACH ROW
                 DELETE FROM products
                 WHERE id = old.product_id;
+            ",
             "
+                CREATE TRIGGER IF NOT EXISTS delete_product_after_delete_weapon
+                AFTER DELETE 
+                ON weapons FOR EACH ROW
+                DELETE FROM products
+                WHERE id = old.product_id;
+            ",     
         ];
 
         try {

@@ -3,19 +3,18 @@
 namespace PhpTraining2\models;
 require_once "Product.php";
 
-final class Shoe extends Product {
-
+final class Weapon extends Product {
+    
     public function __construct(
         protected array $genericData = [],
-        protected array $specificData = ["waterproof" => 0, "level" => "regular"])
+        protected array $specificData = ["ideal_range" => ""])
     {
         parent::__construct($genericData);
-        $this->table = "shoes";
+        $this->table = "weapons";
     }
 
-
     /**
-     * Get specific shoe html
+     * Get specific equipment html
      * 
      * @access public
      * @package PhpTraning2/models
@@ -25,10 +24,10 @@ final class Shoe extends Product {
     public function getProductCardSpecificHtml() {
         ob_start();?>
             
-        <p class="product__waterproof"><span>Waterproof: </span><?=$this->specificData["waterproof"] === 0 ? "no" : "yes" ?></p>
-        <p class="product__level"><span>Practice level: </span><?=$this->specificData["level"]?></p>
+        <p class="product__ideal-range"><span>Range: </span><?=$this->specificData["ideal_range"]?></p>
         
         <?php $specificHtml = ob_get_clean();
         return $specificHtml;
     }
+
 }

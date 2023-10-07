@@ -7,8 +7,11 @@ use PhpTraining2\core\Model;
 use PhpTraining2\models\Category;
 use PhpTraining2\models\Form;
 
+require_once MODELS_DIR . "Book.php";
+require_once MODELS_DIR . "Protection.php";
 require_once MODELS_DIR . "Shoe.php";
-require_once MODELS_DIR . "Equipment.php";
+require_once MODELS_DIR . "Vehicle.php";
+require_once MODELS_DIR . "Weapon.php";
 require_once MODELS_DIR . "Category.php";
 require_once MODELS_DIR . "Form.php";
 
@@ -19,7 +22,7 @@ class ProductsController {
 
     private string $category = "";
     private string $model;
-    private array $genericProperties = ["name", "description", "price", "img_url"];
+    private array $genericProperties = ["name", "description", "special_features", "limitations", "price", "img_url"];
 
     public function __construct()
     {
@@ -138,6 +141,8 @@ class ProductsController {
                 "img_url" => $data->img_url,
                 "name" => $data->name, 
                 "description" => $data->description, 
+                "special_features" => $data->special_features,
+                "limitations" => $data->limitations,
                 "price" => $data->price, 
             ],
             $specificData
@@ -162,7 +167,7 @@ class ProductsController {
             $form = new Form();
             $form->setRequired(array_merge($this->genericProperties, $specificProperties));
             $_POST["img_url"] = "test.jpg"; // TODO : file upload
-            
+                        
             if($form->hasEmptyFields()) {
                 $form->setEmptyFieldsError();
                 // TODO : show form with already filled values and error message
@@ -170,9 +175,12 @@ class ProductsController {
                 $genericToValidate = [
                     "name" => ["type" => "text", "value" => $_POST["name"], "name" => "name"],
                     "description" => ["type" => "text", "value" => $_POST["description"], "name" => "description"],
+                    "special_features" => ["type" => "text", "value" => $_POST["special_features"], "name" => "special_features"],
+                    "limitations" => ["type" => "text", "value" => $_POST["limitations"], "name" => "limitations"],
                     "price" => ["type" => "number", "value" => $_POST["price"], "name" => "price"],
                 ];
                 $genericValidated = $form->validate($genericToValidate);
+
                 
                 $specificToValidate = $form->getSpecificData($specificProperties);
                 $specificValidated = $form->validate($specificToValidate);
@@ -192,6 +200,8 @@ class ProductsController {
                     "img_url" => "",
                     "name" => $genericValidated["name"],
                     "description" => $genericValidated["description"],
+                    "special_features" => $genericValidated["special_features"],
+                    "limitations" => $genericValidated["limitations"],
                     "price" => $genericValidated["price"],
                 ];
     

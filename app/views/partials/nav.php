@@ -17,7 +17,7 @@
                         <a href="<?=ROOT?>products/shoes">Shoes</a>
                     </li>
                     <li class="nav__menu__item">
-                        <a href="<?=ROOT?>products/vehicules">Vehicules</a>
+                        <a href="<?=ROOT?>products/vehicles">Vehicles</a>
                     </li>
                     <li class="nav__menu__item">
                         <a href="<?=ROOT?>products/weapons">Weapons</a>

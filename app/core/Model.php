@@ -90,6 +90,7 @@ trait Model {
     {
         $whereClause = !empty($this->where) ? "WHERE $this->where" : "";
         $query = "SELECT $this->columns FROM $this->table $whereClause ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
+        show($query);
         $results = $this->query($query, $data);
         return $results;
     }
