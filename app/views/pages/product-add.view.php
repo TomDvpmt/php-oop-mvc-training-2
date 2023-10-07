@@ -79,7 +79,7 @@ ob_start()?>
 ob_start(); ?>
 <div class="page__content add-product">
     <form action="" method="GET" class="form">
-        <input type="hidden" name="action" value="add"/>  
+        <!-- <input type="hidden" name="action" value="add"/>   -->
         <div class="form__field">
             <label for="category">Product category :</label>
             <select name="category" id="category" required>

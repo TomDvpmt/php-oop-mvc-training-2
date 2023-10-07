@@ -4,7 +4,7 @@
 <?php $deleteLink = ob_get_clean(); ?>
 
 <article class="product-card <?=$this->genericData['category']?>" id="<?=$this->genericData['id']?>">
-    <img class="product-card__img" src="<?=$this->genericData['img_url']?>" alt="<?=$this->genericData['name']?>">
+    <img class="product-card__img" src="<?=ROOT . $this->genericData['img_url']?>" alt="<?=$this->genericData['name']?>">
     <h2 class="product-card__name"><?=$this->genericData['name']?></h2>
     <p class="product-card__description"><?=$this->genericData['description']?></p>
     <?= $specificHtml?>

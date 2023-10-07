@@ -1,9 +1,6 @@
 <?php
 
 $title = $data["name"];
-
-show($data);
-
 $shoesSpecific = "";
 $equipmentSpecific = "";
 

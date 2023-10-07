@@ -17,17 +17,23 @@ class ProductsController {
     use Controller;
     use Model;
 
-    private string $category;
+    private string $category = "";
     private string $model;
     private array $genericProperties = ["name", "description", "price", "img_url"];
-    // private array $specificProperties = [];
 
     public function __construct()
     {
-        $category = strip_tags($_GET["category"] ?? "");
-        $this->category = $category;
+        $pathChunks = $this->getPathChunks();
+        if(count($pathChunks) > 1) {
+            $this->category = end($pathChunks);
+        }
+        
+        if(isset($_GET["category"])) {
+            $this->category = $_GET["category"];
+        }        
 
         // Remove the final "s" of the category name if it has one, to get the model name (shoes => Shoe)
+        $category = $this->category;
         $model = substr($category, -1) === "s" ? substr($category, 0, -1) : $category;
         $this->model = "PhpTraining2\\models\\" . ucfirst($model);
     }
@@ -40,7 +46,17 @@ class ProductsController {
      */
 
     public function index(): void {
-        $this->category === "" ? $this->showCategories() : $this->showProductsOfCategory();
+        $pathChunks = $this->getPathChunks();
+        
+        $method = $this->getMethod($pathChunks);
+        if($method) $this->$method();
+        
+        if(count($pathChunks) === 1) {
+            $this->showCategories();
+            return;
+        }
+        
+        $this->showProductsOfCategory();
     }
 
 
@@ -97,7 +113,6 @@ class ProductsController {
                 array_push($content, $product->getProductCardHtml($specificHtml));
             }
         }
-
         return $content;
      }
 
@@ -168,6 +183,7 @@ class ProductsController {
                 if(!$genericValidated || !$specificValidated) {
                     show("There are errors !"); 
                     // TODO : deal with errors
+                    return;
                 }
                 
                 $genericData = [
@@ -205,6 +221,6 @@ class ProductsController {
         $this->table = $this->category;
         $this->delete("product_id", $id);
 
-        $this->index();
+        $this->showProductsOfCategory();
     }
 }

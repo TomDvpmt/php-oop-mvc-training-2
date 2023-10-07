@@ -53,7 +53,7 @@ class Category {
         $designator = substr($this->name, 0, 1);
         
         $this->table = "products p JOIN $table $designator";
-        $this->where = "WHERE p.id = $designator.product_id";
+        $this->where = "p.id = $designator.product_id";
         
         $specific = implode(",", $this->specificProperties);
         $this->columns = "p.id as id, name, description, price, img_url, $specific";

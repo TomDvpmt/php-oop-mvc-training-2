@@ -2,6 +2,10 @@
 
 namespace PhpTraining2\core;
 
+use PhpTraining2\models\Route;
+
+require MODELS_DIR . "Route.php";
+
 class Router {
 
     /**
@@ -27,11 +31,10 @@ class Router {
 
     private function createRoute(): object {
 
-        $path = $_GET["url"] ?? "home";
-        
+        $path = $_GET["url"] ?? "home";        
         $params = $_GET;
         unset($params["url"]);
-        
+                
         //TODO : sanitize $path & $params
 
         $route = new Route($path, $params);

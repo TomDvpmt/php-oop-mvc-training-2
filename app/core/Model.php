@@ -88,7 +88,8 @@ trait Model {
 
     protected function find(array $data = []): mixed 
     {
-        $query = "SELECT $this->columns FROM $this->table $this->where ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
+        $whereClause = !empty($this->where) ? "WHERE $this->where" : "";
+        $query = "SELECT $this->columns FROM $this->table $whereClause ORDER BY $this->orderColumn $this->orderType LIMIT $this->limit OFFSET $this->offset";
         $results = $this->query($query, $data);
         return $results;
     }

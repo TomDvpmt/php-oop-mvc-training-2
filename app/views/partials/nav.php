@@ -41,13 +41,13 @@
             <div class="nav__submenu">
                 <ul id="nav-user-submenu" class="nav__submenu__list">
                     <li class="nav__menu__item nav__menu__item--icon-text">
-                        <a href="<?=ROOT?>user?action=signin"><i class="fa-solid fa-arrow-right-to-bracket"></i><span>Sign in</span></a>
+                        <a href="<?=ROOT?>user/signin"><i class="fa-solid fa-arrow-right-to-bracket"></i><span>Sign in</span></a>
                     </li>
                     <li class="nav__menu__item nav__menu__item--icon-text">
-                        <a href="<?=ROOT?>user?action=signup"><i class="fa-solid fa-user-plus"></i></i><span>Sign up</span></a>
+                        <a href="<?=ROOT?>user/signup"><i class="fa-solid fa-user-plus"></i></i><span>Sign up</span></a>
                     </li> 
                     <li class="nav__menu__item">
-                        <a href="<?=ROOT?>products?action=add">Add a product</a>
+                        <a href="<?=ROOT?>products/add">Add a product</a>
                     </li>
                 </ul>
             </div>

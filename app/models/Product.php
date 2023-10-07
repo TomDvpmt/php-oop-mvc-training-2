@@ -37,7 +37,6 @@ class Product {
      */
 
      public function getProductData(): array {
-        
         $genericData = $this->getProductGenericData();
         $specificData = $this->getProductSpecificData();
         $data = array_merge($genericData, $specificData);
@@ -54,7 +53,8 @@ class Product {
 
      public function getProductGenericData(): array {
         $this->columns = "id, name, description, price, img_url";
-        $this->table = "products WHERE id = :id";
+        $this->table = "products";
+        $this->where = "id = :id";
         $genericData = (array) $this->find(["id" => $this->genericData["id"]])[0];
         return $genericData;
     }
@@ -67,10 +67,11 @@ class Product {
      * @package PhpTraining2\models
      * @return array
      */
-
+    
     public function getProductSpecificData(): array {
         $this->columns = "*";
-        $this->table = $this->genericData["category"] . " WHERE product_id= :product_id";
+        $this->table = $this->genericData["category"];
+        $this->where = "product_id= :product_id";
         $data = (array) $this->find(["product_id" => $this->genericData["id"]])[0];
         $specificData = array_filter($data, fn($key) => !in_array($key, ["id", "product_id"]), ARRAY_FILTER_USE_KEY);
         return $specificData;

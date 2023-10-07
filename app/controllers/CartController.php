@@ -30,7 +30,18 @@ class CartController {
 
     public function index() {
         (new Order)->removeIdFromSession();
+        $this->executeMethodIfExists();
+        $this->displayCart();
+    }
 
+    /**
+     * Display cart
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     */
+    
+    private function displayCart() {
         $cart = new Cart($this->cartItems);
         $items = $cart->getAllItems();
         $totalPrice = $cart->getTotalPrice();
@@ -41,49 +52,49 @@ class CartController {
     /**
      * Add an item to the cart
      * 
-     * @access public
+     * @access private
      * @package PhpTraining2\controllers
      */
 
-    public function add(): void {
+    private function add(): void {
         $cart = new Cart($this->cartItems);
         $product = new Product();
         $data = $product->getProductData();
         if($cart->getOneItem($data["id"])) {
-            $this->index(); // TODO : error message
+            // TODO : error message
         } else {
             $cart->addItem([...$data, "quantity" => 1]);
-            $this->index();
         }
+        $this->displayCart();
     }
 
     /**
      * Update an item's quantity
      * 
-     * @access public
+     * @access private
      * @package PhpTraining2\controllers
      */
     
-    public function updateQuantity(): void {
+    private function updateQuantity(): void {
         $productId = strip_tags($_GET["id"]);
         $newQuantity = strip_tags($_POST["quantity"]);
         $cart = new Cart($this->cartItems);
         $cart->updateItemQuantity($productId, $newQuantity);
-        $this->index();
+        $this->displayCart();
     }
 
 
     /**
      * Remove an item from the cart
      * 
-     * @access public
+     * @access private
      * @package PhpTraining2\controllers
      */
 
-    public function remove() {
+    private function remove() {
         $productId = strip_tags($_GET["id"]);
         $cart = new Cart($this->cartItems);
         $cart->removeItem($productId);
-        $this->index();
+        $this->displayCart();
     }
 }

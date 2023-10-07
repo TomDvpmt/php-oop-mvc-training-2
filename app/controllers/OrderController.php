@@ -38,7 +38,7 @@ class OrderController {
      */
 
     public function billing(): void {
-        // TO ADD TO ALL PUBLIC FUNCTIONS ?
+        // TODO : ADD TO ALL PUBLIC FUNCTIONS ?
         // if(!$this->isUserLoggedIn()) {
         //     $this->sendToSigninPage("order?action=billing");
         // }

@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpTraining2\core;
+namespace PhpTraining2\models;
 
 class Route {
     
@@ -9,12 +9,11 @@ class Route {
 
     public function __construct(private string $path = "home", private array $params = [])
     {
-        $controllerName = ucfirst(explode("/", $this->path)[0]) . "Controller";
-        $this->controllerName = $controllerName;
+        $this->setControllerName();
     }
 
     /**
-     * Call a controller (and its specific method)
+     * Call a controller
      * 
      * @access public
      * @package PhpTraining2\core
@@ -22,13 +21,7 @@ class Route {
 
     public function callController() {
         $controller = $this->getController();
-        $method = $this->getMethodFromParams();
-        
-        if(method_exists($controller, $method)) {
-            $this->setMethod($method);
-        }
-
-        call_user_func_array([$controller, $this->method], []);
+        call_user_func_array([$controller, "index"], []);
     }
 
 
@@ -57,9 +50,22 @@ class Route {
         return new $controllerFullName;
     }
 
+    /**
+     * Set controller name
+     * 
+     * @access private
+     * @package PhpTraining2\core
+     */
+
+     private function setControllerName() {
+        $pathChunks = explode("/", $this->path);
+        $controllerName = ucfirst($pathChunks[0]) . "Controller";
+        $this->controllerName = $controllerName;
+    }
+
 
     /**
-     * Get controller's name
+     * Get controller name
      * 
      * @access private
      * @package PhpTraining2\core
@@ -82,7 +88,6 @@ class Route {
     private function getMethodFromParams(): string {
         $action = $this->params["action"] ?? null;
         return empty($action) ? "index" : strip_tags($action); // TODO : sanitize params in Router
-        
     }
 
 
