@@ -10,10 +10,10 @@ $color-secondary: #718073;
 $color-secondary-darker: darken($color-secondary, 10%);
 $color-tertiary: #eccbb4;
 
-$color-background-default: #f7f7f7;
-$color-background-dark: darken($color-background-default, 5%);
-$color-background-darker: darken($color-background-default, 20%);
-$color-background-darkest: darken($color-background-default, 70%);
+$color-background-primary: #ffffff;
+$color-background-primary-dark: darken($color-background-primary, 5%);
+$color-background-primary-darker: darken($color-background-primary, 20%);
+$color-background-primary-darkest: darken($color-background-primary, 70%);
 
 $color-background-secondary: #fcf9f4;
 

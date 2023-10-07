@@ -35,7 +35,16 @@ p {
     color: $color-secondary-darker;
 }
 
+ul {
+    list-style-type: none;
+    padding-inline-start: 0;
+}
+
 h1 {
     margin: 4rem 0;
     text-align: center;
+}
+
+.visible {
+    display: flex;
 }

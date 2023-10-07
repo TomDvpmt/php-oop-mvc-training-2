@@ -7,7 +7,6 @@ foreach($data["items"] as $item) {
     ob_start();
     require VIEWS_DIR . "partials/cart-card.php";
     $card = ob_get_clean();
-
     array_push($grid, $card);
 }
 
