@@ -86,43 +86,11 @@ class Form {
     */
 
     private function getSpecificValues(array $specificProperties): array {
-        $specificValues = array_map(function($property) {
-            switch ($property) {
-                /* Books */
-                case 'genre':
-                    $data = ["type" => "text", "name" => "genre", "value" => $_POST["genre"]];
-                    break;
-                /* Protection */
-                case 'type':
-                    $data = ["type" => "text", "name" => "type", "value" => $_POST["type"]];
-                    break;
-                case 'resistance':
-                    $data = ["type" => "text", "name" => "resistance", "value" => $_POST["resistance"]];
-                    break;
-                /* Shoes */
-                case 'waterproof':
-                    $data = ["type" => "text", "name" => "waterproof", "value" => $_POST["waterproof"]];
-                    break;
-                case 'level':
-                    $data = ["type" => "text", "name" => "level", "value" => $_POST["level"]];
-                    break;
-                /* Vehicles */
-                case 'airborne':
-                    $data = ["type" => "text", "name" => "airborne", "value" => $_POST["airborne"]];
-                    break;
-                case 'aquatic':
-                    $data = ["type" => "text", "name" => "aquatic", "value" => $_POST["aquatic"]];
-                    break;
-                /* Weapons */
-                case 'ideal_range':
-                    $data = ["type" => "text", "name" => "ideal_range", "value" => $_POST["ideal_range"]];
-                    break;
-                default:
-                    $data = [];
-                    break;
-            }
-            return $data;
-        }, $specificProperties);
+        $specificValues = array_map(fn($property) => [
+            "type" => "text", 
+            "name" => $property, 
+            "value" => $_POST[$property]
+        ], $specificProperties);
     
         return $specificValues;
     }
@@ -151,7 +119,6 @@ class Form {
 
      public function hasEmptyFields() {
         $hasEmptyFields = array_reduce($this->required, function($acc, $item){ 
-            if(empty($_POST[$item])) show($item);
             return $acc || empty($_POST[$item]);
         }, false );
         return $hasEmptyFields;

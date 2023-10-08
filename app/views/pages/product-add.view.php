@@ -137,7 +137,7 @@ ob_start()?>
         <input type="number" name="price" min="0" id="price"/>
     </div>
     <div class="form__specific-fields">
-        <?= $specific ?>
+        <?= $data["specificAddFormHtml"] ?>
     </div>
     <button class="button" type="submit" name="submit">Add product</button>
 </form>

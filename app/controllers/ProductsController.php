@@ -35,10 +35,7 @@ class ProductsController {
             $this->category = $_GET["category"];
         }        
 
-        // Remove the final "s" of the category name if it has one, to get the model name (shoes => Shoe)
-        $category = $this->category;
-        $model = substr($category, -1) === "s" ? substr($category, 0, -1) : $category;
-        $this->model = "PhpTraining2\\models\\" . ucfirst($model);
+        $this->model = $this->getModelNameFromCategoryName($this->category);
     }
 
     /**
@@ -159,13 +156,20 @@ class ProductsController {
      */
 
     public function add(): void {
+        $specificAddFormHtml = null;
+
+        if(isset($_GET["category"])) {
+            $specificAddFormHtml = $this->getSpecificAddFormHtml();
+        }
 
         if(isset($_POST["submit"])) {
+
             $category = new Category($this->category);
             $specificProperties = $category->getSpecificProperties();
             
             $form = new Form();
             $form->setRequired(array_merge($this->genericProperties, $specificProperties));
+            
             $_POST["img_url"] = "test.jpg"; // TODO : file upload
                         
             if($form->hasEmptyFields()) {
@@ -213,9 +217,32 @@ class ProductsController {
             }
 
         } else {
-            $this->view("pages/product-add", [], null, null);
+            $this->view("pages/product-add", ["specificAddFormHtml" => $specificAddFormHtml], null, null);
         }
 
+    }
+
+    private function getSpecificAddFormHtml(): string {
+        $selectOptions = (new $this->model)->getSelectOptions();
+        $html = [];
+        foreach ($selectOptions["questions"] as $key => $value) {
+            $options = [];
+            $question = $value;
+            array_push($options, "<option value=''>-- $question --</option>");
+            $answers = $selectOptions["answers"][$key];
+            foreach ($answers as $answer) {
+                $label = ucfirst($answer);
+                array_push($options, "<option value='$answer'>$label</option>");
+            }
+            $optionsHtml = implode("", $options);
+            $formFieldHtml= "
+                <div class='form__field'>
+                    <select name='$key' id='$key'>$optionsHtml</select>
+                </div>    
+            ";
+            array_push($html, $formFieldHtml);
+        }
+        return implode("", $html);
     }
 
 

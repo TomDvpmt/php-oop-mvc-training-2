@@ -5,7 +5,7 @@ namespace PhpTraining2\models;
 use PhpTraining2\core\Model;
 
 
-class Product {
+abstract class Product {
     use Model;
     
     public function __construct(
@@ -27,7 +27,7 @@ class Product {
             $this->genericData["category"] = strip_tags($_GET["category"]);
         }
 
-        if(empty($this->genericData["img_url"])) $this->setRandomImgUrl();
+        // if(empty($this->genericData["img_url"])) $this->setRandomImgUrl();
     }
 
     /**
@@ -138,27 +138,27 @@ class Product {
     }
 
     
-    /**
-     * Assign a random img to a product
-     * 
-     * @access private
-     * @package PhpTraining2\models
-     */
+    // /**
+    //  * Assign a random img to a product
+    //  * 
+    //  * @access private
+    //  * @package PhpTraining2\models
+    //  */
 
-    private function setRandomImgUrl() {
-        $category = $this->genericData["category"];
-        $productDir = "assets/images/$category/";
+    // private function setRandomImgUrl() {
+    //     $category = $this->genericData["category"];
+    //     $productDir = "assets/images/$category/";
 
-        if(empty($this->genericData["img_url"] && !empty($category))) {
-            $IMG_URLS = scandir($productDir);
-            array_splice($IMG_URLS, 0, 2);
+    //     if(empty($this->genericData["img_url"] && !empty($category))) {
+    //         $IMG_URLS = scandir($productDir);
+    //         array_splice($IMG_URLS, 0, 2);
 
-            $imgUrl = "";
-            if(!empty($IMG_URLS)) {
-                $randImgKey = array_rand($IMG_URLS);
-                $imgUrl = $productDir . $IMG_URLS[$randImgKey];
-            }
-            $this->genericData["img_url"] = $imgUrl;
-        }
-    }
+    //         $imgUrl = "";
+    //         if(!empty($IMG_URLS)) {
+    //             $randImgKey = array_rand($IMG_URLS);
+    //             $imgUrl = $productDir . $IMG_URLS[$randImgKey];
+    //         }
+    //         $this->genericData["img_url"] = $imgUrl;
+    //     }
+    // }
 }

@@ -76,6 +76,20 @@ trait Controller {
     }
 
 
+    /**
+     * Get model name from category name
+     * 
+     * @access public
+     * @package PhpTraining2\core
+     * @return string
+     */
+
+    public function getModelNameFromCategoryName($category): string {
+        $model = substr($category, -1) === "s" ? substr($category, 0, -1) : $category;
+        return "PhpTraining2\\models\\" . ucfirst($model);
+    }
+
+
     // /**
     //  * Send user to the signin page
     //  * 

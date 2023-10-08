@@ -4,9 +4,13 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
-use PhpTraining2\models\Product;
 
 require_once MODELS_DIR . "Product.php";
+require_once MODELS_DIR . "Book.php";
+require_once MODELS_DIR . "Protection.php";
+require_once MODELS_DIR . "Shoe.php";
+require_once MODELS_DIR . "Vehicle.php";
+require_once MODELS_DIR . "Weapon.php";
 
 class ProductController {
     use Controller;
@@ -31,7 +35,8 @@ class ProductController {
      */
 
     public function index(): void {
-        $product = new Product();
+        $model = $this->getModelNameFromCategoryName($this->category);
+        $product = new $model();
         $data = $product->getProductData();
         $this->view("pages/product", $data);
     }

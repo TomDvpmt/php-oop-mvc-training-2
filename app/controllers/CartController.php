@@ -10,6 +10,11 @@ use PhpTraining2\models\Order;
 require_once CTRL_DIR . "ProductController.php";
 require_once MODELS_DIR . "Cart.php";
 require_once MODELS_DIR . "Order.php";
+require_once MODELS_DIR . "Book.php";
+require_once MODELS_DIR . "Protection.php";
+require_once MODELS_DIR . "Shoe.php";
+require_once MODELS_DIR . "Vehicle.php";
+require_once MODELS_DIR . "Weapon.php";
 
 class CartController {
     use Controller;
@@ -57,14 +62,19 @@ class CartController {
      */
 
     private function add(): void {
+        $category = $_GET["category"];
+        $model = $this->getModelNameFromCategoryName($category);
+
         $cart = new Cart($this->cartItems);
-        $product = new Product();
+        $product = new $model();
         $data = $product->getProductData();
+
         if($cart->getOneItem($data["id"])) {
             // TODO : error message
         } else {
             $cart->addItem([...$data, "quantity" => 1]);
         }
+        
         $this->displayCart();
     }
 
