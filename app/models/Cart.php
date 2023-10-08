@@ -16,7 +16,7 @@ class Cart {
         if(!isset($_SESSION["cart"])) {
             $_SESSION["cart"] = $this->cartItems;
         }
-        $this->totalPrice = array_sum(array_map(fn($item) => $item["price"] * $item["quantity"], $_SESSION["cart"]));
+        $this->totalPrice = array_sum(array_map(fn($item) => $item["genericData"]["price"] * $item["quantity"], $_SESSION["cart"]));
     }
 
     /**
@@ -42,7 +42,7 @@ class Cart {
      */
 
     public function getOneItem(int $id): array {
-        return array_filter($_SESSION["cart"], fn($item) => $item["id"] === $id);
+        return array_filter($_SESSION["cart"], fn($item) => $item["genericData"]["id"] === $id);
     }
 
 
@@ -71,7 +71,7 @@ class Cart {
     public function updateItemQuantity(int $id, int $newQuantity): void {
         $allItems = $this->getAllItems();
         foreach($allItems as $key => $item) {
-            if($item["id"] === $id) {
+            if($item["genericData"]["id"] === $id) {
                 $_SESSION["cart"][$key]["quantity"] = $newQuantity;
                 return;
             }
@@ -89,7 +89,7 @@ class Cart {
 
     public function removeItem(int $productId): void {
         $items = $this->getAllItems();
-        $newItems = array_filter($items, fn($item) => $item["id"] != $productId);
+        $newItems = array_filter($items, fn($item) => $item["genericData"]["id"] != $productId);
         $_SESSION["cart"] = $newItems;
     }
 

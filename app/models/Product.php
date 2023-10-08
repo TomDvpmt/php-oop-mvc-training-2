@@ -4,7 +4,6 @@ namespace PhpTraining2\models;
 
 use PhpTraining2\core\Model;
 
-
 abstract class Product {
     use Model;
     
@@ -41,19 +40,19 @@ abstract class Product {
      public function getProductData(): array {
         $genericData = $this->getProductGenericData();
         $specificData = $this->getProductSpecificData();
-        $data = array_merge($genericData, $specificData);
+        $data = ["genericData" => $genericData, "specificData" => $specificData];
         return $data;
     }
 
     /**
      * Get the product's generic data (id, name, description, special_features, limitations, price, image url)
      * 
-     * @access public
+     * @access private
      * @package PhpTraining2\models
      * @return array
      */
 
-     public function getProductGenericData(): array {
+     private function getProductGenericData(): array {
         $this->columns = "id, name, description, special_features, limitations, price, img_url";
         $this->table = "products";
         $this->where = "id = :id";
@@ -65,12 +64,12 @@ abstract class Product {
     /**
      * Get the product's specific data (depending on its category)
      * 
-     * @access public
+     * @access private
      * @package PhpTraining2\models
      * @return array
      */
     
-    public function getProductSpecificData(): array {
+    private function getProductSpecificData(): array {
         $this->columns = "*";
         $this->table = $this->genericData["category"];
         $this->where = "product_id= :product_id";
@@ -82,12 +81,12 @@ abstract class Product {
     /**
      * Add an item to the "products" table and return its id
      * 
-     * @access protected
+     * @access private
      * @package PhpTraining2\models
      * @return int
      */
 
-    protected function createGenericProduct(): int {
+    private function createGenericProduct(): int {
         $this->table = "products";
         $genericData = [
             "category" => $this->genericData["category"],

@@ -1,44 +1,27 @@
 <?php
 
-$title = $data["name"];
-$shoesSpecific = "";
-$equipmentSpecific = "";
+$generic = $data["genericData"];
+$title = $generic["name"];
 
-/** Specific html **/
-
-switch ($this->category) {
-    case 'shoes':
-        ob_start();?>
-        <p class="product-card__waterproof">Waterproof: <?= $data["waterproof"] === 0 ? "no" : "yes" ?></p>
-        <p class="product-card__level">Level: <?= $data["level"] ?></p>
-        <?php $shoesSpecific = ob_get_clean();
-        break;
-
-    case 'equipment':
-        ob_start();?>
-        <p class="product-card__activity">Activity: <?= $data["activity"] ?></p>
-        <?php $equipmentSpecific = ob_get_clean();
-    
-    default:
-        break;
+$specific = [];
+foreach ($data["specificData"] as $key => $value) {
+    $label = ucfirst($key);
+    $answer = $value["answer"];
+    array_push($specific, "<p class='product-card__$key'>$label: $answer</p>");
 }
-
-
-/** Full html **/
-
-$specific = $shoesSpecific . $equipmentSpecific;
+$specificHtml = implode("", $specific);
 
 ob_start();?>
 <div class="page__content product" id="<?=$this->id?>">
-    <img class="product__img" src="<?=$data["img_url"]?>" alt="<?=$data["name"]?>">
-    <h2 class="product__name"><?=$data["name"]?></h2>
-    <p class="product__description"><?=$data["description"]?></p>
-    <p class="product__special_features">Special features: <?=$data["special_features"]?></p>
-    <p class="product__limitations">Limitations: <?=$data["limitations"]?></p>
+    <img class="product__img" src="<?=$generic["img_url"]?>" alt="<?=$generic["name"]?>">
+    <h2 class="product__name"><?=$generic["name"]?></h2>
+    <p class="product__description"><?=$generic["description"]?></p>
+    <p class="product__special_features">Special features: <?=$generic["special_features"]?></p>
+    <p class="product__limitations">Limitations: <?=$generic["limitations"]?></p>
     <div class="product__specific">
-        <?= $specific ?>
+        <?= $specificHtml ?>
     </div>
-    <p class="product__price">$ <?=$data["price"]?></p>
+    <p class="product__price">$ <?=$generic["price"]?></p>
     <div class="product__controls">
         <a href="<?= ROOT . "cart?action=add&category=$this->category&id=$this->id" ?>">Add to cart</a>
         <a href="<?= ROOT . "products?action=remove&category=$this->category&id=$this->id"?>">Delete product</a>

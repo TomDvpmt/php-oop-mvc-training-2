@@ -28,3 +28,15 @@ function generateRandomId() {
     }
     return implode("-", $chunks);
 }
+
+
+/**
+ * Get model name from category name
+ * 
+ * @return string
+ */
+
+function getModelNameFromCategoryName($category): string {
+    $model = substr($category, -1) === "s" ? substr($category, 0, -1) : $category;
+    return "PhpTraining2\\models\\" . ucfirst($model);
+}

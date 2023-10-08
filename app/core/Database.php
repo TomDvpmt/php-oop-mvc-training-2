@@ -81,8 +81,8 @@ trait Database {
                 CREATE TABLE IF NOT EXISTS shoes (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     product_id INT NOT NULL,
-                    waterproof BOOL DEFAULT 1 NOT NULL,
-                    level VARCHAR(50) DEFAULT 'regular' NOT NULL,
+                    waterproof VARCHAR(50) DEFAULT 'unsure' NOT NULL,
+                    usage_intensity VARCHAR(50) DEFAULT 'on sundays only' NOT NULL,
                     FOREIGN KEY (product_id) REFERENCES products(id)
                 );
             ",

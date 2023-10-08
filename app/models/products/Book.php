@@ -1,11 +1,12 @@
 <?php
 
 namespace PhpTraining2\models;
-require_once "Product.php";
+
+require_once MODELS_DIR . "Product.php";
 
 final class Book extends Product {
     
-    private array $selectOptions = [
+    private const SELECT_OPTIONS = [
         "questions" => ["genre" => "Which genre better defines this book?"],
         "answers" => [
             "genre" => 
@@ -52,7 +53,7 @@ final class Book extends Product {
      */
 
     public function getSelectOptions(): array {
-        return $this->selectOptions;
+        return self::SELECT_OPTIONS;
     }
 
 }

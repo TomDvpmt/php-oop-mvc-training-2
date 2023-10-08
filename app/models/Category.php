@@ -14,27 +14,10 @@ class Category {
     public function __construct($name)
     {
         $this->name = $name;
-        
-        switch ($this->name) {
-            case 'books':
-                $this->specificProperties = ["genre"];
-                break;
-            case 'protection':
-                $this->specificProperties = ["type", "resistance"];
-                break;
-            case 'shoes':
-                $this->specificProperties = ["waterproof", "level"];
-                break;
-            case 'vehicles':
-                $this->specificProperties = ["airborne", "aquatic"];
-                break;
-            case 'weapons':
-                $this->specificProperties = ["ideal_range"];
-                break;
-            default:
-                $this->specificProperties = [];
-                break;
-        }
+
+        $productModelName = getModelNameFromCategoryName($name);
+        $options = (new $productModelName)->getSelectOptions();
+        $this->specificProperties = array_keys($options["questions"]);
     }
 
     /**

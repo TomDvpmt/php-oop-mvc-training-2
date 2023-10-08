@@ -7,11 +7,11 @@ use PhpTraining2\core\Model;
 use PhpTraining2\models\Category;
 use PhpTraining2\models\Form;
 
-require_once MODELS_DIR . "Book.php";
-require_once MODELS_DIR . "Protection.php";
-require_once MODELS_DIR . "Shoe.php";
-require_once MODELS_DIR . "Vehicle.php";
-require_once MODELS_DIR . "Weapon.php";
+require_once MODELS_DIR . "products/Book.php";
+require_once MODELS_DIR . "products/Protection.php";
+require_once MODELS_DIR . "products/Shoe.php";
+require_once MODELS_DIR . "products/Vehicle.php";
+require_once MODELS_DIR . "products/Weapon.php";
 require_once MODELS_DIR . "Category.php";
 require_once MODELS_DIR . "Form.php";
 
@@ -35,7 +35,7 @@ class ProductsController {
             $this->category = $_GET["category"];
         }        
 
-        $this->model = $this->getModelNameFromCategoryName($this->category);
+        $this->model = getModelNameFromCategoryName($this->category);
     }
 
     /**
@@ -188,9 +188,6 @@ class ProductsController {
                 
                 $specificToValidate = $form->getSpecificData($specificProperties);
                 $specificValidated = $form->validate($specificToValidate);
-                if(in_array("waterproof", array_keys($specificValidated))) {
-                    $specificValidated["waterproof"] = $specificValidated["waterproof"] === "yes" ? 1 : 0;
-                }
                 
                 if(!$genericValidated || !$specificValidated) {
                     show("There are errors !"); 
