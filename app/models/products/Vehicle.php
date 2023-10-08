@@ -34,25 +34,6 @@ final class Vehicle extends Product {
 
 
     /**
-     * Get specific shoe html
-     * 
-     * @access public
-     * @package PhpTraning2/models
-     * @return string
-     */
-
-    public function getProductCardSpecificHtml() {
-        ob_start();?>
-            
-        <p class="product__airborne"><span>Airborne: </span><?=$this->specificData["airborne"]?></p>
-        <p class="product__aquatic"><span>Aquatic: </span><?=$this->specificData["aquatic"]?></p>
-        
-        <?php $specificHtml = ob_get_clean();
-        return $specificHtml;
-    }
-
-
-    /**
      * Get select options for add product form
      * 
      * @access public

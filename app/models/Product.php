@@ -37,7 +37,7 @@ abstract class Product {
      * @return array
      */
 
-     public function getProductData(): array {
+    public function getProductData(): array {
         $genericData = $this->getProductGenericData();
         $specificData = $this->getProductSpecificData();
         $data = ["genericData" => $genericData, "specificData" => $specificData];
@@ -52,8 +52,8 @@ abstract class Product {
      * @return array
      */
 
-     private function getProductGenericData(): array {
-        $this->columns = "id, name, description, special_features, limitations, price, img_url";
+    private function getProductGenericData(): array {
+        $this->columns = "id, category, name, description, special_features, limitations, price, img_url";
         $this->table = "products";
         $this->where = "id = :id";
         $genericData = (array) $this->find(["id" => $this->genericData["id"]])[0];
@@ -77,6 +77,27 @@ abstract class Product {
         $specificData = array_filter($data, fn($key) => !in_array($key, ["id", "product_id"]), ARRAY_FILTER_USE_KEY);
         return $specificData;
     }
+
+
+    /**
+     * Get specific equipment html
+     * 
+     * @access public
+     * @package PhpTraning2/models
+     * @return string
+     */
+
+    public function getProductCardSpecificHtml(): string {
+        $specificHtml = [];
+        $specificData = $this->getProductSpecificData();
+        foreach ($specificData as $key => $value) {
+            $label = ucfirst($key);
+            array_push($specificHtml, "<p class='product__$key'><span>$label: </span>$value</p>");
+        }
+
+        return implode("", $specificHtml);
+    }
+    
 
     /**
      * Add an item to the "products" table and return its id
@@ -128,7 +149,7 @@ abstract class Product {
      * @return string
      */
 
-     public function getProductCardHtml(string $specificHtml): string {
+    public function getProductCardHtml(string $specificHtml): string {
         ob_start();
         require VIEWS_DIR . "partials/product-card.php";
         $cardHtml = ob_get_clean();

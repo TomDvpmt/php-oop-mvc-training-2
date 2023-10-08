@@ -72,7 +72,7 @@ trait Database {
                 CREATE TABLE IF NOT EXISTS protection (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     product_id INT NOT NULL,
-                    type VARCHAR(255) NOT NULL,
+                    type VARCHAR(255) DEFAULT 'hard to say' NOT NULL,
                     resistance VARCHAR(255) DEFAULT 'medium' NOT NULL,
                     FOREIGN KEY (product_id) REFERENCES products(id)
                 );
@@ -90,8 +90,8 @@ trait Database {
                 CREATE TABLE IF NOT EXISTS vehicles (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     product_id INT NOT NULL,
-                    airborne VARCHAR(50) DEFAULT 'no' NOT NULL,
-                    aquatic VARCHAR(50) DEFAULT 'no' NOT NULL,
+                    airborne VARCHAR(50) DEFAULT 'occasionally' NOT NULL,
+                    aquatic VARCHAR(50) DEFAULT 'reasonnably' NOT NULL,
                     FOREIGN KEY (product_id) REFERENCES products(id)
                 );
             ",
@@ -99,7 +99,7 @@ trait Database {
                 CREATE TABLE IF NOT EXISTS weapons (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     product_id INT NOT NULL,
-                    ideal_range VARCHAR(255) DEFAULT 'close' NOT NULL,
+                    ideal_range VARCHAR(255) DEFAULT 'medium' NOT NULL,
                     FOREIGN KEY (product_id) REFERENCES products(id)
                 );
             ",

@@ -34,25 +34,6 @@ final class Shoe extends Product {
 
 
     /**
-     * Get specific shoe html
-     * 
-     * @access public
-     * @package PhpTraning2/models
-     * @return string
-     */
-
-    public function getProductCardSpecificHtml() {
-        ob_start();?>
-            
-        <p class="product__waterproof"><span>Waterproof: </span><?=$this->specificData["waterproof"]?></p>
-        <p class="product__usage_intensity"><span>Maximum usage intensity: </span><?=$this->specificData["usage_intensity"]?></p>
-        
-        <?php $specificHtml = ob_get_clean();
-        return $specificHtml;
-    }
-
-
-    /**
      * Get select options for add product form
      * 
      * @access public

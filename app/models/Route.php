@@ -5,11 +5,21 @@ namespace PhpTraining2\models;
 class Route {
     
     private string $controllerName = "HomeController";
-    private string $method = "index";
 
     public function __construct(private string $path = "home", private array $params = [])
     {
-        $this->setControllerName();
+        
+        show($this->path);
+        
+        $pathChunks = explode("/", $this->path);
+        $base = $pathChunks[0];
+        $controllerName = ucfirst($base) . "Controller";
+
+        if($base === "products") {
+            $controllerName = isset($_GET["id"]) ? "ProductController" : "ProductCategoryController"; 
+        }
+
+        $this->controllerName = $controllerName;
     }
 
     /**
@@ -20,7 +30,7 @@ class Route {
      */
 
     public function callController() {
-        $controller = $this->getController();
+        $controller = $this->getControllerObject();
         call_user_func_array([$controller, "index"], []);
     }
 
@@ -33,7 +43,7 @@ class Route {
      * @return object The controller
      */
 
-    private function getController(): object {
+    private function getControllerObject(): object {
         $controllerName = $this->getControllerName();
         
         $filepath = CTRL_DIR . $controllerName . ".php";
@@ -50,19 +60,6 @@ class Route {
         return new $controllerFullName;
     }
 
-    /**
-     * Set controller name
-     * 
-     * @access private
-     * @package PhpTraining2\core
-     */
-
-     private function setControllerName() {
-        $pathChunks = explode("/", $this->path);
-        $controllerName = ucfirst($pathChunks[0]) . "Controller";
-        $this->controllerName = $controllerName;
-    }
-
 
     /**
      * Get controller name
@@ -74,18 +71,5 @@ class Route {
 
     private function getControllerName(): string {
         return $this->controllerName;
-    }
-
-
-    /**
-     * Set method
-     * 
-     * @access private
-     * @package PhpTraining2\core
-     * @param string $method
-     */
-
-     private function setMethod(string $method) {
-        $this->method = $method;
     }
 }

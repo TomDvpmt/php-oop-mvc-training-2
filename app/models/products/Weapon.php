@@ -25,24 +25,6 @@ final class Weapon extends Product {
     }
 
     /**
-     * Get specific equipment html
-     * 
-     * @access public
-     * @package PhpTraning2/models
-     * @return string
-     */
-
-    public function getProductCardSpecificHtml() {
-        ob_start();?>
-            
-        <p class="product__ideal_range"><span>Range: </span><?=$this->specificData["ideal_range"]?></p>
-        
-        <?php $specificHtml = ob_get_clean();
-        return $specificHtml;
-    }
-
-
-    /**
      * Get select options for add product form
      * 
      * @access public

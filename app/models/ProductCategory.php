@@ -4,7 +4,7 @@ namespace PhpTraining2\models;
 
 use PhpTraining2\core\Model;
 
-class Category {
+class ProductCategory {
     use Model;
 
     private string $name;

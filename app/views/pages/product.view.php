@@ -12,7 +12,7 @@ foreach ($data["specificData"] as $key => $value) {
 $specificHtml = implode("", $specific);
 
 ob_start();?>
-<div class="page__content product" id="<?=$this->id?>">
+<div class="page__content product" id="<?=$generic["id"]?>">
     <img class="product__img" src="<?=$generic["img_url"]?>" alt="<?=$generic["name"]?>">
     <h2 class="product__name"><?=$generic["name"]?></h2>
     <p class="product__description"><?=$generic["description"]?></p>
@@ -23,8 +23,8 @@ ob_start();?>
     </div>
     <p class="product__price">$ <?=$generic["price"]?></p>
     <div class="product__controls">
-        <a href="<?= ROOT . "cart?action=add&category=$this->category&id=$this->id" ?>">Add to cart</a>
-        <a href="<?= ROOT . "products?action=remove&category=$this->category&id=$this->id"?>">Delete product</a>
+        <a href="<?= ROOT . "cart?action=add&category=" . $generic["category"] . "&id=" . $generic["id"]?>">Add to cart</a>
+        <a href="<?= ROOT . "products?action=remove&category=" . $generic["category"] . "&id=" . $generic["id"]?>">Delete product</a>
     </div>
 </div>
 <?php $content = ob_get_clean();

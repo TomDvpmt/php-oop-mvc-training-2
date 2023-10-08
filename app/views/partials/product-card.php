@@ -12,7 +12,7 @@
     <?= $specificHtml?>
     <p class="product-card__price">$ <?=$this->genericData['price']?></p>
     <div class="product-card__controls">
-        <a href="<?= ROOT . "product?category=" . $this->genericData['category'] . "&id=" . $this->genericData['id'] ?>">See details</a>
+        <a href="<?= ROOT . "products?category=" . $this->genericData['category'] . "&id=" . $this->genericData['id'] ?>">See details</a>
         <br />
         <a href="<?= ROOT . "cart?action=add&category=" . $this->genericData['category'] . "&id=" . $this->genericData['id'] ?>">Add to cart</a>
         <?= $deleteLink ?>
