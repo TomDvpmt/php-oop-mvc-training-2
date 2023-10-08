@@ -14,10 +14,16 @@ require_once MODELS_DIR . "products/Vehicle.php";
 require_once MODELS_DIR . "products/Weapon.php";
 
 class ProductCategoryController extends ProductsController {
+
+    private object $productCategoryObject;
     
     public function __construct()
     {
         parent::__construct();
+        
+        if(!empty($this->category)) {
+            $this->productCategoryObject = new ProductCategory($this->category);
+        }
     }
 
     public function index():void {
@@ -39,7 +45,19 @@ class ProductCategoryController extends ProductsController {
      */
 
      private function showCategories(): void {
-        $this->view("pages/categories");
+        $productCategoryFiles = array_slice(scandir("assets/images/categories"), 2);
+        $productCategories = array_map(fn($file) => str_replace(".webp", "", $file), $productCategoryFiles);
+        $data = [];
+        $data = array_map(function($category) {
+            $categoryObject = new ProductCategory($category);
+            $categoryData = [
+                "name" => $category,
+                "thumbnailURL" => $categoryObject->getThumbnailURL()
+            ];
+            return $categoryData;
+        }, $productCategories);
+
+        $this->view("pages/categories", $data);
     }
 
     /**
@@ -50,8 +68,7 @@ class ProductCategoryController extends ProductsController {
      */
 
      private function showProductsOfCategory(): void {
-        $category = new ProductCategory($this->category);
-        $products = $category->getProductsOfCategory();
+        $products = $this->productCategoryObject->getProductsOfCategory();
         $pageContent = $this->getPageContent($products);
 
         $this->view("pages/category", $pageContent);
@@ -77,12 +94,40 @@ class ProductCategoryController extends ProductsController {
             ];
         } else {
             foreach($results as $result) {
-                $product = $this->getProductObject($result);
-                $specificHtml = $product->getProductCardSpecificHtml();
-                
-                array_push($content, $product->getProductCardHtml($specificHtml));
+                $product = $this->getProductObject($result);                
+                array_push($content, $product->getProductCardHtml());
             }
         }
         return $content;
      }
+
+
+     /**
+     * Instantiate a product from its specific class
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @param object $result i.e. a result (row) of a find() query
+     * @return object
+     */
+
+    protected function getProductObject(object $result): object {
+        $specificProperties = $this->productCategoryObject->getSpecificProperties();
+        $specificData = array_filter((array) $result, fn($key) => in_array($key, $specificProperties), ARRAY_FILTER_USE_KEY);
+
+        $product = new ($this->model)(
+            [
+                "id" => $result->id,
+                "category" => $this->category,
+                "img_url" => $result->img_url,
+                "name" => $result->name, 
+                "description" => $result->description, 
+                "special_features" => $result->special_features,
+                "limitations" => $result->limitations,
+                "price" => $result->price, 
+            ],
+            $specificData
+        );
+        return $product;
+    }
 }

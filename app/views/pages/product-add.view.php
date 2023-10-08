@@ -4,7 +4,7 @@ $title = "Add a product";
 
 ob_start()?>
 
-<form method="POST" class="form">
+<form method="POST" class="form" enctype="multipart/form-data">
     <?php echo isset($errorMessage) ? "<p class='error'>" . $errorMessage . "</p>" : null ?>
     <div class="form__field">
         <label for="name">Name:</label>
@@ -28,6 +28,10 @@ ob_start()?>
     </div>
     <div class="form__specific-fields">
         <?= $data["specificAddFormHtml"] ?>
+    </div>
+    <div class="form__field">
+        <label for="image">Image:</label>
+        <input type="file" name="image" id="image"/>
     </div>
     <button class="button" type="submit" name="submit">Add product</button>
 </form>

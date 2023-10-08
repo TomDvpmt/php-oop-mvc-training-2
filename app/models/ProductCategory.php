@@ -7,15 +7,15 @@ use PhpTraining2\core\Model;
 class ProductCategory {
     use Model;
 
-    private string $name;
-    private string $imgUrl;
-    private array $specificProperties;
+    private string $name = "";
+    private array $specificProperties = [];
 
     public function __construct($name)
     {
         $this->name = $name;
 
         $productModelName = getModelNameFromCategoryName($name);
+
         $options = (new $productModelName)->getSelectOptions();
         $this->specificProperties = array_keys($options["questions"]);
     }
@@ -59,5 +59,19 @@ class ProductCategory {
         }
         
         return $results;
+    }
+
+    /**
+     * Get this category thumbnail's URL
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+
+    public function getThumbnailURL(): string {
+        $thumbs = array_slice(scandir("assets/images/categories"), 2);
+        $thumbnail = array_filter($thumbs, fn($thumb) => str_contains($thumb, $this->name));
+        $thumbnailFileName = array_values($thumbnail)[0];
+        return "assets/images/categories/" . $thumbnailFileName;
     }
 }

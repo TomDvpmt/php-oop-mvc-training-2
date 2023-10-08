@@ -2,7 +2,7 @@
 
 namespace PhpTraining2\models;
 
-class Form {
+abstract class Form {
 
     /**
      * The fields that need to be validated in the signup form.
@@ -15,9 +15,9 @@ class Form {
     const REGISTER_REQUIRED = ["email", "password", "passwordConfirm"];
 
     public function __construct(
-        private array $inputsToValidate = [], 
-        private array $required = [], 
-        private array $validationErrors = []
+        protected array $inputsToValidate = [], 
+        protected array $required = [], 
+        protected array $validationErrors = []
         )
     {}
 
@@ -220,23 +220,29 @@ class Form {
 
     public function addValidationError(string $name): void {
         switch ($name) {
+            
             case "hasEmptyFields":
                 $this->validationErrors["hasEmptyFields"] = "All required fields must be filled.";
                 break;
-            case 'emailInvalid':
-                $this->validationErrors["emailInvalid"] = "Invalid email.";
-                break;
-            case 'emailAlreadyUsed':
-                $this->validationErrors["emailAlreadyUsed"] = "This email address is already used, please choose another one.";
-                break;
-            case "password":
-                $this->validationErrors["password"] = "Password must be at least 8 characters long.";
-                break;
-            case "price":
-                $this->validationErrors["price"] = "The price must be a number.";
-                break;
-            case "passwordsDontMatch": 
-                $this->validationErrors["passwordsDontMatch"] = "Passwords don't match.";
+            
+            // /* user */
+            // case 'emailInvalid':
+            //     $this->validationErrors["emailInvalid"] = "Invalid email.";
+            //     break;
+            // case 'emailAlreadyUsed':
+            //     $this->validationErrors["emailAlreadyUsed"] = "This email address is already used, please choose another one.";
+            //     break;
+            // case "password":
+            //     $this->validationErrors["password"] = "Password must be at least 8 characters long.";
+            //     break;
+            // case "passwordsDontMatch": 
+            //     $this->validationErrors["passwordsDontMatch"] = "Passwords don't match.";
+            
+            // /* product */
+            // case "price":
+            //     $this->validationErrors["price"] = "The price must be a number.";
+            //     break;
+            
             default:
                 break;
         }

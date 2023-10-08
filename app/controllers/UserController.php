@@ -3,11 +3,11 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
-use PhpTraining2\models\Form;
+use PhpTraining2\models\UserForm;
 use PhpTraining2\models\User;
 
 require_once MODELS_DIR . "User.php";
-require_once MODELS_DIR . "Form.php";
+require_once MODELS_DIR . "UserForm.php";
 
 class UserController {
     use Controller;
@@ -34,7 +34,7 @@ class UserController {
 
     public function signup() {
         if(isset($_POST["submit"])) { 
-            $form = new Form();
+            $form = new UserForm();
             $form->setRequired($form::REGISTER_REQUIRED);
             $dataInSession = $form->setFormDataInSession();
             

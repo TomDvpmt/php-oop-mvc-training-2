@@ -2,20 +2,22 @@
 
 $title = "All our products";
 
-$shoesImg = ROOT . "assets/images/categories/shoes.jpg";
-$equipmentImg = ROOT . "assets/images/categories/equipment.jpg";
+$categoriesHtmlArray = array_map(function($category) {
+    ob_start();?>
+        <div class="category-card">
+            <img src="<?= $category["thumbnailURL"] ?>" alt="">
+            <h2><?=$category["name"]?></h2>
+        </div>
+    <?php $categoryContent = ob_get_clean();
+    return $categoryContent;
+}, $data);
+
+$categoriesHtml = implode("", $categoriesHtmlArray);
 
 ob_start();?>
-<div class="page__content categories">
-    <div class="category-card">
-        <img src="<?= $shoesImg ?>" alt="Awesome shoes">
-        <h2>Shoes</h2>
+    <div class="page__content categories">
+        <?= $categoriesHtml ?>
     </div>
-    <div class="category-card">
-        <img src="<?= $equipmentImg ?>" alt="Awesome equipment">
-        <h2>Equipment</h2>
-    </div>
-</div>
 <?php $content = ob_get_clean();
 
 require_once VIEWS_DIR . "/layout.php";

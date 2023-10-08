@@ -29,8 +29,6 @@ abstract class Product {
         if(isset($_GET["category"])) {
             $this->genericData["category"] = strip_tags($_GET["category"]);
         }
-
-        // if(empty($this->genericData["img_url"])) $this->setRandomImgUrl();
     }
 
     /**
@@ -80,26 +78,6 @@ abstract class Product {
         $data = (array) $this->find(["product_id" => $this->genericData["id"]])[0];
         $specificData = array_filter($data, fn($key) => !in_array($key, ["id", "product_id"]), ARRAY_FILTER_USE_KEY);
         return $specificData;
-    }
-
-
-    /**
-     * Get specific equipment html
-     * 
-     * @access public
-     * @package PhpTraning2/models
-     * @return string
-     */
-
-    public function getProductCardSpecificHtml(): string {
-        $specificHtml = [];
-        $specificData = $this->getProductSpecificData();
-        foreach ($specificData as $key => $value) {
-            $label = ucfirst($key);
-            array_push($specificHtml, "<p class='product__$key'><span>$label: </span>$value</p>");
-        }
-
-        return implode("", $specificHtml);
     }
     
 
@@ -153,7 +131,9 @@ abstract class Product {
      * @return string
      */
 
-    public function getProductCardHtml(string $specificHtml): string {
+    public function getProductCardHtml(): string {
+        $specificHtml = $this->getProductCardSpecificHtml();
+
         ob_start();
         require VIEWS_DIR . "partials/product-card.php";
         $cardHtml = ob_get_clean();
@@ -161,28 +141,23 @@ abstract class Product {
         return $cardHtml;
     }
 
-    
-    // /**
-    //  * Assign a random img to a product
-    //  * 
-    //  * @access private
-    //  * @package PhpTraining2\models
-    //  */
 
-    // private function setRandomImgUrl() {
-    //     $category = $this->genericData["category"];
-    //     $productDir = "assets/images/$category/";
+    /**
+     * Get product card specific HTML
+     * 
+     * @access private
+     * @package PhpTraning2/models
+     * @return string
+     */
 
-    //     if(empty($this->genericData["img_url"] && !empty($category))) {
-    //         $IMG_URLS = scandir($productDir);
-    //         array_splice($IMG_URLS, 0, 2);
+     private function getProductCardSpecificHtml(): string {
+        $specificHtml = [];
+        $specificData = $this->getProductSpecificData();
+        foreach ($specificData as $key => $value) {
+            $label = ucfirst($key);
+            array_push($specificHtml, "<p class='product__$key'><span>$label: </span>$value</p>");
+        }
 
-    //         $imgUrl = "";
-    //         if(!empty($IMG_URLS)) {
-    //             $randImgKey = array_rand($IMG_URLS);
-    //             $imgUrl = $productDir . $IMG_URLS[$randImgKey];
-    //         }
-    //         $this->genericData["img_url"] = $imgUrl;
-    //     }
-    // }
+        return implode("", $specificHtml);
+    }
 }

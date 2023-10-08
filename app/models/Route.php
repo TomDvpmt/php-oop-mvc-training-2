@@ -16,10 +16,9 @@ class Route {
         $base = getURI()["base"];
         $last = getURI()["last"];
         
-        $controllerName = ucfirst($base) . "Controller";
+        $controllerName = empty($base) ? "HomeController" : ucfirst($base) . "Controller";
 
         if($base === "products") {
-            show($last);
             $controllerName = "ProductController";
             $this->controllerName = $controllerName;
             $productController = new ProductController();

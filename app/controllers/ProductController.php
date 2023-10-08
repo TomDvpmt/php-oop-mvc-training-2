@@ -2,12 +2,12 @@
 
 namespace PhpTraining2\controllers;
 
-use PhpTraining2\models\Form;
+use PhpTraining2\models\ProductForm;
 use PhpTraining2\models\ProductCategory;
 
 require_once CTRL_DIR . "ProductsController.php";
 
-require_once MODELS_DIR . "Form.php";
+require_once MODELS_DIR . "ProductForm.php";
 require_once MODELS_DIR . "Product.php";
 require_once MODELS_DIR . "ProductCategory.php";
 require_once MODELS_DIR . "products/Book.php";
@@ -17,6 +17,8 @@ require_once MODELS_DIR . "products/Vehicle.php";
 require_once MODELS_DIR . "products/Weapon.php";
 
 class ProductController extends ProductsController {
+
+    protected array $genericProperties = ["name", "description", "special_features", "limitations", "price", "img_url"];
 
     public function __construct()
     {
@@ -63,7 +65,7 @@ class ProductController extends ProductsController {
 
 
     /**
-     * Control the "Add a product" form page. 
+     * Control the "Add a product" Product page. 
      * 
      * @access public
      * @package PhpTraining2\controllers
@@ -81,7 +83,7 @@ class ProductController extends ProductsController {
             $category = new ProductCategory($this->category);
             $specificProperties = $category->getSpecificProperties();
             
-            $form = new Form();
+            $form = new ProductForm();
             $form->setRequired(array_merge($this->genericProperties, $specificProperties));
             
             $_POST["img_url"] = "test.jpg"; // TODO : file upload
@@ -145,17 +147,19 @@ class ProductController extends ProductsController {
         $selectOptions = (new $this->model)->getSelectOptions();
         $html = [];
         foreach ($selectOptions["questions"] as $key => $value) {
+            $fieldLabel = ucfirst($key);
             $options = [];
             $question = $value;
-            array_push($options, "<option value=''>-- $question --</option>");
+            array_push($options, "<option value=''>--</option>");
             $answers = $selectOptions["answers"][$key];
             foreach ($answers as $answer) {
-                $label = ucfirst($answer);
-                array_push($options, "<option value='$answer'>$label</option>");
+                $optionLabel = ucfirst($answer);
+                array_push($options, "<option value='$answer'>$optionLabel</option>");
             }
             $optionsHtml = implode("", $options);
             $formFieldHtml= "
                 <div class='form__field'>
+                    <label for='$key'>$question</label>
                     <select name='$key' id='$key'>$optionsHtml</select>
                 </div>    
             ";

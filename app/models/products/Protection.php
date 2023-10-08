@@ -7,7 +7,7 @@ final class Protection extends Product {
 
     private const SELECT_OPTIONS = [
         "questions" => [
-            "type" => "What kind of protection is this beauty?",
+            "type" => "What kind of protection does this beauty provide?",
             "resistance" => "How resistant is it?"
         ],
         "answers" => [
@@ -32,6 +32,7 @@ final class Protection extends Product {
     {
         parent::__construct($genericData);
         $this->table = "protection";
+        $this->genericData["category"] = "protection";
     }
 
 
