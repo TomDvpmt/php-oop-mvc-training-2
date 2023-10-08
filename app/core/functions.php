@@ -40,3 +40,28 @@ function getModelNameFromCategoryName($category): string {
     $model = substr($category, -1) === "s" ? substr($category, 0, -1) : $category;
     return "PhpTraining2\\models\\" . ucfirst($model);
 }
+
+/**
+ * Get an array of URI data
+ * 
+ * @return array
+ */
+
+function getURI(): array {
+    $requestURI = $_SERVER["REQUEST_URI"];
+    $fullPath = str_replace("/public/", "", $requestURI);
+    $noParamPath = explode("?", $fullPath)[0];
+    $pathChunks = explode("/", $noParamPath);
+    $base = $pathChunks[0];
+    $last = end($pathChunks);
+    
+    $path = [
+        "request" => $requestURI,
+        "fullPath" => $fullPath,
+        "noParamPath" => $noParamPath,
+        "pathCunks" => $pathChunks,
+        "base" => $base,
+        "last" => $last,
+    ];
+    return $path;
+}

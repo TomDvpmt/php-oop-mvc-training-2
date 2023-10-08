@@ -8,43 +8,43 @@ require MODELS_DIR . "Route.php";
 
 class Router {
 
-    private array $routes = [
-        "home" => [
-            "path" => "/",
-            "controller" => "HomeController",
-            "method" => "index"
-        ],
-        "getProductCategories" => [
-            "path" => "products",
-            "controller" => "ProductCategoryController",
-            "method" => "index"
-        ],
-        "getOneProduct" => [
-            "path" => "products/:productId",
-            "controller" => "ProductController",
-            "method" => "displayProduct"
-        ],
-        "addProduct" => [
-            "path" => "products/add",
-            "controller" => "ProductController",
-            "method" => "add"
-        ],
-        "removeProduct" => [
-            "path" => "products/:productId/remove",
-            "controller" => "ProductController",
-            "method" => "remove"
-        ],
-        "user" => [
-            "path" => "user",
-            "controller" => "UserController",
-            "method" => "index",
-        ],
-        "getOneUser" => [
-            "path" => "user/:userId",
-            "controller" => "UserController",
-            "method" => "displayUser"
-        ],
-    ];
+    // private array $routes = [
+    //     "home" => [
+    //         "path" => "/",
+    //         "controller" => "HomeController",
+    //         "method" => "index"
+    //     ],
+    //     "getProductCategories" => [
+    //         "path" => "products",
+    //         "controller" => "ProductCategoryController",
+    //         "method" => "index"
+    //     ],
+    //     "getOneProduct" => [
+    //         "path" => "products/:productId",
+    //         "controller" => "ProductController",
+    //         "method" => "displayProduct"
+    //     ],
+    //     "addProduct" => [
+    //         "path" => "products/add",
+    //         "controller" => "ProductController",
+    //         "method" => "add"
+    //     ],
+    //     "removeProduct" => [
+    //         "path" => "products/:productId/remove",
+    //         "controller" => "ProductController",
+    //         "method" => "remove"
+    //     ],
+    //     "user" => [
+    //         "path" => "user",
+    //         "controller" => "UserController",
+    //         "method" => "index",
+    //     ],
+    //     "getOneUser" => [
+    //         "path" => "user/:userId",
+    //         "controller" => "UserController",
+    //         "method" => "displayUser"
+    //     ],
+    // ];
 
     /**
      * Call a route

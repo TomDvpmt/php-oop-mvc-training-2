@@ -22,8 +22,6 @@ class ProductCategoryController extends ProductsController {
 
     public function index():void {
         $pathChunks = $this->getPathChunks();
-        // $method = $this->getMethod($pathChunks);
-        // if($method) $this->$method();
         
         if(count($pathChunks) === 1) {
             $this->showCategories();

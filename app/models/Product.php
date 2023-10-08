@@ -19,8 +19,12 @@ abstract class Product {
             "img_url" => ""
         ],
     ) {
+        $last = getURI()["last"];
         if(isset($_GET["id"])) {
             $this->genericData["id"] = intval(strip_tags($_GET["id"]));
+        }
+        if(intval($last)) {
+            $this->genericData["id"] = $last;
         }
         if(isset($_GET["category"])) {
             $this->genericData["category"] = strip_tags($_GET["category"]);

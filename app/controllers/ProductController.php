@@ -163,4 +163,20 @@ class ProductController extends ProductsController {
         }
         return implode("", $html);
     }
+
+
+    /**
+     * Remove a product
+     * 
+     * @access public
+     * @package PhpTraining2/controllers
+     */
+
+     public function remove(): void {
+        $id = strip_tags($_GET["id"]);
+        $this->table = $this->category;
+        $this->delete("product_id", $id);
+
+        header("Location:" . $this->category);
+    }
 };

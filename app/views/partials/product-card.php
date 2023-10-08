@@ -1,6 +1,6 @@
 <?php ob_start();?>
 <br />
-<a href="<?= ROOT . "products?action=remove&category=" . $this->genericData['category'] . "&id=" . $this->genericData['id'] ?>">Delete</a>
+<a href="<?= ROOT . "products/remove?category=" . $this->genericData['category'] . "&id=" . $this->genericData['id'] ?>">Delete</a>
 <?php $deleteLink = ob_get_clean(); ?>
 
 <article class="product-card <?=$this->genericData['category']?>" id="<?=$this->genericData['id']?>">
@@ -12,7 +12,7 @@
     <?= $specificHtml?>
     <p class="product-card__price">$ <?=$this->genericData['price']?></p>
     <div class="product-card__controls">
-        <a href="<?= ROOT . "products?category=" . $this->genericData['category'] . "&id=" . $this->genericData['id'] ?>">See details</a>
+        <a href="<?= ROOT . "products/" . $this->genericData['id'] . "?category=" . $this->genericData['category'] ?>">See details</a>
         <br />
         <a href="<?= ROOT . "cart?action=add&category=" . $this->genericData['category'] . "&id=" . $this->genericData['id'] ?>">Add to cart</a>
         <?= $deleteLink ?>

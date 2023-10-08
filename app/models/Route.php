@@ -2,21 +2,34 @@
 
 namespace PhpTraining2\models;
 
+use PhpTraining2\controllers\ProductController;
+
+require_once CTRL_DIR . "ProductController.php";
+
 class Route {
     
     private string $controllerName = "HomeController";
+    private string $method = "index";
 
     public function __construct(private string $path = "home", private array $params = [])
-    {
+    {        
+        $base = getURI()["base"];
+        $last = getURI()["last"];
         
-        show($this->path);
-        
-        $pathChunks = explode("/", $this->path);
-        $base = $pathChunks[0];
         $controllerName = ucfirst($base) . "Controller";
 
         if($base === "products") {
-            $controllerName = isset($_GET["id"]) ? "ProductController" : "ProductCategoryController"; 
+            show($last);
+            $controllerName = "ProductController";
+            $this->controllerName = $controllerName;
+            $productController = new ProductController();
+            if(method_exists($productController, $last)) {
+                $this->method = $last;
+                return;
+            }
+            if(!intval($last)) {
+                $controllerName = "ProductCategoryController"; 
+            }
         }
 
         $this->controllerName = $controllerName;
@@ -31,7 +44,7 @@ class Route {
 
     public function callController() {
         $controller = $this->getControllerObject();
-        call_user_func_array([$controller, "index"], []);
+        call_user_func_array([$controller, $this->method], []);
     }
 
 
@@ -44,7 +57,7 @@ class Route {
      */
 
     private function getControllerObject(): object {
-        $controllerName = $this->getControllerName();
+        $controllerName = $this->controllerName;
         
         $filepath = CTRL_DIR . $controllerName . ".php";
 
@@ -58,18 +71,5 @@ class Route {
 
         $controllerFullName = "\\PhpTraining2\\controllers\\" . $controllerName;
         return new $controllerFullName;
-    }
-
-
-    /**
-     * Get controller name
-     * 
-     * @access private
-     * @package PhpTraining2\core
-     * @return string
-     */
-
-    private function getControllerName(): string {
-        return $this->controllerName;
     }
 }
