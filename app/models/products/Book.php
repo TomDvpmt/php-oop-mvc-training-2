@@ -3,8 +3,9 @@
 namespace PhpTraining2\models\products;
 
 use PhpTraining2\models\Product;
+use PhpTraining2\models\ProductInterface;
 
-final class Book extends Product {
+final class Book extends Product implements ProductInterface {
     
     private const SELECT_OPTIONS = [
         "questions" => ["genre" => "Which genre better defines this book?"],
@@ -25,15 +26,6 @@ final class Book extends Product {
         parent::__construct($genericData);
         $this->table = "books";
     }
-    
-
-    /**
-     * Get select options for add product form
-     * 
-     * @access public
-     * @package PhpTraning2/models
-     * @return array
-     */
 
     public function getSelectOptions(): array {
         return self::SELECT_OPTIONS;

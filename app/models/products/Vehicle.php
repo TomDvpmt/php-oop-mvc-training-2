@@ -3,8 +3,9 @@
 namespace PhpTraining2\models\products;
 
 use PhpTraining2\models\Product;
+use PhpTraining2\models\ProductInterface;
 
-final class Vehicle extends Product {
+final class Vehicle extends Product implements ProductInterface {
 
     private const SELECT_OPTIONS = [
         "questions" => [
@@ -33,16 +34,7 @@ final class Vehicle extends Product {
         $this->table = "vehicles";
     }
 
-
-    /**
-     * Get select options for add product form
-     * 
-     * @access public
-     * @package PhpTraning2/models
-     * @return array
-     */
-
-     public function getSelectOptions(): array {
+    public function getSelectOptions(): array {
         return self::SELECT_OPTIONS;
     }
 }

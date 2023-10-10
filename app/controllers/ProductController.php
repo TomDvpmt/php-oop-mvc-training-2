@@ -2,10 +2,11 @@
 
 namespace PhpTraining2\controllers;
 
+use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\models\ProductForm;
 use PhpTraining2\models\ProductCategory;
 
-class ProductController extends ProductsController {
+class ProductController extends ProductsController implements ControllerInterface {
 
     protected array $genericProperties = ["name", "description", "special_features", "limitations", "price", "img_url"];
 
@@ -13,15 +14,6 @@ class ProductController extends ProductsController {
     {
         parent::__construct();
     }
-
-
-    /**
-     * Default method of the controller
-     * 
-     * @access public
-     * @package PhpTraining2\controllers
-     * 
-     */
 
     public function index(): void {
         $data = $this->getFullData();

@@ -3,19 +3,12 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
+use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\models\User;
 use PhpTraining2\models\UserForm;
 
-class UserController {
+class UserController implements ControllerInterface {
     use Controller;
-
-
-    /**
-     * Default method of the controller
-     * 
-     * @access public
-     * @package PhpTraining2\controllers
-     */
 
     public function index(): void {
         $user = new User();

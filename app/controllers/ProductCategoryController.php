@@ -2,9 +2,10 @@
 
 namespace PhpTraining2\controllers;
 
+use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\models\ProductCategory;
 
-class ProductCategoryController extends ProductsController {
+class ProductCategoryController extends ProductsController implements ControllerInterface {
 
     private object $productCategoryObject;
     
@@ -17,7 +18,7 @@ class ProductCategoryController extends ProductsController {
         }
     }
 
-    public function index():void {
+    public function index(): void {
         $pathChunks = $this->getPathChunks();
         
         if(count($pathChunks) === 1) {

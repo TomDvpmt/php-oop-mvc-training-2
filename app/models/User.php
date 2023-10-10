@@ -22,7 +22,7 @@ class User {
         }
     }
 
-    public function findOne() {
+    public function findOne(): object {
         $this->setWhere("email = :email");
         $result = $this->find(["email" => $this->email]);
         return $result;

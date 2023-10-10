@@ -3,8 +3,9 @@
 namespace PhpTraining2\models\products;
 
 use PhpTraining2\models\Product;
+use PhpTraining2\models\ProductInterface;
 
-final class Protection extends Product {
+final class Protection extends Product implements ProductInterface {
 
     private const SELECT_OPTIONS = [
         "questions" => [
@@ -36,16 +37,7 @@ final class Protection extends Product {
         $this->genericData["category"] = "protection";
     }
 
-
-    /**
-     * Get select options for add product form
-     * 
-     * @access public
-     * @package PhpTraning2/models
-     * @return array
-     */
-
-     public function getSelectOptions(): array {
+    public function getSelectOptions(): array {
         return self::SELECT_OPTIONS;
     }
 

@@ -3,10 +3,11 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
+use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\models\Cart;
 use PhpTraining2\models\Order;
 
-class OrderController {
+class OrderController implements ControllerInterface {
     use Controller;
 
     private object $cart;
@@ -15,13 +16,6 @@ class OrderController {
     {
         $this->cart = new Cart();
     }
-
-    /**
-     * Default method of the controller
-     * 
-     * @access public
-     * @package PhpTraining2\controllers
-     */
 
     public function index(): void {
         $this->view("pages/cart");

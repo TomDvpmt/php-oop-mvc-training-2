@@ -3,10 +3,11 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
+use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\models\Cart;
 use PhpTraining2\models\Order;
 
-class CartController {
+class CartController implements ControllerInterface {
     use Controller;
 
     public function __construct(private int $userId = 0, private array $cartItems = [])
@@ -16,14 +17,7 @@ class CartController {
         }
     }
 
-    /**
-     * Default method of the controller
-     * 
-     * @access public
-     * @package PhpTraining2\controllers
-     */
-
-    public function index() {
+    public function index():void {
         (new Order)->removeIdFromSession();
         $this->executeMethodIfExists();
         $this->displayCart();

@@ -18,7 +18,6 @@ trait Model {
     protected string $orderColumn = "id";
     protected string $orderType = "desc";
 
-    
 
     protected function setTable($newTable) {
         $this->table = $newTable;

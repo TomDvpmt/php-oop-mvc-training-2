@@ -4,8 +4,9 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
+use PhpTraining2\controllers\ControllerInterface;
 
-class HomeController {
+class HomeController implements ControllerInterface {
 
     use Controller;
     use Model;
@@ -16,7 +17,7 @@ class HomeController {
         $this->toggleHomeDisclaimer();
     }
     
-    public function index() {
+    public function index(): void {
         $this->view("pages/home");
     }
 

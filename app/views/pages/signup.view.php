@@ -35,7 +35,7 @@ ob_start();?>
         </div>
         <button class="button" type="submit" name="submit">Sign up</button>
         <?= !empty($errors["hasEmptyFields"]) ? "<p class='error'>" . $errors["hasEmptyFields"] . "</p>" : null ?>
-        <p class="has-account">Already have an account? <a href="<?=ROOT?>signin">Sign in</a></p>
+        <p class="has-account">Already have an account? <a href="<?=ROOT?>user/signin">Sign in</a></p>
     </form>
 </div>
 <?php $content = ob_get_clean();

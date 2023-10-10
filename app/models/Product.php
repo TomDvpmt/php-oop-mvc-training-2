@@ -3,8 +3,9 @@
 namespace PhpTraining2\models;
 
 use PhpTraining2\core\Model;
+use PhpTraining2\models\ProductInterface;
 
-abstract class Product {
+abstract class Product implements ProductInterface {
     use Model;
     
     public function __construct(
@@ -30,14 +31,6 @@ abstract class Product {
             $this->genericData["category"] = strip_tags($_GET["category"]);
         }
     }
-
-    /**
-     * Get the product's full data (generic + specific)
-     * 
-     * @access public
-     * @package PhpTraining2\models
-     * @return array
-     */
 
     public function getProductData(): array {
         $genericData = $this->getProductGenericData();
