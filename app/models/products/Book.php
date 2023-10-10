@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpTraining2\models;
+namespace PhpTraining2\models\products;
 
-require_once MODELS_DIR . "Product.php";
+use PhpTraining2\models\Product;
 
 final class Book extends Product {
     

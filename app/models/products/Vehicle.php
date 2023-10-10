@@ -1,7 +1,8 @@
 <?php
 
-namespace PhpTraining2\models;
-require_once MODELS_DIR . "Product.php";
+namespace PhpTraining2\models\products;
+
+use PhpTraining2\models\Product;
 
 final class Vehicle extends Product {
 

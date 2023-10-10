@@ -2,16 +2,7 @@
 
 namespace PhpTraining2\controllers;
 
-use PhpTraining2\controllers\ProductsController;
 use PhpTraining2\models\ProductCategory;
-
-require_once CTRL_DIR . "ProductsController.php";
-require_once MODELS_DIR . "ProductCategory.php";
-require_once MODELS_DIR . "products/Book.php";
-require_once MODELS_DIR . "products/Protection.php";
-require_once MODELS_DIR . "products/Shoe.php";
-require_once MODELS_DIR . "products/Vehicle.php";
-require_once MODELS_DIR . "products/Weapon.php";
 
 class ProductCategoryController extends ProductsController {
 
@@ -115,7 +106,8 @@ class ProductCategoryController extends ProductsController {
         $specificProperties = $this->productCategoryObject->getSpecificProperties();
         $specificData = array_filter((array) $result, fn($key) => in_array($key, $specificProperties), ARRAY_FILTER_USE_KEY);
 
-        $product = new ($this->model)(
+        $model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->model);
+        $product = new ($model)(
             [
                 "id" => $result->id,
                 "category" => $this->category,

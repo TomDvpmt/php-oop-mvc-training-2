@@ -36,9 +36,12 @@ function generateRandomId() {
  * @return string
  */
 
-function getModelNameFromCategoryName($category): string {
+function getModelNameFromCategoryName(string $category): string {
+    // $subFolder = "";
+    $products = array_map(fn($fileName) => lcfirst(str_replace(".php", "", $fileName)) . "s", scandir(MODELS_DIR . "products"));
+    // $subFolder = in_array($category, $products) ? "products\\" : "";
     $model = substr($category, -1) === "s" ? substr($category, 0, -1) : $category;
-    return "PhpTraining2\\models\\" . ucfirst($model);
+    return ucfirst($model);
 }
 
 /**
@@ -64,4 +67,9 @@ function getURI(): array {
         "last" => $last,
     ];
     return $path;
+}
+
+
+function getProductModelNames(): array {
+    return array_map(fn($fileName) => lcfirst(str_replace(".php", "", $fileName)), scandir(MODELS_DIR . "products"));
 }

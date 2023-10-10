@@ -14,8 +14,8 @@ class ProductCategory {
     {
         $this->name = $name;
 
-        $productModelName = getModelNameFromCategoryName($name);
-
+        $productModelName = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($name);
+        
         $options = (new $productModelName)->getSelectOptions();
         $this->specificProperties = array_keys($options["questions"]);
     }

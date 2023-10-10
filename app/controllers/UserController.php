@@ -3,11 +3,8 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
-use PhpTraining2\models\UserForm;
 use PhpTraining2\models\User;
-
-require_once MODELS_DIR . "User.php";
-require_once MODELS_DIR . "UserForm.php";
+use PhpTraining2\models\UserForm;
 
 class UserController {
     use Controller;
@@ -21,6 +18,7 @@ class UserController {
      */
 
     public function index(): void {
+        $user = new User();
         $this->executeMethodIfExists();
     }
 

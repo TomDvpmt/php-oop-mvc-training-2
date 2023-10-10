@@ -4,8 +4,6 @@ namespace PhpTraining2\models;
 
 use PhpTraining2\core\Model;
 
-require_once MODELS_DIR . "Order.php";
-
 class Cart {
     use Model;
 

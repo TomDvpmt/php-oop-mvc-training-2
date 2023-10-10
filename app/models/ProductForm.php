@@ -4,8 +4,6 @@ namespace PhpTraining2\models;
 
 use PhpTraining2\models\Form;
 
-require_once MODELS_DIR . "Form.php";
-
 final class ProductForm extends Form {
     
 

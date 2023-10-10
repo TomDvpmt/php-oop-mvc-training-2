@@ -2,8 +2,6 @@
 
 namespace PhpTraining2\models;
 
-require_once MODELS_DIR . "Cart.php";
-
 use PhpTraining2\models\Cart;
 
 class Order {

@@ -5,17 +5,6 @@ namespace PhpTraining2\controllers;
 use PhpTraining2\models\ProductForm;
 use PhpTraining2\models\ProductCategory;
 
-require_once CTRL_DIR . "ProductsController.php";
-
-require_once MODELS_DIR . "ProductForm.php";
-require_once MODELS_DIR . "Product.php";
-require_once MODELS_DIR . "ProductCategory.php";
-require_once MODELS_DIR . "products/Book.php";
-require_once MODELS_DIR . "products/Protection.php";
-require_once MODELS_DIR . "products/Shoe.php";
-require_once MODELS_DIR . "products/Vehicle.php";
-require_once MODELS_DIR . "products/Weapon.php";
-
 class ProductController extends ProductsController {
 
     protected array $genericProperties = ["name", "description", "special_features", "limitations", "price", "img_url"];
@@ -52,7 +41,7 @@ class ProductController extends ProductsController {
      */
 
     private function getFullData(): array {
-        $model = getModelNameFromCategoryName($this->category);
+        $model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->category);
         $product = new $model();
         $productData = $product->getProductData();
         $specific = [];
@@ -121,8 +110,10 @@ class ProductController extends ProductsController {
                     "limitations" => $genericValidated["limitations"],
                     "price" => $genericValidated["price"],
                 ];
+
+                $model = "PhpTraining2\models\products\\" . $this->model;
     
-                $product = new ($this->model)($genericData);
+                $product = new ($model)($genericData);
                 $product->createSpecificProduct($specificValidated);
     
                 $successMessage = "Product added.";
@@ -144,7 +135,8 @@ class ProductController extends ProductsController {
      */
 
     private function getSpecificAddFormHtml(): string {
-        $selectOptions = (new $this->model)->getSelectOptions();
+        $model = "PhpTraining2\models\products\\" . $this->model;
+        $selectOptions = (new $model)->getSelectOptions();
         $html = [];
         foreach ($selectOptions["questions"] as $key => $value) {
             $fieldLabel = ucfirst($key);

@@ -6,8 +6,6 @@ use PhpTraining2\core\Controller;
 use PhpTraining2\models\Cart;
 use PhpTraining2\models\Order;
 
-require_once MODELS_DIR . "Order.php";
-
 class OrderController {
     use Controller;
 

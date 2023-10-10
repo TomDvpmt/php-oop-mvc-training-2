@@ -4,8 +4,6 @@ namespace PhpTraining2\models;
 
 use PhpTraining2\controllers\ProductController;
 
-require_once CTRL_DIR . "ProductController.php";
-
 class Route {
     
     private string $controllerName = "HomeController";

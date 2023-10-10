@@ -4,17 +4,7 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\models\Cart;
-use PhpTraining2\models\Product;
 use PhpTraining2\models\Order;
-
-require_once CTRL_DIR . "ProductController.php";
-require_once MODELS_DIR . "Cart.php";
-require_once MODELS_DIR . "Order.php";
-require_once MODELS_DIR . "products/Book.php";
-require_once MODELS_DIR . "products/Protection.php";
-require_once MODELS_DIR . "products/Shoe.php";
-require_once MODELS_DIR . "products/Vehicle.php";
-require_once MODELS_DIR . "products/Weapon.php";
 
 class CartController {
     use Controller;
@@ -63,7 +53,7 @@ class CartController {
 
     private function add(): void {
         $category = $_GET["category"];
-        $model = getModelNameFromCategoryName($category);
+        $model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($category);
 
         $cart = new Cart($this->cartItems);
         $product = new $model();
