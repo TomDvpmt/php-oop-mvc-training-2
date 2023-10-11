@@ -17,7 +17,7 @@ abstract class Product implements ProductInterface {
             "special_features" => "",
             "limitations" => "",
             "price" => 0, 
-            "img_url" => ""
+            "thumbnail" => ""
         ],
     ) {
         $last = getURI()["last"];
@@ -48,7 +48,7 @@ abstract class Product implements ProductInterface {
      */
 
     private function getProductGenericData(): array {
-        $this->columns = "id, category, name, description, special_features, limitations, price, img_url";
+        $this->columns = "id, category, name, description, special_features, limitations, price, thumbnail";
         $this->table = "products";
         $this->where = "id = :id";
         $genericData = (array) $this->find(["id" => $this->genericData["id"]])[0];
@@ -91,7 +91,7 @@ abstract class Product implements ProductInterface {
             "special_features" => $this->genericData["special_features"],
             "limitations" => $this->genericData["limitations"],
             "price" => $this->genericData["price"],
-            "img_url" => $this->genericData["img_url"],
+            "thumbnail" => $this->genericData["thumbnail"],
         ];
         $this->create($genericData);   
         $id = $this->getLastInsertId();

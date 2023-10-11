@@ -5,7 +5,7 @@ $title = "All our products";
 $categoriesHtmlArray = array_map(function($category) {
     ob_start();?>
         <div class="category-card">
-            <img src="<?= $category["thumbnailURL"] ?>" alt="">
+            <img src="<?= $category["thumbnail"] ?>" alt="">
             <h2><?=$category["name"]?></h2>
         </div>
     <?php $categoryContent = ob_get_clean();

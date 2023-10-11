@@ -5,7 +5,7 @@ $generic = $item["genericData"];
 ?>
 
 <article class="product-card product-card--cart" id="<?=$generic["id"]?>">
-    <img class="product-card__img" src="<?=$generic["img_url"]?>" alt="<?=$generic["name"]?>">
+    <img class="product-card__img" src="<?=$generic["thumbnail"]?>" alt="<?=$generic["name"]?>">
     <h2 class="product-card__name"><?=$generic["name"]?></h2>
     <!-- insert specific -->
     <p class="product-card__price">$ <?=$generic["price"]?></p>

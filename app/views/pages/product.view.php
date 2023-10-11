@@ -3,6 +3,8 @@
 $generic = $data["genericData"];
 $title = $generic["name"];
 
+$thumbnail = ROOT. PRODUCTS_THUMBS_DIR . $generic["thumbnail"];
+
 $specific = [];
 foreach ($data["specificData"] as $key => $value) {
     $label = ucfirst($key);
@@ -13,7 +15,7 @@ $specificHtml = implode("", $specific);
 
 ob_start();?>
 <div class="page__content product" id="<?=$generic["id"]?>">
-    <img class="product__img" src="<?=$generic["img_url"]?>" alt="<?=$generic["name"]?>">
+    <img class="product__img" src="<?=$thumbnail?>" alt="<?=$generic["name"]?>">
     <h2 class="product__name"><?=$generic["name"]?></h2>
     <p class="product__description"><?=$generic["description"]?></p>
     <p class="product__special_features">Special features: <?=$generic["special_features"]?></p>
@@ -24,7 +26,7 @@ ob_start();?>
     <p class="product__price">$ <?=$generic["price"]?></p>
     <div class="product__controls">
         <a href="<?= ROOT . "cart?action=add&category=" . $generic["category"] . "&id=" . $generic["id"]?>">Add to cart</a>
-        <a href="<?= ROOT . "products?action=remove&category=" . $generic["category"] . "&id=" . $generic["id"]?>">Delete product</a>
+        <a href="<?= ROOT . "products/remove?category=" . $generic["category"] . "&id=" . $generic["id"]?>">Delete product</a>
     </div>
 </div>
 <?php $content = ob_get_clean();

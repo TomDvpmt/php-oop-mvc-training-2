@@ -1,5 +1,5 @@
 <article class="recap-card" id="<?=$item["id"]?>">
-    <img src="<?=$item["img_url"]?>" alt="<?=$item["name"]?>">
+    <img src="<?=$item["thumbnail"]?>" alt="<?=$item["name"]?>">
     <h3 class="recap-card__name"><?=$item["name"]?></h3>
     <!-- insert specific -->
     <p class="recap-card__price">$ <?=$item["price"]?></p>

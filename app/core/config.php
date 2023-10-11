@@ -16,6 +16,12 @@ define("DB_PASSWORD", $_SERVER["DB_PASSWORD"]);
 $rootDir = ($_SERVER["DOCUMENT_ROOT"]);
 
 /**
+ * The products thumbnail images folder
+ */
+
+define("PRODUCTS_THUMBS_DIR", "assets/images/products/");
+
+/**
  * The views folder
  */
 define("VIEWS_DIR", $rootDir . "/app/views/");

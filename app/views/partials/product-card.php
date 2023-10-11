@@ -1,10 +1,14 @@
-<?php ob_start();?>
+<?php 
+
+$thumbnail = ROOT. PRODUCTS_THUMBS_DIR . $this->genericData['thumbnail'];
+
+ob_start();?>
 <br />
 <a href="<?= ROOT . "products/remove?category=" . $this->genericData['category'] . "&id=" . $this->genericData['id'] ?>">Delete</a>
 <?php $deleteLink = ob_get_clean(); ?>
 
 <article class="product-card <?=$this->genericData['category']?>" id="<?=$this->genericData['id']?>">
-    <img class="product-card__img" src="<?=ROOT . $this->genericData['img_url']?>" alt="<?=$this->genericData['name']?>">
+    <img class="product-card__img" src="<?=$thumbnail?>" alt="<?=$this->genericData['name']?>">
     <h2 class="product-card__name"><?=$this->genericData['name']?></h2>
     <p class="product-card__description"><?=$this->genericData['description']?></p>
     <p class="product-card__special_features">Special features: <?=$this->genericData['special_features']?></p>

@@ -51,7 +51,7 @@ class ProductCategory {
         $this->where = "p.id = $designator.product_id";
         
         $specific = implode(",", $this->specificProperties);
-        $this->columns = "p.id as id, name, description, special_features, limitations, price, img_url, $specific";
+        $this->columns = "p.id as id, name, description, special_features, limitations, price, thumbnail, $specific";
         
         $results = $this->find();
         if(empty($results)) {
@@ -68,7 +68,7 @@ class ProductCategory {
      * @package PhpTraining2\models
      */
 
-    public function getThumbnailURL(): string {
+    public function getThumbnail(): string {
         $thumbs = array_slice(scandir("assets/images/categories"), 2);
         $thumbnail = array_filter($thumbs, fn($thumb) => str_contains($thumb, $this->name));
         $thumbnailFileName = array_values($thumbnail)[0];

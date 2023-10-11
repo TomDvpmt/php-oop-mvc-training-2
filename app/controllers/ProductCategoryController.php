@@ -44,7 +44,7 @@ class ProductCategoryController extends ProductsController implements Controller
             $categoryObject = new ProductCategory($category);
             $categoryData = [
                 "name" => $category,
-                "thumbnailURL" => $categoryObject->getThumbnailURL()
+                "thumbnail" => $categoryObject->getThumbnail()
             ];
             return $categoryData;
         }, $productCategories);
@@ -112,7 +112,7 @@ class ProductCategoryController extends ProductsController implements Controller
             [
                 "id" => $result->id,
                 "category" => $this->category,
-                "img_url" => $result->img_url,
+                "thumbnail" => $result->thumbnail,
                 "name" => $result->name, 
                 "description" => $result->description, 
                 "special_features" => $result->special_features,

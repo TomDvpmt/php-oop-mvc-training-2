@@ -4,14 +4,14 @@ $title = "Add a product";
 
 ob_start()?>
 
-<form method="POST" class="form" enctype="multipart/form-data">
+<form action="" method="POST" enctype="multipart/form-data" class="form" >
     <?php echo isset($errorMessage) ? "<p class='error'>" . $errorMessage . "</p>" : null ?>
     <div class="form__field">
-        <label for="name">Name:</label>
+        <label for="name">* Name:</label>
         <input type="text" name="name" id="name"/>
     </div>
     <div class="form__field">
-        <label for="description">Description:</label>
+        <label for="description">* Description:</label>
         <input type="text" name="description" id="description"/>
     </div>
     <div class="form__field">
@@ -23,15 +23,15 @@ ob_start()?>
         <input type="text" name="limitations" id="limitations"/>
     </div>
     <div class="form__field">
-        <label for="price">Price:</label>
+        <label for="price">* Price:</label>
         <input type="number" name="price" min="0" id="price"/>
     </div>
     <div class="form__specific-fields">
         <?= $data["specificAddFormHtml"] ?>
     </div>
     <div class="form__field">
-        <label for="image">Image:</label>
-        <input type="file" name="image" id="image"/>
+        <label for="image-file">Image:</label>
+        <input type="file" name="image-file" id="image-file"/>
     </div>
     <button class="button" type="submit" name="submit">Add product</button>
 </form>

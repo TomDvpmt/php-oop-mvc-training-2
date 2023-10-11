@@ -57,7 +57,7 @@ trait Database {
                     special_features VARCHAR(5000) NOT NULL,
                     limitations VARCHAR(5000) NOT NULL,
                     price INT DEFAULT 0 NOT NULL DEFAULT 0,
-                    img_url VARCHAR(255) NOT NULL
+                    thumbnail VARCHAR(255) DEFAULT 'default_product_thumbnail.webp' NOT NULL
                 );
             ",
             "
