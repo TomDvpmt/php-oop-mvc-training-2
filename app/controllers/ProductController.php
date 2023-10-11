@@ -7,6 +7,7 @@ use RuntimeException;
 use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\models\ProductForm;
 use PhpTraining2\models\ProductCategory;
+use PhpTraining2\models\Thumbnail;
 
 class ProductController extends ProductsController implements ControllerInterface {
 
@@ -78,7 +79,14 @@ class ProductController extends ProductsController implements ControllerInterfac
             } else {                
                 /* File upload handling */
                 if(file_exists($_FILES['image-file']['tmp_name']) && is_uploaded_file($_FILES['image-file']['tmp_name'])) {
-                    $thumbnail = $this->handleFileUpload();
+                    $thumb = new Thumbnail();
+                    $upload = $thumb->upload();
+                    if($upload["success"]) {
+                        $thumbnail = $thumb->getSavedFileName();
+                    } else {
+                        show($upload["errors"]); // TODO
+                        return;
+                    }
                 }
 
                 /* Input data validation */
@@ -190,18 +198,7 @@ class ProductController extends ProductsController implements ControllerInterfac
      */
 
     private function handleFileUpload() {
-        $fileName = $_FILES["image-file"]["name"];
-        $fileSize = $_FILES["image-file"]["size"];
-        $fileTmp = $_FILES["image-file"]["tmp_name"];
         
-        $fileNameArr = explode(".", $fileName);
-        $fileExtension = strtolower(end($fileNameArr));
-        $fileFinalName = time() . "_" . $fileName;
-
-        $allowedExtensions = ["avif", "bmp", "jpg", "jpeg", "png", "webp"];
-
-        $errors = [];
-
         try {
             if (
                 !isset($_FILES["image-file"]['error']) ||
@@ -209,6 +206,19 @@ class ProductController extends ProductsController implements ControllerInterfac
             ) {
                 throw new RuntimeException('Invalid parameters.');
             }
+
+            $fileName = $_FILES["image-file"]["name"];
+            $fileSize = $_FILES["image-file"]["size"];
+            $fileTmp = $_FILES["image-file"]["tmp_name"];
+            
+            $fileNameArr = explode(".", $fileName);
+            $fileExtension = strtolower(end($fileNameArr));
+            $fileFinalName = time() . "_" . $fileName;
+    
+            $allowedExtensions = ["avif", "bmp", "jpg", "jpeg", "png", "webp"];
+    
+            $errors = [];
+
 
             if(!in_array($fileExtension, $allowedExtensions)) {
                 array_push($errors, "Incorrect file format. Allowed formats: avif, bmp, jpg, jpeg, png, webp.");
