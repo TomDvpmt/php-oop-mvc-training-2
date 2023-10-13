@@ -23,8 +23,9 @@ final class ProductForm extends Form {
      public function addValidationError(string $name): void {
         switch ($name) {
             case "price":
-                $this->validationErrors["price"] = "The price must be a number.";
+                $this->setValidationError("price", "The price must be a number.");
                 break;
+            
             default:
                 break;
         }

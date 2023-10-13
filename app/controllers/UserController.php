@@ -27,7 +27,7 @@ class UserController implements ControllerInterface {
         if(isset($_POST["submit"])) { 
             $form = new UserForm();
             $form->setRequired($form::REGISTER_REQUIRED);
-            $dataInSession = $form->setFormDataInSession();
+            $dataInSession = $form->setFormDataInSession($form::REGISTER_TO_VALIDATE);
             
             if($form->hasEmptyFields()) {
                 $form->setEmptyFieldsError();
@@ -83,7 +83,7 @@ class UserController implements ControllerInterface {
                 $fullData = array_merge($data["notToValidate"], $validated, $data["password"]);
                 $user = new User(...$fullData);
                 
-                if(!empty($user->findOne())) {
+                if(!empty($user->findOne("email = :email"))) {
                     $form->addValidationError("emailAlreadyUsed");
                     $validationErrors = $form->getValidationErrors();
                     $this->view("pages/signup", ["formData" => $inputData, "validationErrors" => $validationErrors]);

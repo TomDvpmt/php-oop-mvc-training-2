@@ -4,16 +4,6 @@ namespace PhpTraining2\models;
 
 abstract class Form {
 
-    /**
-     * The fields that need to be validated in the signup form.
-     */
-    const REGISTER_TO_VALIDATE = ["firstName", "lastName", "email"];
-
-    /**
-     * The required fields in the signup form. 
-     */
-    const REGISTER_REQUIRED = ["email", "password", "passwordConfirm"];
-
     public function __construct(
         protected array $inputsToValidate = [], 
         protected array $required = [], 
@@ -36,6 +26,18 @@ abstract class Form {
 
 
     /**
+     * Add an item to the validation errors array
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+    
+     public function setValidationError(string $errorType, string $message): void {
+        $this->validationErrors[$errorType] = $message;
+    }
+
+
+    /**
      * Set the required fields array
      * 
      * @access public
@@ -48,15 +50,18 @@ abstract class Form {
     }
 
     /**
-     * Set from data in $_SESSION
+     * Set form data in $_SESSION
      * 
      * @access public
      * @package PhpTraining2\models
      * @return array
      */
 
-    public function setFormDataInSession(): array {
-        $dataToStore = array_merge(...array_map(fn($property) => [$property => $_POST[$property]], $this::REGISTER_TO_VALIDATE));
+    public function setFormDataInSession(array $propertiesToValidate): array {
+        $dataToStore = array_merge(
+            ...array_map(fn($property) => [$property => $_POST[$property]], 
+            $propertiesToValidate)
+        );
         $_SESSION["formData"] = $dataToStore;
         return $dataToStore;
     }
@@ -222,26 +227,8 @@ abstract class Form {
         switch ($name) {
             
             case "hasEmptyFields":
-                $this->validationErrors["hasEmptyFields"] = "All required fields must be filled.";
+                $this->setValidationError("hasEmptyFields", "All required fields must be filled.");
                 break;
-            
-            // /* user */
-            // case 'emailInvalid':
-            //     $this->validationErrors["emailInvalid"] = "Invalid email.";
-            //     break;
-            // case 'emailAlreadyUsed':
-            //     $this->validationErrors["emailAlreadyUsed"] = "This email address is already used, please choose another one.";
-            //     break;
-            // case "password":
-            //     $this->validationErrors["password"] = "Password must be at least 8 characters long.";
-            //     break;
-            // case "passwordsDontMatch": 
-            //     $this->validationErrors["passwordsDontMatch"] = "Passwords don't match.";
-            
-            // /* product */
-            // case "price":
-            //     $this->validationErrors["price"] = "The price must be a number.";
-            //     break;
             
             default:
                 break;

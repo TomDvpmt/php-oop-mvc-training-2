@@ -2,7 +2,7 @@
 
 namespace PhpTraining2\models;
 
-use Exception;
+use RuntimeException;
 
 class Thumbnail {
 
@@ -15,27 +15,6 @@ class Thumbnail {
     private string $fileExtension = "";
     private string $fileFinalName = "";
     private array $errors = [];
-
-    public function __construct()
-    {
-        try {
-            $this->checkParameters();
-
-            $this->fileName = $_FILES["image-file"]["name"];
-            $this->fileSize = $_FILES["image-file"]["size"];
-            $this->fileTmp = $_FILES["image-file"]["tmp_name"];
-            
-            $fileNameArr = explode(".", $this->fileName);
-            $this->fileExtension = strtolower(end($fileNameArr));
-            $this->fileFinalName = time() . "_" . $this->fileName;
-            
-            $this->checkType();
-            $this->checkSize();
-
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-    }
 
     /**
      * Get the saved file's name
@@ -57,6 +36,18 @@ class Thumbnail {
 
     public function upload(): array {
         try {
+            $this->checkParameters();
+
+            $this->fileName = $_FILES["image-file"]["name"];
+            $this->fileSize = $_FILES["image-file"]["size"];
+            $this->fileTmp = $_FILES["image-file"]["tmp_name"];
+            
+            $fileNameArr = explode(".", $this->fileName);
+            $this->fileExtension = strtolower(end($fileNameArr));
+            $this->fileFinalName = time() . "_" . $this->fileName;
+            
+            $this->checkType();
+            $this->checkSize();
             $this->checkPermissionOnFolder();
 
             if(!empty($this->errors)) {
@@ -65,9 +56,33 @@ class Thumbnail {
             $this->saveFile();
             return ["success" => true, "errors" => []];   
             
-        } catch (Exception $e) {
+        } catch (RuntimeException $e) {
             echo $e->getMessage();
         }
+    }
+
+    /**
+     * Save the file in the folder
+     * 
+     * @access private
+     * @package PhpTraining2\models
+     */
+
+     private function saveFile(): void {
+        if(!move_uploaded_file($this->fileTmp, PRODUCTS_THUMBS_DIR . $this->fileFinalName)) {
+            throw new RuntimeException("An error occured while saving the file.");
+        }
+    }
+
+    /**
+     * Delete file in the folder
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+
+    public function deleteFile($path): void {
+        unlink($path);
     }
 
     /**
@@ -82,7 +97,7 @@ class Thumbnail {
             !isset($_FILES["image-file"]['error']) ||
             is_array($_FILES["image-file"]['error'])
         ) {
-            throw new Exception('Invalid parameters.');
+            throw new RuntimeException('Invalid parameters.');
         }
     }
 
@@ -122,22 +137,8 @@ class Thumbnail {
 
     private function checkPermissionOnFolder(): void {
         if(!is_writable(PRODUCTS_THUMBS_DIR)) {
-            throw new Exception("The products thumbnails directory is not writable.");
+            throw new RuntimeException("The products thumbnails directory is not writable.");
         }
     }
-
-    /**
-     * Save the file in the folder
-     * 
-     * @access private
-     * @package PhpTraining2\models
-     */
-
-    private function saveFile(): void {
-        if(!move_uploaded_file($this->fileTmp, PRODUCTS_THUMBS_DIR . $this->fileFinalName)) {
-            throw new Exception("An error occured while saving the file.");
-        }
-    }
-
     
 }

@@ -9,12 +9,12 @@ final class UserForm extends Form {
     /**
      * The fields that need to be validated in the signup form.
      */
-    const REGISTER_TO_VALIDATE = ["firstName", "lastName", "email"];
+    public const REGISTER_TO_VALIDATE = ["firstName", "lastName", "email"];
 
     /**
      * The required fields in the signup form. 
      */
-    const REGISTER_REQUIRED = ["email", "password", "passwordConfirm"];
+    public const REGISTER_REQUIRED = ["email", "password", "passwordConfirm"];
 
     public function __construct()
     {
@@ -32,16 +32,16 @@ final class UserForm extends Form {
      public function addValidationError(string $name): void {
         switch ($name) {
             case 'emailInvalid':
-                $this->validationErrors["emailInvalid"] = "Invalid email.";
+                $this->setValidationError("emailInvalid", "Invalid email.");
                 break;
             case 'emailAlreadyUsed':
-                $this->validationErrors["emailAlreadyUsed"] = "This email address is already used, please choose another one.";
+                $this->setValidationError("emailAlreadyUsed", "This email address is already used, please choose another one.");
                 break;
             case "password":
-                $this->validationErrors["password"] = "Password must be at least 8 characters long.";
+                $this->setValidationError("password", "Password must be at least 8 characters long.");
                 break;
             case "passwordsDontMatch": 
-                $this->validationErrors["passwordsDontMatch"] = "Passwords don't match.";
+                $this->setValidationError("passwordsDontMatch", "Passwords don't match.");
             default:
                 break;
         }

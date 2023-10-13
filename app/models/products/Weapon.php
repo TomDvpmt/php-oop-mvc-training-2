@@ -7,6 +7,8 @@ use PhpTraining2\models\ProductInterface;
 
 final class Weapon extends Product implements ProductInterface {
 
+    private const DEFAULT_SPECIFIC_DATA = ["ideal_range" => "medium"];
+
     private const SELECT_OPTIONS = [
         "questions" => ["ideal_range" => "What is the ideal range for this weapon?"],
         "answers" => [
@@ -20,10 +22,10 @@ final class Weapon extends Product implements ProductInterface {
     
     public function __construct(
         protected array $genericData = [],
-        protected array $specificData = ["ideal_range" => "medium"])
+        protected array $specificData = self::DEFAULT_SPECIFIC_DATA)
     {
         parent::__construct($genericData);
-        $this->table = "weapons";
+        $this->setTable("weapons");
     }
 
     public function getSelectOptions(): array {

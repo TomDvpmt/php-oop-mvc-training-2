@@ -10,7 +10,7 @@ use PhpTraining2\models\Order;
 class OrderController implements ControllerInterface {
     use Controller;
 
-    private object $cart;
+    private Cart $cart;
     
     public function __construct()
     {

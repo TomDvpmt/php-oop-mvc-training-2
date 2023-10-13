@@ -6,6 +6,8 @@ use PhpTraining2\models\Product;
 use PhpTraining2\models\ProductInterface;
 
 final class Book extends Product implements ProductInterface {
+
+    private const DEFAULT_SPECIFIC_DATA = ["genre" => "fantasy"];
     
     private const SELECT_OPTIONS = [
         "questions" => ["genre" => "Which genre better defines this book?"],
@@ -21,10 +23,10 @@ final class Book extends Product implements ProductInterface {
 
     public function __construct(
         protected array $genericData = [],
-        protected array $specificData = ["genre" => "fantasy"])
+        protected array $specificData = self::DEFAULT_SPECIFIC_DATA)
     {
         parent::__construct($genericData);
-        $this->table = "books";
+        $this->setTable("books");
     }
 
     public function getSelectOptions(): array {

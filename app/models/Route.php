@@ -17,13 +17,16 @@ class Route {
         $controllerName = empty($base) ? "HomeController" : ucfirst($base) . "Controller";
 
         if($base === "products") {
+            
             $controllerName = "ProductController";
             $this->controllerName = $controllerName;
             $productController = new ProductController();
+            
             if(method_exists($productController, $last)) {
                 $this->method = $last;
                 return;
             }
+            
             if(!intval($last)) {
                 $controllerName = "ProductCategoryController"; 
             }

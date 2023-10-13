@@ -6,6 +6,8 @@ use PhpTraining2\models\Product;
 use PhpTraining2\models\ProductInterface;
 
 final class Shoe extends Product implements ProductInterface {
+    
+    private const DEFAULT_SPECIFIC_DATA = ["waterproof" => "unsure", "usage_intensity" => "on sundays only"];
 
     private const SELECT_OPTIONS = [
         "questions" => [
@@ -28,10 +30,10 @@ final class Shoe extends Product implements ProductInterface {
 
     public function __construct(
         protected array $genericData = [],
-        protected array $specificData = ["waterproof" => "unsure", "usage_intensity" => "on sundays only"])
+        protected array $specificData = self::DEFAULT_SPECIFIC_DATA)
     {
         parent::__construct($genericData);
-        $this->table = "shoes";
+        $this->setTable("shoes");
     }
 
     public function getSelectOptions(): array {

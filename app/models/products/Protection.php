@@ -7,6 +7,8 @@ use PhpTraining2\models\ProductInterface;
 
 final class Protection extends Product implements ProductInterface {
 
+    private const DEFAULT_SPECIFIC_DATA = ["type" => "hard to say", "resistance" => "medium"];
+
     private const SELECT_OPTIONS = [
         "questions" => [
             "type" => "What kind of protection does this beauty provide?",
@@ -30,10 +32,10 @@ final class Protection extends Product implements ProductInterface {
     
     public function __construct(
         protected array $genericData = [],
-        protected array $specificData = ["type" => "hard to say", "resistance" => "medium"])
+        protected array $specificData = self::DEFAULT_SPECIFIC_DATA)
     {
         parent::__construct($genericData);
-        $this->table = "protection";
+        $this->setTable("protection");
         $this->genericData["category"] = "protection";
     }
 

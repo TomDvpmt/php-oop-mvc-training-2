@@ -2,8 +2,6 @@
 
 namespace PhpTraining2\controllers;
 
-use finfo;
-use RuntimeException;
 use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\models\ProductForm;
 use PhpTraining2\models\ProductCategory;
@@ -179,80 +177,10 @@ class ProductController extends ProductsController implements ControllerInterfac
      */
 
      public function remove(): void {
-        $id = strip_tags($_GET["id"]);
-        $this->table = $this->category;
-        $this->delete("product_id", $id);
-
-        $this->deleteThumbnailFile(); // TODO
-
+        $model = "PhpTraining2\models\products\\" . $this->model;
+        $product = new $model;
+        $product->deleteThumbnailFile();
+        $product->removeProductFromDB(); 
         header("Location:" . $this->category);
-    }
-
-
-    /**
-     * Handle file upload
-     * 
-     * @access private
-     * @package PhpTraining2/controllers
-     * @return string $thumbnail The image file name
-     */
-
-    private function handleFileUpload() {
-        
-        try {
-            if (
-                !isset($_FILES["image-file"]['error']) ||
-                is_array($_FILES["image-file"]['error'])
-            ) {
-                throw new RuntimeException('Invalid parameters.');
-            }
-
-            $fileName = $_FILES["image-file"]["name"];
-            $fileSize = $_FILES["image-file"]["size"];
-            $fileTmp = $_FILES["image-file"]["tmp_name"];
-            
-            $fileNameArr = explode(".", $fileName);
-            $fileExtension = strtolower(end($fileNameArr));
-            $fileFinalName = time() . "_" . $fileName;
-    
-            $allowedExtensions = ["avif", "bmp", "jpg", "jpeg", "png", "webp"];
-    
-            $errors = [];
-
-
-            if(!in_array($fileExtension, $allowedExtensions)) {
-                array_push($errors, "Incorrect file format. Allowed formats: avif, bmp, jpg, jpeg, png, webp.");
-            }
-
-            if($fileSize > 1000000) {
-                array_push($errors, "File size must not exceed 1 MB.");
-            }
-
-            if(empty($errors)) {
-                $dirName = $_SERVER["DOCUMENT_ROOT"] . "/public/assets/images/products/";
-                
-                if(!is_writable($dirName)) {
-                    show("The directory is not writable."); // TODO
-                    return;
-                }
-                
-                if(!move_uploaded_file($fileTmp, $dirName . $fileFinalName)) {
-                    show("An error occured while saving the file."); // TODO
-                } else {
-                    show("success"); // TODO
-                    show($fileFinalName);
-                    return $fileFinalName;
-                }
-            } else {
-                show($errors); // TODO
-            }
-
-        } catch (RuntimeException $e) {
-            echo $e->getMessage();
-        }
-    }
-
-    private function deleteThumbnailFile(): void {
-        //
     }
 };

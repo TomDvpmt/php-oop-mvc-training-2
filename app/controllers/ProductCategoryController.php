@@ -7,7 +7,7 @@ use PhpTraining2\models\ProductCategory;
 
 class ProductCategoryController extends ProductsController implements ControllerInterface {
 
-    private object $productCategoryObject;
+    private ProductCategory $productCategoryObject;
     
     public function __construct()
     {

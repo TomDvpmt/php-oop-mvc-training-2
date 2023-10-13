@@ -3,6 +3,7 @@
 namespace PhpTraining2\models;
 
 use PhpTraining2\core\Model;
+use RuntimeException;
 
 class User {
     use Model;
@@ -16,14 +17,36 @@ class User {
         private string $password = "",
     )
     {
-        $this->table = "users";
+        $this->setTable("users");
         if(isset($_SESSION["user"]["id"])) {
             $this->id = $_SESSION["user"]["id"];
         }
     }
 
-    public function findOne(): object {
-        $this->setWhere("email = :email");
+    /**
+     * Set user id
+     * 
+     * @access protected
+     * @package PhpTraining2\models
+     */
+
+    protected function setId(string|int $id): void {
+        if(!intval($id)) {
+            throw new RuntimeException("Invalid id type.");
+        }
+        $this->id = intval($id);
+    }
+
+    /**
+     * Get a user from the database
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     * @param string $selector Example : "email = :email"
+     */
+
+    public function findOne(string $selector): object {
+        $this->setWhere($selector);
         $result = $this->find(["email" => $this->email]);
         return $result;
     }

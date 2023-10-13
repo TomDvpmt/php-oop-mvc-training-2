@@ -2,6 +2,8 @@
 
 namespace PhpTraining2\core;
 
+use PhpTraining2\models\Router;
+
 class App {
 
     use Database;

@@ -17,6 +17,7 @@ abstract class ProductsController {
     {
         $pathChunks = $this->getPathChunks();
         $lastChunk = end($pathChunks);
+        
         if(count($pathChunks) > 1) {
             $this->category = $lastChunk;
         }

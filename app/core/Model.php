@@ -18,13 +18,59 @@ trait Model {
     protected string $orderColumn = "id";
     protected string $orderType = "desc";
 
+    /**
+     * Set table
+     * 
+     * @access protected
+     * @package PhpTraining2\core
+     */
 
-    protected function setTable($newTable) {
+    protected function setTable(string $newTable) {
         $this->table = $newTable;
     }
 
-    protected function setWhere($where) {
-        $this->where = "WHERE $where";
+    /**
+     * Set columns
+     * 
+     * @access protected
+     * @package PhpTraining2\core
+     */
+
+    protected function setColumns(string $columns) {
+        $this->columns = $columns;
+    }
+
+    /**
+     * Set where clause
+     * 
+     * @access protected
+     * @package PhpTraining2\core
+     */
+
+    protected function setWhere(string $where) {
+        $this->where = $where;
+    }
+
+    /**
+     * Set the limit number of results
+     * 
+     * @access protected
+     * @package PhpTraining2\core
+     */
+
+     protected function setLimit(int $limit) {
+        $this->limit = $limit;
+    }
+
+    /**
+     * Set the column used to order results
+     * 
+     * @access protected
+     * @package PhpTraining2\core
+     */
+
+     protected function setOrderColumn(string $column) {
+        $this->orderColumn = $column;
     }
 
 
@@ -68,8 +114,8 @@ trait Model {
      */
 
     protected function getLastInsertId(): int {
-        $this->orderColumn = "id";
-        $this->limit = 1;
+        $this->setOrderColumn("id");
+        $this->setLimit(1);
         $result = $this->find();
         return $result[0]->id;
     }

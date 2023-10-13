@@ -21,6 +21,7 @@ abstract class Product implements ProductInterface {
         ],
     ) {
         $last = getURI()["last"];
+        
         if(isset($_GET["id"])) {
             $this->genericData["id"] = intval(strip_tags($_GET["id"]));
         }
@@ -48,9 +49,9 @@ abstract class Product implements ProductInterface {
      */
 
     private function getProductGenericData(): array {
-        $this->columns = "id, category, name, description, special_features, limitations, price, thumbnail";
-        $this->table = "products";
-        $this->where = "id = :id";
+        $this->setTable("products");
+        $this->setColumns("id, category, name, description, special_features, limitations, price, thumbnail");
+        $this->setWhere("id = :id");
         $genericData = (array) $this->find(["id" => $this->genericData["id"]])[0];
         return $genericData;
     }
@@ -65,9 +66,9 @@ abstract class Product implements ProductInterface {
      */
     
     private function getProductSpecificData(): array {
-        $this->columns = "*";
-        $this->table = $this->genericData["category"];
-        $this->where = "product_id= :product_id";
+        $this->setTable($this->genericData["category"]);
+        $this->setColumns("*");
+        $this->setWhere("product_id= :product_id");
         $data = (array) $this->find(["product_id" => $this->genericData["id"]])[0];
         $specificData = array_filter($data, fn($key) => !in_array($key, ["id", "product_id"]), ARRAY_FILTER_USE_KEY);
         return $specificData;
@@ -83,7 +84,7 @@ abstract class Product implements ProductInterface {
      */
 
     private function createGenericProduct(): int {
-        $this->table = "products";
+        $this->setTable("products");
         $genericData = [
             "category" => $this->genericData["category"],
             "name" => $this->genericData["name"],
@@ -108,10 +109,10 @@ abstract class Product implements ProductInterface {
     public function createSpecificProduct(array $data): void {
         $id = $this->createGenericProduct();
 
-        $this->table = $this->genericData["category"];
-        $this->orderColumn = "product_id";
+        $this->setTable($this->genericData["category"]);
+        $this->setOrderColumn("product_id");
+        
         $specificData = array_merge(["product_id" => $id], $data);
-
         $this->create($specificData);
     }
 
@@ -152,5 +153,31 @@ abstract class Product implements ProductInterface {
         }
 
         return implode("", $specificHtml);
+    }
+
+    /**
+     * Delete thumbnail file
+     * 
+     * @access public
+     * @package PhpTraning2/models
+     */
+
+    public function deleteThumbnailFile(): void {
+        $productData = $this->getProductData();
+        $path = PRODUCTS_THUMBS_DIR . $productData["genericData"]["thumbnail"];
+        unlink($path);
+    }
+
+
+    /**
+     * Remove a product from database
+     * 
+     * @access public
+     * @package PhpTraning2/models
+     */
+
+    public function removeProductFromDB() {
+        $id = strip_tags($_GET["id"]);
+        $this->delete("product_id", $id);
     }
 }

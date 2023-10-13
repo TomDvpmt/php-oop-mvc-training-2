@@ -47,11 +47,10 @@ class ProductCategory {
             $designator = "spec";
         }
         
-        $this->table = "products p JOIN $table $designator";
-        $this->where = "p.id = $designator.product_id";
-        
+        $this->setTable("products p JOIN $table $designator");
         $specific = implode(",", $this->specificProperties);
-        $this->columns = "p.id as id, name, description, special_features, limitations, price, thumbnail, $specific";
+        $this->setColumns("p.id as id, name, description, special_features, limitations, price, thumbnail, $specific"); // TODO : dynamic columns
+        $this->setWhere("p.id = $designator.product_id");
         
         $results = $this->find();
         if(empty($results)) {
@@ -69,9 +68,9 @@ class ProductCategory {
      */
 
     public function getThumbnail(): string {
-        $thumbs = array_slice(scandir("assets/images/categories"), 2);
+        $thumbs = array_slice(scandir("assets/images/categories"), 2); // TODO : dynamic path
         $thumbnail = array_filter($thumbs, fn($thumb) => str_contains($thumb, $this->name));
         $thumbnailFileName = array_values($thumbnail)[0];
-        return "assets/images/categories/" . $thumbnailFileName;
+        return "assets/images/categories/" . $thumbnailFileName; // TODO : dynamic path
     }
 }
