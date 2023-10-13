@@ -30,8 +30,8 @@ ob_start()?>
         <?= $data["specificAddFormHtml"] ?>
     </div>
     <div class="form__field">
-        <label for="image-file">Image:</label>
-        <input type="file" name="image-file" id="image-file"/>
+        <label for="thumbnail">Image:</label>
+        <input type="file" name="thumbnail" id="thumbnail"/>
     </div>
     <button class="button" type="submit" name="submit">Add product</button>
 </form>

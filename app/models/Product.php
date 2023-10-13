@@ -7,6 +7,16 @@ use PhpTraining2\models\ProductInterface;
 
 abstract class Product implements ProductInterface {
     use Model;
+
+    public const GENERIC_PROPERTIES = [
+        "name" => "text", 
+        "description" => "text", 
+        "special_features" => "text", 
+        "limitations" => "text", 
+        "price" => "number"
+    ];
+    public const REQUIRED_GENERIC_PROPERTIES = ["name", "description", "price"];
+    public const DEFAULT_THUMBNAIL = "default_product_thumbnail.webp"; // TODO: put a default img in the default folder
     
     public function __construct(
         protected array $genericData = [
@@ -38,6 +48,10 @@ abstract class Product implements ProductInterface {
         $specificData = $this->getProductSpecificData();
         $data = ["genericData" => $genericData, "specificData" => $specificData];
         return $data;
+    }
+
+    public function setGenericData($data): void {
+        $this->genericData = $data;
     }
 
     /**
@@ -104,6 +118,7 @@ abstract class Product implements ProductInterface {
      * 
      * @access public
      * @package PhpTraining2\models
+     * @param array $data
      */
 
     public function createSpecificProduct(array $data): void {

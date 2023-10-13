@@ -16,16 +16,6 @@ class Thumbnail {
     private string $fileFinalName = "";
     private array $errors = [];
 
-    /**
-     * Get the saved file's name
-     * 
-     * @access public
-     * @package PhpTraining2\models
-     */
-
-    public function getSavedFileName(): string {
-        return $this->fileFinalName;
-    }
 
     /**
      * Upload the file
@@ -38,9 +28,9 @@ class Thumbnail {
         try {
             $this->checkParameters();
 
-            $this->fileName = $_FILES["image-file"]["name"];
-            $this->fileSize = $_FILES["image-file"]["size"];
-            $this->fileTmp = $_FILES["image-file"]["tmp_name"];
+            $this->fileName = $_FILES["thumbnail"]["name"];
+            $this->fileSize = $_FILES["thumbnail"]["size"];
+            $this->fileTmp = $_FILES["thumbnail"]["tmp_name"];
             
             $fileNameArr = explode(".", $this->fileName);
             $this->fileExtension = strtolower(end($fileNameArr));
@@ -51,10 +41,10 @@ class Thumbnail {
             $this->checkPermissionOnFolder();
 
             if(!empty($this->errors)) {
-                return ["success" => false, "errors" => $this->errors];
+                return ["thumbnail" => false, "errors" => $this->errors];
             } 
             $this->saveFile();
-            return ["success" => true, "errors" => []];   
+            return ["thumbnail" => $this->fileFinalName, "errors" => []];   
             
         } catch (RuntimeException $e) {
             echo $e->getMessage();
@@ -94,8 +84,8 @@ class Thumbnail {
 
     private function checkParameters(): void {
         if (
-            !isset($_FILES["image-file"]['error']) ||
-            is_array($_FILES["image-file"]['error'])
+            !isset($_FILES["thumbnail"]['error']) ||
+            is_array($_FILES["thumbnail"]['error'])
         ) {
             throw new RuntimeException('Invalid parameters.');
         }

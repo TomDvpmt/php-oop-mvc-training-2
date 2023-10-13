@@ -2,7 +2,7 @@
 
 namespace PhpTraining2\models;
 
-abstract class Form {
+abstract class Form implements FormInterface {
 
     public function __construct(
         protected array $inputsToValidate = [], 
@@ -64,40 +64,6 @@ abstract class Form {
         );
         $_SESSION["formData"] = $dataToStore;
         return $dataToStore;
-    }
-
-    /**
-     * Get specific data for this product category
-     * 
-     * @access public
-     * @package PhpTraining2\models
-     * @param array $specificProperties Array of strings (the list of specific properties for this product category)
-     * @return array
-     */
-
-    public function getSpecificData(array $specificProperties): array {
-        $specificValues = $this->getSpecificValues($specificProperties);
-        return array_combine($specificProperties, $specificValues);
-    }
-
-
-    /**
-     * Get the values of the specific properties of this product category
-    * 
-    * @access private
-    * @package PhpTraining2\models
-    * @param array $specificProperties Array of strings (the list of specific properties for this product category)
-    * @return array
-    */
-
-    private function getSpecificValues(array $specificProperties): array {
-        $specificValues = array_map(fn($property) => [
-            "type" => "text", 
-            "name" => $property, 
-            "value" => $_POST[$property]
-        ], $specificProperties);
-    
-        return $specificValues;
     }
 
     /**
@@ -178,7 +144,7 @@ abstract class Form {
 
 
     /**
-     * Sanitize a user input
+     * Sanitize an input
      * 
      * @access private
      * @package PhpTraining2\models
@@ -191,7 +157,7 @@ abstract class Form {
         $sanitized = null;
         switch($input["type"]) {
             case "email":
-                // $sanitized = filter_var($input["value"], FILTER_SANITIZE_EMAIL);
+                // $sanitized = filter_var($input["value"], FILTER_SANITIZE_EMAIL); // TODO with regex
                 $sanitized = $input["value"];
                 break;
             case "text":
@@ -211,27 +177,5 @@ abstract class Form {
                 break;
         }
         return [...$input, "value" => $sanitized];
-    }
-
-    
-
-    /**
-     * Add an item to the form errors array
-     * 
-     * @access public
-     * @package PhpTraining2\models
-     * @param string $name Error name: hasEmptyFields, emailInvalid, emailAlreadyUsed, password, price, passwordsDontMatch
-     */
-
-    public function addValidationError(string $name): void {
-        switch ($name) {
-            
-            case "hasEmptyFields":
-                $this->setValidationError("hasEmptyFields", "All required fields must be filled.");
-                break;
-            
-            default:
-                break;
-        }
     }
 }

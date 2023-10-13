@@ -3,21 +3,10 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\controllers\ControllerInterface;
-use PhpTraining2\models\ProductForm;
-use PhpTraining2\models\ProductCategory;
+use PhpTraining2\models\forms\ProductForm;
 use PhpTraining2\models\Thumbnail;
 
 class ProductController extends ProductsController implements ControllerInterface {
-
-    protected const GENERIC_PROPERTIES = [
-        "name" => "text", 
-        "description" => "text", 
-        "special_features" => "text", 
-        "limitations" => "text", 
-        "price" => "number"
-    ];
-    protected const REQUIRED_GENERIC_PROPERTIES = ["name", "description", "price"];
-    protected const DEFAULT_THUMBNAIL = "default_product_thumbnail.webp"; // TODO: put a default img in the default folder
     
     public function __construct()
     {
@@ -30,7 +19,6 @@ class ProductController extends ProductsController implements ControllerInterfac
     }
 
     
-
     /**
      * Get full product data
      * 
@@ -69,64 +57,41 @@ class ProductController extends ProductsController implements ControllerInterfac
         }
         
         if(isset($_POST["submit"])) {
-            $thumbnail = self::DEFAULT_THUMBNAIL;
 
-            $category = new ProductCategory($this->category);
-            $specificProperties = $category->getSpecificProperties();
+            $model = "PhpTraining2\models\products\\" . $this->model;
+            $product = new $model;
+            $specificProperties = array_keys($product::DEFAULT_SPECIFIC_DATA);
             
+            /* Form validation */
             $form = new ProductForm();
-            $form->setRequired(array_merge(self::REQUIRED_GENERIC_PROPERTIES, $specificProperties));
-                        
+            $form->setRequired(array_merge($product::REQUIRED_GENERIC_PROPERTIES, $specificProperties));
+            
             if($form->hasEmptyFields()) {
                 show("empty fields");
                 $form->setEmptyFieldsError();
                 // TODO : show form with already filled values and error message
-            } else {                
-                /* File upload handling */
-                if(file_exists($_FILES['image-file']['tmp_name']) && is_uploaded_file($_FILES['image-file']['tmp_name'])) {
-                    $thumb = new Thumbnail();
-                    $upload = $thumb->upload();
-                    if($upload["success"]) {
-                        $thumbnail = $thumb->getSavedFileName();
-                    } else {
-                        show($upload["errors"]); // TODO
-                        return;
-                    }
-                }
+                return;
+            }  
 
-                /* Input data validation */
-                
-                $genericToValidate = $this->getGenericToValidate();                
-                $genericValidated = $form->validate($genericToValidate);
-                $specificToValidate = $form->getSpecificData($specificProperties);
-                $specificValidated = $form->validate($specificToValidate);
-                
-                if(!$genericValidated || !$specificValidated) {
-                    show("There are errors !"); 
-                    // TODO : deal with errors
-                    return;
-                }
-                
-                /* Creating the product */
-                $genericData = [
-                    "id" => 0,
-                    "category" => $this->category,
-                    "thumbnail" => $thumbnail,
-                    "name" => ucfirst($genericValidated["name"]),
-                    "description" => ucfirst($genericValidated["description"]),
-                    "special_features" => $genericValidated["special_features"],
-                    "limitations" => $genericValidated["limitations"],
-                    "price" => $genericValidated["price"],
-                ];
-
-                $model = "PhpTraining2\models\products\\" . $this->model;
-    
-                $product = new ($model)($genericData);
-                $product->createSpecificProduct($specificValidated);
-    
-                $successMessage = "Product added."; // TODO : show success message in destination page           
-                header("Location: " . ROOT . "products/" . $this->category);
+            $validatedData = $form->validateProductForm($product);
+            if(!$validatedData) {
+                show("There are errors!"); // TODO : deal with errors
+                return;
+                // $this->showFormWithErrors($form, "products/add");
             }
+            
+            /* Thumbnail upload check */
+            $thumbnail = $this->getUploadedThumbnail();
+            $validatedData["generic"]["thumbnail"] = $thumbnail ?? $product::DEFAULT_THUMBNAIL;
+            
+            /* Creating the product */
+            $formatedGenericData = $this->getFormatedGenericData($validatedData);
+            $product->setGenericData($formatedGenericData);
+            $product->createSpecificProduct($validatedData["specific"]);
+
+            $successMessage = "Product added."; // TODO : show success message in destination page           
+            header("Location: " . ROOT . "products/" . $this->category);
+            
 
         } else {
             $this->view("pages/product-add", ["specificAddFormHtml" => $specificAddFormHtml], null, null);
@@ -167,21 +132,43 @@ class ProductController extends ProductsController implements ControllerInterfac
         return implode("", $html);
     }
 
-
     /**
-     * Get generic data to validate
+     * Get uploaded thumbnail file name
      * 
      * @access private
      * @package PhpTraining2\controllers
-     * @return array
+     * @return string|bool
      */
 
-    private function getGenericToValidate(): array {
-        $genericToValidate = [];
-        foreach (self::GENERIC_PROPERTIES as $key => $value) {
-            $genericToValidate[$key] = ["type" => $value, "value" => $_POST[$key], "name" => $key];
+    private function getUploadedThumbnail(): string|bool {
+        if(!file_exists($_FILES['thumbnail']['tmp_name']) || !is_uploaded_file($_FILES['thumbnail']['tmp_name'])) {
+            return false;
         }
-        return $genericToValidate;
+        $thumb = new Thumbnail();
+        $upload = $thumb->upload();
+        return $upload["thumbnail"];
+    }
+
+
+    /**
+     * Get formated generic data for creating product
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     */
+
+    private function getFormatedGenericData(array $validatedData): array {
+        $formatedData = [
+            "id" => 0,
+            "category" => $this->category,
+            "thumbnail" => $validatedData["generic"]["thumbnail"],
+            "name" => ucfirst($validatedData["generic"]["name"]),
+            "description" => ucfirst($validatedData["generic"]["description"]),
+            "special_features" => $validatedData["generic"]["special_features"],
+            "limitations" => $validatedData["generic"]["limitations"],
+            "price" => $validatedData["generic"]["price"],
+        ];
+        return $formatedData;
     }
 
 

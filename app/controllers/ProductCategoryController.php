@@ -105,23 +105,28 @@ class ProductCategoryController extends ProductsController implements Controller
      */
 
     protected function getProductObject(object $result): Product {
-        $specificProperties = $this->productCategoryObject->getSpecificProperties();
-        $specificData = array_filter((array) $result, fn($key) => in_array($key, $specificProperties), ARRAY_FILTER_USE_KEY);
-
         $model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->model);
-        $product = new ($model)(
-            [
-                "id" => $result->id,
-                "category" => $this->category,
-                "thumbnail" => $result->thumbnail,
-                "name" => $result->name, 
-                "description" => $result->description, 
-                "special_features" => $result->special_features,
-                "limitations" => $result->limitations,
-                "price" => $result->price, 
-            ],
-            $specificData
+        $product = new $model;
+        $specificProperties = array_keys($product::DEFAULT_SPECIFIC_DATA);
+        
+        $specificData = array_filter(
+            (array) $result, 
+            fn($key) => in_array($key, $specificProperties), 
+            ARRAY_FILTER_USE_KEY
         );
+
+        $genericData = [
+            "id" => $result->id,
+            "category" => $this->category,
+            "thumbnail" => $result->thumbnail,
+            "name" => $result->name, 
+            "description" => $result->description, 
+            "special_features" => $result->special_features,
+            "limitations" => $result->limitations,
+            "price" => $result->price, 
+        ];
+
+        $product = new ($model)($genericData, $specificData);
         return $product;
     }
 }

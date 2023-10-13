@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpTraining2\models;
+namespace PhpTraining2\models\forms;
 
 use PhpTraining2\models\Form;
 
@@ -25,12 +25,15 @@ final class UserForm extends Form {
      * Add an item to the form errors array
      * 
      * @access public
-     * @package PhpTraining2\models
-     * @param string $name Error name: hasEmptyFields, emailInvalid, emailAlreadyUsed, password, price, passwordsDontMatch
+     * @package PhpTraining2\models\forms
+     * @param string $name Error name: emailInvalid, emailAlreadyUsed, password, passwordsDontMatch
      */
 
      public function addValidationError(string $name): void {
         switch ($name) {
+            case "hasEmptyFields":
+                $this->setValidationError("hasEmptyFields", "All required fields must be filled.");
+                break;
             case 'emailInvalid':
                 $this->setValidationError("emailInvalid", "Invalid email.");
                 break;
@@ -47,16 +50,8 @@ final class UserForm extends Form {
         }
     }
 
-    /**
-     * Get input data
-     * 
-     * @access public
-     * @package PhpTraining2\controllers
-     * @param string $formType Types: "signIn", "signUp"
-     * @return array
-     */
 
-     public function getInputData(string $formType): array {
+    public function getInputData(string $formType): array {
         $data = [];
 
         switch ($formType) {

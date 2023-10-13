@@ -7,9 +7,9 @@ use PhpTraining2\models\ProductInterface;
 
 final class Weapon extends Product implements ProductInterface {
 
-    private const DEFAULT_SPECIFIC_DATA = ["ideal_range" => "medium"];
+    public const DEFAULT_SPECIFIC_DATA = ["ideal_range" => "medium"];
 
-    private const SELECT_OPTIONS = [
+    public const SELECT_OPTIONS = [
         "questions" => ["ideal_range" => "What is the ideal range for this weapon?"],
         "answers" => [
             "ideal_range" => [

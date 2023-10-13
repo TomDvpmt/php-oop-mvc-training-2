@@ -7,9 +7,9 @@ use PhpTraining2\models\ProductInterface;
 
 final class Protection extends Product implements ProductInterface {
 
-    private const DEFAULT_SPECIFIC_DATA = ["type" => "hard to say", "resistance" => "medium"];
+    public const DEFAULT_SPECIFIC_DATA = ["type" => "hard to say", "resistance" => "medium"];
 
-    private const SELECT_OPTIONS = [
+    public const SELECT_OPTIONS = [
         "questions" => [
             "type" => "What kind of protection does this beauty provide?",
             "resistance" => "How resistant is it?"

@@ -2,6 +2,8 @@
 
 namespace PhpTraining2\core;
 
+use PhpTraining2\models\FormInterface;
+
 trait Controller {
 
     /**
@@ -87,6 +89,23 @@ trait Controller {
     public function getModelNameFromCategoryName($category): string {
         $model = substr($category, -1) === "s" ? substr($category, 0, -1) : $category;
         return "PhpTraining2\\models\\" . ucfirst($model);
+    }
+
+
+    /**
+     * Show the form with error messages for fields that failed validation
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @param Form $form
+     * @param string $page The page where the form is displayed
+     */
+
+    protected function showFormWithErrors(FormInterface $form, string $page): void {
+        $inputData = $form->getInputData($page);
+        $validationErrors = $form->getValidationErrors();
+        
+        $this->view("pages/$page", ["formData" => $inputData, "validationErrors" => $validationErrors]);
     }
 
 

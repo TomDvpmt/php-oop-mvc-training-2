@@ -7,9 +7,9 @@ use PhpTraining2\models\ProductInterface;
 
 final class Book extends Product implements ProductInterface {
 
-    private const DEFAULT_SPECIFIC_DATA = ["genre" => "fantasy"];
+    public const DEFAULT_SPECIFIC_DATA = ["genre" => "fantasy"];
     
-    private const SELECT_OPTIONS = [
+    public const SELECT_OPTIONS = [
         "questions" => ["genre" => "Which genre better defines this book?"],
         "answers" => [
             "genre" => 

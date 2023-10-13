@@ -7,9 +7,9 @@ use PhpTraining2\models\ProductInterface;
 
 final class Vehicle extends Product implements ProductInterface {
 
-    private const DEFAULT_SPECIFIC_DATA = ["airborne" => "occasionally", "aquatic" => "reasonnably"];
+    public const DEFAULT_SPECIFIC_DATA = ["airborne" => "occasionally", "aquatic" => "reasonnably"];
 
-    private const SELECT_OPTIONS = [
+    public const SELECT_OPTIONS = [
         "questions" => [
             "airborne" => "Can it fly?",
             "aquatic" => "Is it aquatic?"

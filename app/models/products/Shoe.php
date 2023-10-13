@@ -7,9 +7,9 @@ use PhpTraining2\models\ProductInterface;
 
 final class Shoe extends Product implements ProductInterface {
     
-    private const DEFAULT_SPECIFIC_DATA = ["waterproof" => "unsure", "usage_intensity" => "on sundays only"];
+    public const DEFAULT_SPECIFIC_DATA = ["waterproof" => "unsure", "usage_intensity" => "on sundays only"];
 
-    private const SELECT_OPTIONS = [
+    public const SELECT_OPTIONS = [
         "questions" => [
             "waterproof" => "Is the shoe waterproof?",
             "usage_intensity" => "What is the maximum usage intensity of this shoe?"

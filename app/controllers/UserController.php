@@ -4,7 +4,7 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\controllers\ControllerInterface;
-use PhpTraining2\models\UserForm;
+use PhpTraining2\models\forms\UserForm;
 use PhpTraining2\models\users\Customer;
 
 class UserController implements ControllerInterface {
@@ -114,21 +114,5 @@ class UserController implements ControllerInterface {
             ]
         ];
         return $data;
-    }
-
-    /**
-     * Show the user form with error messages for fields that failed validation
-     * 
-     * @access private
-     * @package PhpTraining2\controllers
-     * @param UserForm $form
-     * @param string $formType Types: "signIn", "signUp"
-     */
-
-    private function showFormWithErrors(UserForm $form, string $formType): void {
-        $inputData = $form->getInputData($formType);
-        $validationErrors = $form->getValidationErrors();
-        $this->view("pages/signup", ["formData" => $inputData, "validationErrors" => $validationErrors]);
-    }
-    
+    }  
 }
