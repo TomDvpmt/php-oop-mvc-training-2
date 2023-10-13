@@ -12,7 +12,7 @@ trait Database {
      * 
      * @access private
      * @package PhpTraining2\core
-     * @return object
+     * @return PDO
      */
     
     private function connect() {

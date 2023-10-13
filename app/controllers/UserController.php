@@ -4,14 +4,14 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\controllers\ControllerInterface;
-use PhpTraining2\models\User;
 use PhpTraining2\models\UserForm;
+use PhpTraining2\models\users\Customer;
 
 class UserController implements ControllerInterface {
     use Controller;
 
     public function index(): void {
-        $user = new User();
+        // $user = new User();
         $this->executeMethodIfExists();
     }
 
@@ -39,56 +39,20 @@ class UserController implements ControllerInterface {
                 $this->index($dataInSession);
             }
 
-            $data = [ // beware of properties order, must match class User constructor (TODO : find a better way to do this)
-                "notToValidate" => [
-                    "id" => 0,                 
-                    "isAdmin" => 0,
-                ],
-                "toValidate" => [
-                    "firstName" => [
-                        "type" => "text", 
-                        "value" => $_POST["firstName"], 
-                        "name" => "firstName"
-                    ],
-                    "lastName" => [
-                        "type" => "text", 
-                        "value" => $_POST["lastName"], 
-                        "name" => "lastName"
-                    ],
-                    "email" => [
-                        "type" => "email", 
-                        "value" => $_POST["email"], 
-                        "name" => "email"
-                    ],
-                ],
-                "password" => [
-                    "password" => password_hash($_POST["password"], PASSWORD_DEFAULT)
-                ]
-            ];
-            
-            $validated = $form->validate($data["toValidate"]);
+            $tempData = $this->getTempData();
+            $validated = $form->validate($tempData["toValidate"]);
 
-            $inputData = [
-                "email" => $_POST["email"],
-                "firstName" => $_POST["firstName"],
-                "lastName" => $_POST["lastName"],
-                "password" => $_POST["password"],
-                "passwordConfirm" => $_POST["passwordConfirm"],
-            ];
-            
             if(!$validated) {
-                $validationErrors = $form->getValidationErrors();
-                $this->view("pages/signup", ["formData" => $inputData, "validationErrors" => $validationErrors]);
+                $this->showFormWithErrors($form, "signUp");
             } else {
-                $fullData = array_merge($data["notToValidate"], $validated, $data["password"]);
-                $user = new User(...$fullData);
+                $finalSignUpData = array_merge($tempData["notToValidate"], $validated, $tempData["password"]);
+                $customer = new Customer(...$finalSignUpData);
                 
-                if(!empty($user->findOne("email = :email"))) {
+                if(!empty($customer->findOne("email = :email"))) {
                     $form->addValidationError("emailAlreadyUsed");
-                    $validationErrors = $form->getValidationErrors();
-                    $this->view("pages/signup", ["formData" => $inputData, "validationErrors" => $validationErrors]);
+                    $this->showFormWithErrors($form, "signUp");
                 } else {
-                    $user->createOne();
+                    $customer->createOne();
                 };
             }
         }
@@ -99,5 +63,72 @@ class UserController implements ControllerInterface {
         $this->view("pages/signin");
     }
 
+    /**
+     * Get hashed password
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @param string $password The password entered by the user
+     * @return string
+     */
+
+     private function getHashedPassword(string $password): string {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        return $hash;
+    }
+
+
+    /**
+     * Get signup data
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @return array
+     */
+
+    private function getTempData(): array {
+        $data = [ // beware of properties order, must match class User constructor (TODO : find a better way to do this)
+            "notToValidate" => [
+                "id" => 0,                 
+                "isAdmin" => 0, // TODO : dynamic
+            ],
+            "toValidate" => [
+                "firstName" => [
+                    "type" => "text", 
+                    "value" => $_POST["firstName"], 
+                    "name" => "firstName"
+                ],
+                "lastName" => [
+                    "type" => "text", 
+                    "value" => $_POST["lastName"], 
+                    "name" => "lastName"
+                ],
+                "email" => [
+                    "type" => "email", 
+                    "value" => $_POST["email"], 
+                    "name" => "email"
+                ],
+            ],
+            "password" => [
+                "password" => $this->getHashedPassword($_POST["password"])
+            ]
+        ];
+        return $data;
+    }
+
+    /**
+     * Show the user form with error messages for fields that failed validation
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @param UserForm $form
+     * @param string $formType Types: "signIn", "signUp"
+     */
+
+    private function showFormWithErrors(UserForm $form, string $formType): void {
+        $inputData = $form->getInputData($formType);
+        $validationErrors = $form->getValidationErrors();
+        $this->view("pages/signup", ["formData" => $inputData, "validationErrors" => $validationErrors]);
+    }
     
 }

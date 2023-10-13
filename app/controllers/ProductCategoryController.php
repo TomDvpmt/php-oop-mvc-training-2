@@ -4,6 +4,7 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\models\ProductCategory;
+use PhpTraining2\models\Product;
 
 class ProductCategoryController extends ProductsController implements ControllerInterface {
 
@@ -100,10 +101,10 @@ class ProductCategoryController extends ProductsController implements Controller
      * @access private
      * @package PhpTraining2\controllers
      * @param object $result i.e. a result (row) of a find() query
-     * @return object
+     * @return Product
      */
 
-    protected function getProductObject(object $result): object {
+    protected function getProductObject(object $result): Product {
         $specificProperties = $this->productCategoryObject->getSpecificProperties();
         $specificData = array_filter((array) $result, fn($key) => in_array($key, $specificProperties), ARRAY_FILTER_USE_KEY);
 

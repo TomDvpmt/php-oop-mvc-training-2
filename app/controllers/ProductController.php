@@ -9,6 +9,13 @@ use PhpTraining2\models\Thumbnail;
 
 class ProductController extends ProductsController implements ControllerInterface {
 
+    protected const GENERIC_PROPERTIES = [
+        "name" => "text", 
+        "description" => "text", 
+        "special_features" => "text", 
+        "limitations" => "text", 
+        "price" => "number"
+    ];
     protected const REQUIRED_GENERIC_PROPERTIES = ["name", "description", "price"];
     protected const DEFAULT_THUMBNAIL = "default_product_thumbnail.webp"; // TODO: put a default img in the default folder
     
@@ -88,14 +95,8 @@ class ProductController extends ProductsController implements ControllerInterfac
                 }
 
                 /* Input data validation */
-                $genericToValidate = [
-                    "name" => ["type" => "text", "value" => $_POST["name"], "name" => "name"],
-                    "description" => ["type" => "text", "value" => $_POST["description"], "name" => "description"],
-                    "special_features" => ["type" => "text", "value" => $_POST["special_features"], "name" => "special_features"],
-                    "limitations" => ["type" => "text", "value" => $_POST["limitations"], "name" => "limitations"],
-                    "price" => ["type" => "number", "value" => $_POST["price"], "name" => "price"],
-                ];
                 
+                $genericToValidate = $this->getGenericToValidate();                
                 $genericValidated = $form->validate($genericToValidate);
                 $specificToValidate = $form->getSpecificData($specificProperties);
                 $specificValidated = $form->validate($specificToValidate);
@@ -117,8 +118,6 @@ class ProductController extends ProductsController implements ControllerInterfac
                     "limitations" => $genericValidated["limitations"],
                     "price" => $genericValidated["price"],
                 ];
-
-                show($genericData);
 
                 $model = "PhpTraining2\models\products\\" . $this->model;
     
@@ -166,6 +165,23 @@ class ProductController extends ProductsController implements ControllerInterfac
             array_push($html, $formFieldHtml);
         }
         return implode("", $html);
+    }
+
+
+    /**
+     * Get generic data to validate
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @return array
+     */
+
+    private function getGenericToValidate(): array {
+        $genericToValidate = [];
+        foreach (self::GENERIC_PROPERTIES as $key => $value) {
+            $genericToValidate[$key] = ["type" => $value, "value" => $_POST[$key], "name" => $key];
+        }
+        return $genericToValidate;
     }
 
 

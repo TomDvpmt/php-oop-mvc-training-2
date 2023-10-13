@@ -5,7 +5,7 @@ namespace PhpTraining2\models;
 use PhpTraining2\core\Model;
 use RuntimeException;
 
-class User {
+abstract class User implements UserInterface {
     use Model;
 
     public function __construct(
@@ -37,20 +37,11 @@ class User {
         $this->id = intval($id);
     }
 
-    /**
-     * Get a user from the database
-     * 
-     * @access public
-     * @package PhpTraining2\models
-     * @param string $selector Example : "email = :email"
-     */
-
     public function findOne(string $selector): object {
         $this->setWhere($selector);
         $result = $this->find(["email" => $this->email]);
         return $result;
     }
-
 
     public function createOne() {
         $this->create([
@@ -61,7 +52,11 @@ class User {
         ]);
     }
 
-    public function signin() {
+    public function signIn() {
+        //
+    }
+
+    public function signOut() {
         //
     }
 
@@ -73,7 +68,7 @@ class User {
         //
     }
 
-    public function isUserLoggedIn(): bool {
+    public function isUserSignedIn(): bool {
         return $_SESSION["user"]["id"];
     }
 

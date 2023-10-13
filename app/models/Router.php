@@ -24,10 +24,10 @@ class Router {
      * 
      * @access private
      * @package PhpTraining2\models
-     * @return object
+     * @return Route
      */
 
-    private function createRoute(): object {
+    private function createRoute(): Route {
 
         $path = $_GET["url"] ?? "home";        
         $params = $_GET;

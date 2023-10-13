@@ -5,21 +5,25 @@ namespace PhpTraining2\models;
 interface UserInterface {
 
     /**
-     * Find a user
+     * Get a user from the database
      * 
      * @access public
      * @package PhpTraining2\models
+     * @param string $selector Example : "email = :email"
      * @return object
      */
-    function findOne(): object;
+    
+    function findOne(string $selector): object;
 
     function createOne();
 
-    function signin();
+    function signIn();
+
+    function signOut();
 
     function updateOne();
 
     function deleteOne();
 
-    function isUserLoggedIn(): bool;
+    function isUserSignedIn(): bool;
 }

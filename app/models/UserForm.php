@@ -46,4 +46,42 @@ final class UserForm extends Form {
                 break;
         }
     }
+
+    /**
+     * Get input data
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     * @param string $formType Types: "signIn", "signUp"
+     * @return array
+     */
+
+     public function getInputData(string $formType): array {
+        $data = [];
+
+        switch ($formType) {
+            case 'signIn':
+                $data = [
+                    "email" => $_POST["email"],
+                    "password" => $_POST["password"],
+                ];
+                break;
+
+            case 'signUp':
+                $data = [
+                    "email" => $_POST["email"],
+                    "firstName" => $_POST["firstName"],
+                    "lastName" => $_POST["lastName"],
+                    "password" => $_POST["password"],
+                    "passwordConfirm" => $_POST["passwordConfirm"],
+                ];
+                break;
+            
+            default:
+                $data = [];
+                break;
+        }
+        
+        return $data;
+    }
 }
