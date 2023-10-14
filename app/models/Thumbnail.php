@@ -2,7 +2,11 @@
 
 namespace PhpTraining2\models;
 
+use Exception;
+use PhpTraining2\models\exceptions\FileSizeException;
+use PhpTraining2\models\exceptions\FileTypeException;
 use RuntimeException;
+use PhpTraining2\models\Product;
 
 class Thumbnail {
 
@@ -25,30 +29,25 @@ class Thumbnail {
      */
 
     public function upload(): array {
-        try {
-            $this->checkParameters();
+        $this->checkParameters();
 
-            $this->fileName = $_FILES["thumbnail"]["name"];
-            $this->fileSize = $_FILES["thumbnail"]["size"];
-            $this->fileTmp = $_FILES["thumbnail"]["tmp_name"];
-            
-            $fileNameArr = explode(".", $this->fileName);
-            $this->fileExtension = strtolower(end($fileNameArr));
-            $this->fileFinalName = time() . "_" . $this->fileName;
-            
-            $this->checkType();
-            $this->checkSize();
-            $this->checkPermissionOnFolder();
+        $this->fileName = $_FILES["thumbnail"]["name"];
+        $this->fileSize = $_FILES["thumbnail"]["size"];
+        $this->fileTmp = $_FILES["thumbnail"]["tmp_name"];
+        
+        $fileNameArr = explode(".", $this->fileName);
+        $this->fileExtension = strtolower(end($fileNameArr));
+        $this->fileFinalName = time() . "_" . $this->fileName;
+        
+        $this->checkType();
+        $this->checkSize();
+        $this->checkPermissionOnFolder();
 
-            if(!empty($this->errors)) {
-                return ["thumbnail" => false, "errors" => $this->errors];
-            } 
-            $this->saveFile();
-            return ["thumbnail" => $this->fileFinalName, "errors" => []];   
-            
-        } catch (RuntimeException $e) {
-            echo $e->getMessage();
-        }
+        if(!empty($this->errors)) {
+            return ["thumbnail" => false, "errors" => $this->errors];
+        } 
+        $this->saveFile();
+        return ["thumbnail" => $this->fileFinalName, "errors" => []];   
     }
 
     /**
@@ -59,7 +58,7 @@ class Thumbnail {
      */
 
      private function saveFile(): void {
-        if(!move_uploaded_file($this->fileTmp, PRODUCTS_THUMBS_DIR . $this->fileFinalName)) {
+        if(!move_uploaded_file($this->fileTmp, Product::PRODUCTS_THUMBS_DIR . $this->fileFinalName)) {
             throw new RuntimeException("An error occured while saving the file.");
         }
     }
@@ -87,7 +86,7 @@ class Thumbnail {
             !isset($_FILES["thumbnail"]['error']) ||
             is_array($_FILES["thumbnail"]['error'])
         ) {
-            throw new RuntimeException('Invalid parameters.');
+            throw new RuntimeException('Invalid parameters.'); // TODO
         }
     }
 
@@ -100,7 +99,7 @@ class Thumbnail {
 
     private function checkType(): void {
         if(!in_array($this->fileExtension, self::ALLOWED_EXTENSIONS)) {
-            array_push($this->errors, "Incorrect file format. Allowed formats: avif, bmp, jpg, jpeg, png, webp.");
+            throw new FileTypeException(self::ALLOWED_EXTENSIONS);
         }
     }
 
@@ -112,9 +111,9 @@ class Thumbnail {
      */
 
     private function checkSize(): void {
-        if($this->fileSize > self::MAX_SIZE) {
-            $megaBytes = number_format((float) self::MAX_SIZE / 1000000, 2, ".", ",");
-            array_push($this->errors, "File size must not exceed $megaBytes MB.");
+        $maxSize = self::MAX_SIZE;
+        if($this->fileSize > $maxSize) {
+            throw new FileSizeException($maxSize);
         }
     } 
 
@@ -126,8 +125,8 @@ class Thumbnail {
      */
 
     private function checkPermissionOnFolder(): void {
-        if(!is_writable(PRODUCTS_THUMBS_DIR)) {
-            throw new RuntimeException("The products thumbnails directory is not writable.");
+        if(!is_writable(Product::PRODUCTS_THUMBS_DIR)) {
+            throw new RuntimeException("The products thumbnails directory is not writable."); // TODO : show to developers, not user
         }
     }
     

@@ -24,7 +24,7 @@ ob_start()?>
     </div>
     <div class="form__field">
         <label for="price">* Price:</label>
-        <input type="number" name="price" min="0" id="price"/>
+        <input type="number" name="price" min="1" id="price"/>
     </div>
     <div class="form__specific-fields">
         <?= $data["specificAddFormHtml"] ?>

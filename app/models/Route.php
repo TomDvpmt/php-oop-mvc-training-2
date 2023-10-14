@@ -73,7 +73,7 @@ class Route {
             $productController = new ProductController();
             
             if(method_exists($productController, $last)) {
-                $this->method = $last;
+                $this->setMethod($last);
                 return;
             }
             
@@ -83,5 +83,16 @@ class Route {
         }
 
         $this->controllerName = $controllerName;
+    }
+
+    /**
+     * Set method
+     * 
+     * @access private
+     * @package PhpTraining2\models
+     */
+
+    private function setMethod(string $method): void {
+        $this->method = $method;
     }
 }

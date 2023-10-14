@@ -4,7 +4,7 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\controllers\ControllerInterface;
-use PhpTraining2\models\forms\UserForm;
+use PhpTraining2\models\forms\UserFormSignUp;
 use PhpTraining2\models\users\Customer;
 
 class UserController implements ControllerInterface {
@@ -25,9 +25,9 @@ class UserController implements ControllerInterface {
 
     public function signup() {
         if(isset($_POST["submit"])) { 
-            $form = new UserForm();
-            $form->setRequired($form::REGISTER_REQUIRED);
-            $dataInSession = $form->setFormDataInSession($form::REGISTER_TO_VALIDATE);
+            $form = new UserFormSignUp();
+            $form->setRequired($form::SIGNUP_REQUIRED);
+            $dataInSession = $form->setFormDataInSession($form::SIGNUP_TO_VALIDATE);
             
             if($form->hasEmptyFields()) {
                 $form->setEmptyFieldsError();
@@ -39,7 +39,7 @@ class UserController implements ControllerInterface {
                 $this->index($dataInSession);
             }
 
-            $tempData = $this->getTempData();
+            $tempData = $this->getTempSignUpData();
             $validated = $form->validate($tempData["toValidate"]);
 
             if(!$validated) {
@@ -59,22 +59,16 @@ class UserController implements ControllerInterface {
         $this->view("pages/signup");
     }
 
-    public function signin() {
-        $this->view("pages/signin");
-    }
-
     /**
-     * Get hashed password
+     * Sign a user in
      * 
-     * @access private
+     * @access public
      * @package PhpTraining2\controllers
-     * @param string $password The password entered by the user
-     * @return string
      */
 
-     private function getHashedPassword(string $password): string {
-        $hash = password_hash($password, PASSWORD_DEFAULT);
-        return $hash;
+    public function signin() {
+        // TODO
+        $this->view("pages/signin");
     }
 
 
@@ -86,11 +80,11 @@ class UserController implements ControllerInterface {
      * @return array
      */
 
-    private function getTempData(): array {
+    private function getTempSignUpData(): array {
         $data = [ // beware of properties order, must match class User constructor (TODO : find a better way to do this)
             "notToValidate" => [
                 "id" => 0,                 
-                "isAdmin" => 0, // TODO : dynamic
+                "isAdmin" => 0,
             ],
             "toValidate" => [
                 "firstName" => [
@@ -115,4 +109,19 @@ class UserController implements ControllerInterface {
         ];
         return $data;
     }  
+
+
+    /**
+     * Get hashed password
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @param string $password The password entered by the user
+     * @return string
+     */
+
+     private function getHashedPassword(string $password): string {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        return $hash;
+    }
 }

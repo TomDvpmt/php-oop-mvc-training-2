@@ -1,6 +1,6 @@
 <?php 
 
-$thumbnail = ROOT. PRODUCTS_THUMBS_DIR . $this->genericData['thumbnail'];
+$thumbnail = ROOT. self::PRODUCTS_THUMBS_DIR . $this->genericData['thumbnail'];
 
 ob_start();?>
 <br />

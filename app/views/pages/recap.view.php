@@ -8,16 +8,14 @@ foreach($data["billingInfo"] as $key => $value) {
     ob_start();?>
     <p class="recap__billing-info__field"><?=ucfirst($key)?>: <?=$value?></p>
     <?php $field = ob_get_clean();
-
-    array_push($billingGrid, $field);
+    $billingGrid[] = $field;
 }
 
 foreach($data["items"] as $item) {
     ob_start();
     require VIEWS_DIR . "partials/recap-card.php";
     $card = ob_get_clean();
-
-    array_push($itemsGrid, $card);
+    $itemsGrid[] = $card;
 }
 
 

@@ -2,6 +2,11 @@
 
 namespace PhpTraining2\models;
 
+use PhpTraining2\models\exceptions\FormEmailException;
+use PhpTraining2\models\exceptions\FormEmptyFieldException;
+use PhpTraining2\models\exceptions\FormNumberException;
+use PhpTraining2\models\exceptions\FormPasswordLengthException;
+
 abstract class Form implements FormInterface {
 
     public function __construct(
@@ -75,7 +80,7 @@ abstract class Form implements FormInterface {
 
     public function setEmptyFieldsError(): void {
         if($this->hasEmptyFields()) {
-            $this->addValidationError("hasEmptyFields");
+            throw new FormEmptyFieldException();
         }
     }
 
@@ -126,19 +131,22 @@ abstract class Form implements FormInterface {
             switch($input["type"]) {
                 case "email":
                     $validated = filter_var($sanitizedInput["value"], FILTER_VALIDATE_EMAIL);
+                    if(!$validated) throw new FormEmailException();
                     break;
                 case "password":
-                    $validated = strlen($sanitizedInput["value"]) > 8;
+                    $validated = strlen($sanitizedInput["value"]) > 8; // TODO : dynamic min length
+                    if(!$validated) throw new FormPasswordLengthException(8); // TODO : dynamic min length
                     break;
                 case "number":
                     $validated = filter_var($sanitizedInput["value"], FILTER_VALIDATE_INT);
+                    if(!$validated) throw new FormNumberException();
                     break;
                 default:
                     $validated = $sanitizedInput;
                     break;
             }
         }
-        if(!$validated) $this->addValidationError($input["name"]);
+        // if(!$validated) $this->addValidationError($input["name"]);
         return $validated ? $sanitizedInput["value"] : false;
     }
 

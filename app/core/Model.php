@@ -87,22 +87,21 @@ trait Model {
      protected function query($query, $params = []): mixed {
         $pdo = $this->connect();
 
-        try {
-            $statement = $pdo->prepare($query);
-            $check = $statement->execute($params);
-            if($check) {
-                $result = $statement->fetchAll(PDO::FETCH_OBJ);
-                if(is_array($result) && count($result)) {
-                    return $result;
-                }
-            }
+        $statement = $pdo->prepare($query);
+        $check = $statement->execute($params);
+        if(!$check) {
             $statement = null;
             $pdo = null;
-            return false;
-
-        } catch(Exception $e) {
-            die("Error : " . $e->getMessage());
+            throw new Exception("PDO statement execution error.");
         }
+
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+        if(!is_array($result)) {
+            throw new Exception("PDO statement fetching error.");
+        }
+        if(!count($result)) return false;
+
+        return $result;
     }
 
     /**
@@ -153,7 +152,6 @@ trait Model {
         $columns = implode(",", array_keys($data));
         $values = implode(",", array_map(fn($item) => ":" . $item, array_keys($data)));
         $query = "INSERT INTO $this->table ($columns) VALUES ($values);";
-        
         $this->query($query, $data);
     }
 

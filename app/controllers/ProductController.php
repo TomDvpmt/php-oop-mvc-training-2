@@ -3,8 +3,11 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\controllers\ControllerInterface;
-use PhpTraining2\models\forms\ProductForm;
+use PhpTraining2\models\exceptions\FormEmptyFieldException;
+use PhpTraining2\models\exceptions\ProductCreateException;
+use PhpTraining2\models\forms\ProductFormAdd;
 use PhpTraining2\models\Thumbnail;
+use RuntimeException;
 
 class ProductController extends ProductsController implements ControllerInterface {
     
@@ -62,32 +65,44 @@ class ProductController extends ProductsController implements ControllerInterfac
             $product = new $model;
             $specificProperties = array_keys($product::DEFAULT_SPECIFIC_DATA);
             
-            /* Form validation */
-            $form = new ProductForm();
+            $form = new ProductFormAdd();
             $form->setRequired(array_merge($product::REQUIRED_GENERIC_PROPERTIES, $specificProperties));
             
-            if($form->hasEmptyFields()) {
-                show("empty fields");
+            /* Check for empty required inputs */
+            try {
                 $form->setEmptyFieldsError();
-                // TODO : show form with already filled values and error message
+            } catch (FormEmptyFieldException $e) {
+                echo $e->getMessage(); // TODO
                 return;
-            }  
+            }
 
-            $validatedData = $form->validateProductForm($product);
-            if(!$validatedData) {
-                show("There are errors!"); // TODO : deal with errors
+            /* Validate form inputs */
+            try {
+                $validatedData = $form->validateProductForm($product);
+            } catch (RuntimeException $e) {
+                echo $e->getMessage(); // TODO
                 return;
-                // $this->showFormWithErrors($form, "products/add");
             }
             
             /* Thumbnail upload check */
-            $thumbnail = $this->getUploadedThumbnail();
-            $validatedData["generic"]["thumbnail"] = $thumbnail ?? $product::DEFAULT_THUMBNAIL;
+            try {
+                $upload = $this->getUploadedThumbnail();
+            } catch (RuntimeException $e) {
+                echo $e->getMessage(); // TODO
+                return;
+            }
             
-            /* Creating the product */
+            /* Create the product */
+            $validatedData["generic"]["thumbnail"] = $upload["thumbnail"] ?? $product::DEFAULT_THUMBNAIL;
             $formatedGenericData = $this->getFormatedGenericData($validatedData);
             $product->setGenericData($formatedGenericData);
-            $product->createSpecificProduct($validatedData["specific"]);
+            
+            try {
+                $product->createSpecificProduct($validatedData["specific"]);
+            } catch (ProductCreateException $e) {
+                echo $e->getMessage(); // TODO
+                return;
+            }
 
             $successMessage = "Product added."; // TODO : show success message in destination page           
             header("Location: " . ROOT . "products/" . $this->category);
@@ -112,13 +127,12 @@ class ProductController extends ProductsController implements ControllerInterfac
         $selectOptions = (new $model)->getSelectOptions();
         $html = [];
         foreach ($selectOptions["questions"] as $key => $value) {
-            $options = [];
             $question = $value;
-            array_push($options, "<option value=''>--</option>");
+            $options[] = "<option value=''>--</option>";
             $answers = $selectOptions["answers"][$key];
             foreach ($answers as $answer) {
                 $optionLabel = ucfirst($answer);
-                array_push($options, "<option value='$answer'>$optionLabel</option>");
+                $options[] = "<option value='$answer'>$optionLabel</option>";
             }
             $optionsHtml = implode("", $options);
             $formFieldHtml= "
@@ -127,7 +141,7 @@ class ProductController extends ProductsController implements ControllerInterfac
                     <select name='$key' id='$key'>$optionsHtml</select>
                 </div>    
             ";
-            array_push($html, $formFieldHtml);
+            $html[] = $formFieldHtml;
         }
         return implode("", $html);
     }
@@ -137,16 +151,16 @@ class ProductController extends ProductsController implements ControllerInterfac
      * 
      * @access private
      * @package PhpTraining2\controllers
-     * @return string|bool
+     * @return array
      */
 
-    private function getUploadedThumbnail(): string|bool {
+    private function getUploadedThumbnail(): array|bool {
         if(!file_exists($_FILES['thumbnail']['tmp_name']) || !is_uploaded_file($_FILES['thumbnail']['tmp_name'])) {
             return false;
         }
         $thumb = new Thumbnail();
-        $upload = $thumb->upload();
-        return $upload["thumbnail"];
+        $uploaded = $thumb->upload();
+        return $uploaded;
     }
 
 

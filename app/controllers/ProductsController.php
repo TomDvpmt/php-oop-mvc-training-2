@@ -15,6 +15,18 @@ abstract class ProductsController {
 
     public function __construct()
     {
+        $this->setProductCategoryFromURL();
+        $this->model = getModelNameFromCategoryName($this->category);
+    }
+
+    /**
+     * Set product category if given in URL
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     */
+
+    private function setProductCategoryFromURL(): void {
         $pathChunks = $this->getPathChunks();
         $lastChunk = end($pathChunks);
         
@@ -25,7 +37,5 @@ abstract class ProductsController {
         if(isset($_GET["category"])) {
             $this->category = $_GET["category"];
         }    
-
-        $this->model = getModelNameFromCategoryName($this->category);
     }
 }

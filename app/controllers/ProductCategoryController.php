@@ -87,8 +87,8 @@ class ProductCategoryController extends ProductsController implements Controller
             ];
         } else {
             foreach($results as $result) {
-                $product = $this->getProductObject($result);                
-                array_push($content, $product->getProductCardHtml());
+                $product = $this->getProductObject($result);
+                $content[] = $product->getProductCardHtml();              
             }
         }
         return $content;

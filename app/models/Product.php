@@ -2,7 +2,9 @@
 
 namespace PhpTraining2\models;
 
+use Exception;
 use PhpTraining2\core\Model;
+use PhpTraining2\models\exceptions\ProductCreateException;
 use PhpTraining2\models\ProductInterface;
 
 abstract class Product implements ProductInterface {
@@ -16,6 +18,7 @@ abstract class Product implements ProductInterface {
         "price" => "number"
     ];
     public const REQUIRED_GENERIC_PROPERTIES = ["name", "description", "price"];
+    public const PRODUCTS_THUMBS_DIR = "assets/images/products/";
     public const DEFAULT_THUMBNAIL = "default_product_thumbnail.webp"; // TODO: put a default img in the default folder
     
     public function __construct(
@@ -108,7 +111,11 @@ abstract class Product implements ProductInterface {
             "price" => $this->genericData["price"],
             "thumbnail" => $this->genericData["thumbnail"],
         ];
-        $this->create($genericData);   
+        try {
+            $this->create($genericData);
+        } catch (Exception) {
+            throw new ProductCreateException("generic");
+        }
         $id = $this->getLastInsertId();
         return $id;
     }
@@ -123,12 +130,16 @@ abstract class Product implements ProductInterface {
 
     public function createSpecificProduct(array $data): void {
         $id = $this->createGenericProduct();
+        $specificData = array_merge(["product_id" => $id], $data);
 
         $this->setTable($this->genericData["category"]);
         $this->setOrderColumn("product_id");
         
-        $specificData = array_merge(["product_id" => $id], $data);
-        $this->create($specificData);
+        try {
+            $this->create($specificData);
+        } catch (Exception) {
+            throw new ProductCreateException("specific");
+        }
     }
 
 
@@ -164,7 +175,7 @@ abstract class Product implements ProductInterface {
         $specificData = $this->getProductSpecificData();
         foreach ($specificData as $key => $value) {
             $label = ucfirst($key);
-            array_push($specificHtml, "<p class='product__$key'><span>$label: </span>$value</p>");
+            $specificHtml[] = "<p class='product__$key'><span>$label: </span>$value</p>";
         }
 
         return implode("", $specificHtml);
@@ -179,7 +190,7 @@ abstract class Product implements ProductInterface {
 
     public function deleteThumbnailFile(): void {
         $productData = $this->getProductData();
-        $path = PRODUCTS_THUMBS_DIR . $productData["genericData"]["thumbnail"];
+        $path = self::PRODUCTS_THUMBS_DIR . $productData["genericData"]["thumbnail"];
         unlink($path);
     }
 
