@@ -4,6 +4,7 @@ namespace PhpTraining2\core;
 
 use PDO;
 use Exception;
+use PDOException;
 use PhpTraining2\core\Database;
 
 trait Model {
@@ -81,27 +82,33 @@ trait Model {
      * @package PhpTraining2\core
      * @param string $query The SQL query string
      * @param array $params The parameters of the query
-     * @return mixed
+     * @return array|bool
      */
 
-     protected function query($query, $params = []): mixed {
-        $pdo = $this->connect();
+     protected function query($query, $params = []): array|bool {
+        
+        try {
+            $pdo = $this->connect();
+            $statement = $pdo->prepare($query);
+            $check = $statement->execute($params);
+            if(!$check) {
+                throw new PDOException("PDO statement execution error.");
+            }
+            $results = $statement->fetchAll(PDO::FETCH_OBJ);
+            if(!is_array($results)) {
+                throw new PDOException("PDO statement fetching error.");
+            }
+            if(!count($results)) {
+                return false;
+            };
 
-        $statement = $pdo->prepare($query);
-        $check = $statement->execute($params);
-        if(!$check) {
+        } catch (Exception $e) {
             $statement = null;
             $pdo = null;
-            throw new Exception("PDO statement execution error.");
+            return false;
         }
 
-        $result = $statement->fetchAll(PDO::FETCH_OBJ);
-        if(!is_array($result)) {
-            throw new Exception("PDO statement fetching error.");
-        }
-        if(!count($result)) return false;
-
-        return $result;
+        return $results;
     }
 
     /**

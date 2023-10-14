@@ -5,6 +5,7 @@ namespace PhpTraining2\controllers;
 use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\exceptions\FormEmptyFieldException;
 use PhpTraining2\exceptions\ProductCreateException;
+use PhpTraining2\exceptions\ProductGetDataException;
 use PhpTraining2\models\forms\ProductFormAdd;
 use PhpTraining2\models\Thumbnail;
 use RuntimeException;
@@ -17,7 +18,11 @@ class ProductController extends ProductsController implements ControllerInterfac
     }
 
     public function index(): void {
-        $data = $this->getFullData();
+        try {
+            $data = $this->getFullData();
+        } catch (ProductGetDataException $e) {
+            $data = ["error" => "Unable to get product data."];
+        }
         $this->view("pages/product", $data);
     }
 
@@ -72,7 +77,8 @@ class ProductController extends ProductsController implements ControllerInterfac
             try {
                 $form->setEmptyFieldsError();
             } catch (FormEmptyFieldException $e) {
-                echo $e->getMessage(); // TODO
+                $this->view("pages/product-add", ["error" => $e->getMessage(), "specificAddFormHtml" => $specificAddFormHtml]);
+                show($_POST);
                 return;
             }
 
@@ -80,7 +86,7 @@ class ProductController extends ProductsController implements ControllerInterfac
             try {
                 $validatedData = $form->validateProductForm($product);
             } catch (RuntimeException $e) {
-                echo $e->getMessage(); // TODO
+                $this->view("pages/product-add", ["error" => $e->getMessage(), "specificAddFormHtml" => $specificAddFormHtml]);
                 return;
             }
             
@@ -88,7 +94,7 @@ class ProductController extends ProductsController implements ControllerInterfac
             try {
                 $upload = $this->getUploadedThumbnail();
             } catch (RuntimeException $e) {
-                echo $e->getMessage(); // TODO
+                $this->view("pages/product-add", ["error" => $e->getMessage(), "specificAddFormHtml" => $specificAddFormHtml]);
                 return;
             }
             
@@ -132,7 +138,8 @@ class ProductController extends ProductsController implements ControllerInterfac
             $answers = $selectOptions["answers"][$key];
             foreach ($answers as $answer) {
                 $optionLabel = ucfirst($answer);
-                $options[] = "<option value='$answer'>$optionLabel</option>";
+                $selected = isset($_POST["submit"]) && $_POST[$key] === $answer ? "selected" : null;
+                $options[] = "<option value='$answer' $selected>$optionLabel</option>";
             }
             $optionsHtml = implode("", $options);
             $formFieldHtml= "

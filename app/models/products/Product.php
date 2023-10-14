@@ -5,6 +5,7 @@ namespace PhpTraining2\models\products;
 use Exception;
 use PhpTraining2\core\Model;
 use PhpTraining2\exceptions\ProductCreateException;
+use PhpTraining2\exceptions\ProductGetDataException;
 use PhpTraining2\models\products\ProductInterface;
 
 abstract class Product implements ProductInterface {
@@ -67,9 +68,14 @@ abstract class Product implements ProductInterface {
 
     private function getProductGenericData(): array {
         $this->setTable("products");
-        $this->setColumns("id, category, name, description, special_features, limitations, price, thumbnail");
+        $allGenericProperties = array_merge(["id", "category", "thumbnail"], array_keys(self::GENERIC_PROPERTIES));
+        $columns = implode(", ", $allGenericProperties);
+        $this->setColumns($columns);
         $this->setWhere("id = :id");
         $genericData = (array) $this->find(["id" => $this->genericData["id"]])[0];
+        if(!$genericData || empty($genericData)) {
+            throw new ProductGetDataException("generic");
+        }
         return $genericData;
     }
 
@@ -87,6 +93,9 @@ abstract class Product implements ProductInterface {
         $this->setColumns("*");
         $this->setWhere("product_id= :product_id");
         $data = (array) $this->find(["product_id" => $this->genericData["id"]])[0];
+        if(!$data || empty($data)) {
+            throw new ProductGetDataException("specific");
+        }
         $specificData = array_filter($data, fn($key) => !in_array($key, ["id", "product_id"]), ARRAY_FILTER_USE_KEY);
         return $specificData;
     }

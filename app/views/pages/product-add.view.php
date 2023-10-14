@@ -2,29 +2,31 @@
 
 $title = "Add a product";
 
+$errorMessage = $data["error"] ?? null;
+
 ob_start()?>
 
 <form action="" method="POST" enctype="multipart/form-data" class="form" >
     <?php echo isset($errorMessage) ? "<p class='error'>" . $errorMessage . "</p>" : null ?>
     <div class="form__field">
         <label for="name">* Name:</label>
-        <input type="text" name="name" id="name"/>
+        <input type="text" name="name" id="name" value="<?=$_POST["name"] ?? ""?>"/>
     </div>
     <div class="form__field">
         <label for="description">* Description:</label>
-        <input type="text" name="description" id="description"/>
+        <input type="text" name="description" id="description" value="<?=$_POST["description"] ?? ""?>"/>
     </div>
     <div class="form__field">
         <label for="special_features">Special features:</label>
-        <input type="text" name="special_features" id="special_features"/>
+        <input type="text" name="special_features" id="special_features" value="<?=$_POST["special_features"] ?? ""?>"/>
     </div>
     <div class="form__field">
         <label for="limitations">Limitations:</label>
-        <input type="text" name="limitations" id="limitations"/>
+        <input type="text" name="limitations" id="limitations" value="<?=$_POST["limitations"] ?? ""?>"/>
     </div>
     <div class="form__field">
         <label for="price">* Price:</label>
-        <input type="number" name="price" min="1" id="price"/>
+        <input type="number" name="price" min="1" id="price" value="<?=$_POST["price"] ?? ""?>"/>
     </div>
     <div class="form__specific-fields">
         <?= $data["specificAddFormHtml"] ?>
