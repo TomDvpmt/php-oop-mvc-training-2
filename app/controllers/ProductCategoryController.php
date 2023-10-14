@@ -2,9 +2,11 @@
 
 namespace PhpTraining2\controllers;
 
+use Exception;
+use LogicException;
 use PhpTraining2\controllers\ControllerInterface;
-use PhpTraining2\models\ProductCategory;
-use PhpTraining2\models\Product;
+use PhpTraining2\models\products\ProductCategory;
+use PhpTraining2\models\products\Product;
 
 class ProductCategoryController extends ProductsController implements ControllerInterface {
 
@@ -38,18 +40,25 @@ class ProductCategoryController extends ProductsController implements Controller
      */
 
      private function showCategories(): void {
-        $productCategoryFiles = array_slice(scandir("assets/images/categories"), 2);
-        $productCategories = array_map(fn($file) => str_replace(".webp", "", $file), $productCategoryFiles);
         $data = [];
-        $data = array_map(function($category) {
-            $categoryObject = new ProductCategory($category);
-            $categoryData = [
-                "name" => $category,
-                "thumbnail" => $categoryObject->getThumbnail()
-            ];
-            return $categoryData;
-        }, $productCategories);
-
+        try {
+            $scanned = scandir(ProductCategory::PRODUCT_CATEGORIES_THUMB_DIR);
+            if(!$scanned) {
+                throw new LogicException("Unable to display product categories.");
+            }
+            $productCategoryFiles = array_slice($scanned, 2);
+            $productCategories = array_map(fn($file) => str_replace(".webp", "", $file), $productCategoryFiles);
+            $data = array_map(function($category) {
+                $categoryObject = new ProductCategory($category);
+                $categoryData = [
+                    "name" => $category,
+                    "thumbnail" => $categoryObject->getThumbnail()
+                ];
+                return $categoryData;
+            }, $productCategories);
+        } catch (Exception $e) {
+            $data = ["error" => $e->getMessage()];
+        }
         $this->view("pages/categories", $data);
     }
 
@@ -61,23 +70,26 @@ class ProductCategoryController extends ProductsController implements Controller
      */
 
      private function showProductsOfCategory(): void {
-        $products = $this->productCategoryObject->getProductsOfCategory();
-        $pageContent = $this->getPageContent($products);
-
-        $this->view("pages/category", $pageContent);
+        try {
+            $products = $this->productCategoryObject->getProductsOfCategory();
+            $pageContent = $this->getPageContent($products);
+            $this->view("pages/category", $pageContent);
+        } catch (Exception $e) {
+            $this->view("pages/category", ["error" => "Unable to display products."]);
+        }
     }
 
 
     /**
      * Get the html content of a products' array
      * 
-     * @access public
+     * @access private
      * @package PhpTraining2\models
      * @param array $results
      * @return array
      */
 
-     public function getPageContent(array $results): array {
+     private function getPageContent(array $results): array {
 
         $content = [];
 
@@ -104,7 +116,7 @@ class ProductCategoryController extends ProductsController implements Controller
      * @return Product
      */
 
-    protected function getProductObject(object $result): Product {
+    private function getProductObject(object $result): Product {
         $model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->model);
         $product = new $model;
         $specificProperties = array_keys($product::DEFAULT_SPECIFIC_DATA);

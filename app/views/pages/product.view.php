@@ -1,6 +1,6 @@
 <?php
 
-use PhpTraining2\models\Product;
+use PhpTraining2\models\products\Product;
 
 $generic = $data["genericData"];
 $title = $generic["name"];

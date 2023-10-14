@@ -1,11 +1,13 @@
 <?php 
 
-namespace PhpTraining2\models;
+namespace PhpTraining2\models\products;
 
 use PhpTraining2\core\Model;
 
 class ProductCategory {
     use Model;
+
+    public const PRODUCT_CATEGORIES_THUMB_DIR = "assets/images/products/categories/";
 
     private string $name = "";
     private array $specificProperties = [];
@@ -68,9 +70,9 @@ class ProductCategory {
      */
 
     public function getThumbnail(): string {
-        $thumbs = array_slice(scandir("assets/images/categories"), 2); // TODO : dynamic path
+        $thumbs = array_slice(scandir(self::PRODUCT_CATEGORIES_THUMB_DIR), 2); // offset = 2 to avoid including "." and ".." directories
         $thumbnail = array_filter($thumbs, fn($thumb) => str_contains($thumb, $this->name));
         $thumbnailFileName = array_values($thumbnail)[0];
-        return "assets/images/categories/" . $thumbnailFileName; // TODO : dynamic path
+        return self::PRODUCT_CATEGORIES_THUMB_DIR . $thumbnailFileName;
     }
 }

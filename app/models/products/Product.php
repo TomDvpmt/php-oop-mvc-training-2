@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpTraining2\models;
+namespace PhpTraining2\models\products;
 
 use Exception;
 use PhpTraining2\core\Model;
-use PhpTraining2\models\exceptions\ProductCreateException;
-use PhpTraining2\models\ProductInterface;
+use PhpTraining2\exceptions\ProductCreateException;
+use PhpTraining2\models\products\ProductInterface;
 
 abstract class Product implements ProductInterface {
     use Model;

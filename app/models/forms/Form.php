@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpTraining2\models;
+namespace PhpTraining2\models\forms;
 
-use PhpTraining2\models\exceptions\FormEmailException;
-use PhpTraining2\models\exceptions\FormEmptyFieldException;
-use PhpTraining2\models\exceptions\FormNumberException;
-use PhpTraining2\models\exceptions\FormPasswordLengthException;
+use PhpTraining2\exceptions\FormEmailException;
+use PhpTraining2\exceptions\FormEmptyFieldException;
+use PhpTraining2\exceptions\FormNumberException;
+use PhpTraining2\exceptions\FormPasswordLengthException;
 
 abstract class Form implements FormInterface {
 

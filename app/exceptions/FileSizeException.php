@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpTraining2\models\exceptions;
+namespace PhpTraining2\exceptions;
 
 use RuntimeException;
 

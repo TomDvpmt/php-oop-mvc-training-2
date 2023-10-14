@@ -2,7 +2,7 @@
 
 namespace PhpTraining2\models\forms;
 
-use PhpTraining2\models\Form;
+use PhpTraining2\models\forms\Form;
 
 abstract class ProductForm extends Form {
     

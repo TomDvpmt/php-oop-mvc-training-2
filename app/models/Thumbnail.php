@@ -2,11 +2,10 @@
 
 namespace PhpTraining2\models;
 
-use Exception;
-use PhpTraining2\models\exceptions\FileSizeException;
-use PhpTraining2\models\exceptions\FileTypeException;
+use PhpTraining2\exceptions\FileSizeException;
+use PhpTraining2\exceptions\FileTypeException;
 use RuntimeException;
-use PhpTraining2\models\Product;
+use PhpTraining2\models\products\Product;
 
 class Thumbnail {
 

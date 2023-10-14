@@ -2,7 +2,7 @@
 
 namespace PhpTraining2\core;
 
-use PhpTraining2\models\FormInterface;
+use PhpTraining2\models\forms\FormInterface;
 
 trait Controller {
 

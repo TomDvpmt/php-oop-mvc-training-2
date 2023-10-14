@@ -2,8 +2,8 @@
 
 namespace PhpTraining2\models\products;
 
-use PhpTraining2\models\Product;
-use PhpTraining2\models\ProductInterface;
+use PhpTraining2\models\products\Product;
+use PhpTraining2\models\products\ProductInterface;
 
 final class Shoe extends Product implements ProductInterface {
     

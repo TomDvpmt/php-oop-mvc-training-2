@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpTraining2\models;
+namespace PhpTraining2\models\products;
 
 interface ProductInterface {
 

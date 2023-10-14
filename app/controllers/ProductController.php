@@ -3,8 +3,8 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\controllers\ControllerInterface;
-use PhpTraining2\models\exceptions\FormEmptyFieldException;
-use PhpTraining2\models\exceptions\ProductCreateException;
+use PhpTraining2\exceptions\FormEmptyFieldException;
+use PhpTraining2\exceptions\ProductCreateException;
 use PhpTraining2\models\forms\ProductFormAdd;
 use PhpTraining2\models\Thumbnail;
 use RuntimeException;
