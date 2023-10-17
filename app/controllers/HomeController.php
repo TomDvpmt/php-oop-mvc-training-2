@@ -24,6 +24,8 @@ class HomeController implements ControllerInterface {
     /**
      * Increment home page visits count for this session
      * 
+     * Usage: for the disclaimer, which is shown only on first visit of the homepage
+     * 
      * @access private
      * @package PhpTraining2\controllers
      */

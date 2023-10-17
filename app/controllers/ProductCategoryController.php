@@ -84,7 +84,7 @@ class ProductCategoryController extends ProductsController implements Controller
      * Get the html content of a products' array
      * 
      * @access private
-     * @package PhpTraining2\models
+     * @package PhpTraining2\controllers
      * @param array $results
      * @return array
      */
@@ -117,8 +117,7 @@ class ProductCategoryController extends ProductsController implements Controller
      */
 
     private function getProductObject(object $result): Product {
-        $model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->model);
-        $product = new $model;
+        $product = new $this->model;
         $specificProperties = array_keys($product::DEFAULT_SPECIFIC_DATA);
         
         $specificData = array_filter(
@@ -138,7 +137,7 @@ class ProductCategoryController extends ProductsController implements Controller
             "price" => $result->price, 
         ];
 
-        $product = new ($model)($genericData, $specificData);
+        $product = new ($this->model)($genericData, $specificData);
         return $product;
     }
 }

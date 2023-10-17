@@ -2,6 +2,7 @@
 
 namespace PhpTraining2\controllers;
 
+use Exception;
 use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\exceptions\FormEmptyFieldException;
 use PhpTraining2\exceptions\ProductCreateException;
@@ -38,9 +39,8 @@ class ProductController extends ProductsController implements ControllerInterfac
      */
 
     private function getFullData(): array {
-        $model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->category);
-        $product = new $model();
-        $productData = $product->getProductData();
+        $product = new $this->model;
+        $productData = $product->getProductDataFromDB();
         $specific = [];
         foreach ($productData["specificData"] as $key => $value) {
             $question = $product->getSelectOptions()["questions"][$key];
@@ -65,9 +65,7 @@ class ProductController extends ProductsController implements ControllerInterfac
         }
         
         if(isset($_POST["submit"])) {
-
-            $model = "PhpTraining2\models\products\\" . $this->model;
-            $product = new $model;
+            $product = new $this->model;
             $specificProperties = array_keys($product::DEFAULT_SPECIFIC_DATA);
             
             $form = new ProductFormAdd();
@@ -78,7 +76,6 @@ class ProductController extends ProductsController implements ControllerInterfac
                 $form->setEmptyFieldsError();
             } catch (FormEmptyFieldException $e) {
                 $this->view("pages/product-add", ["error" => $e->getMessage(), "specificAddFormHtml" => $specificAddFormHtml]);
-                show($_POST);
                 return;
             }
 
@@ -104,7 +101,7 @@ class ProductController extends ProductsController implements ControllerInterfac
             $product->setGenericData($formatedGenericData);
             
             try {
-                $product->createSpecificProduct($validatedData["specific"]);
+                $product->createProduct($validatedData["specific"]);
             } catch (ProductCreateException $e) {
                 echo $e->getMessage(); // TODO
                 return;
@@ -129,11 +126,11 @@ class ProductController extends ProductsController implements ControllerInterfac
      */
 
     private function getSpecificAddFormHtml(): string {
-        $model = "PhpTraining2\models\products\\" . $this->model;
-        $selectOptions = (new $model)->getSelectOptions();
+        $selectOptions = (new $this->model)->getSelectOptions();
         $html = [];
         foreach ($selectOptions["questions"] as $key => $value) {
             $question = $value;
+            $options = [];
             $options[] = "<option value=''>--</option>";
             $answers = $selectOptions["answers"][$key];
             foreach ($answers as $answer) {
@@ -201,10 +198,13 @@ class ProductController extends ProductsController implements ControllerInterfac
      */
 
      public function remove(): void {
-        $model = "PhpTraining2\models\products\\" . $this->model;
-        $product = new $model;
-        $product->deleteThumbnailFile();
-        $product->removeProductFromDB(); 
-        header("Location:" . $this->category);
+        $product = new $this->model;
+        try {
+            $product->deleteThumbnailFile();
+            $product->removeProductFromDB(); 
+            header("Location:" . $this->category);
+        } catch (Exception) {
+            $this->view("pages/error500", ["error" => "Unable to delete the product."]);
+        }
     }
 };

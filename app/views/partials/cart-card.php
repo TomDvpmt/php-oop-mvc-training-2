@@ -1,11 +1,13 @@
-<?php 
+<?php
+
+use PhpTraining2\models\products\Product; // TODO : full path compiling not in the view, but before
 
 $generic = $item["genericData"];
 
 ?>
 
 <article class="product-card product-card--cart" id="<?=$generic["id"]?>">
-    <img class="product-card__img" src="<?=$generic["thumbnail"]?>" alt="<?=$generic["name"]?>">
+    <img class="product-card__img" src="<?=ROOT . Product::PRODUCTS_THUMBS_DIR . $generic["thumbnail"]?>" alt="<?=$generic["name"]?>">
     <h2 class="product-card__name"><?=$generic["name"]?></h2>
     <!-- insert specific -->
     <p class="product-card__price">$ <?=$generic["price"]?></p>

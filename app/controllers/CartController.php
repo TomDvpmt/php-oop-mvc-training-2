@@ -51,7 +51,7 @@ class CartController implements ControllerInterface {
 
         $cart = new Cart($this->cartItems);
         $product = new $model();
-        $data = $product->getProductData();
+        $data = $product->getProductDataFromDB();
 
         if($cart->getOneItem($data["genericData"]["id"])) {
             // TODO : error message

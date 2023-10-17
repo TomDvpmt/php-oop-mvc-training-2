@@ -20,6 +20,10 @@ final class UserFormSignUp extends UserForm {
         parent::__construct();
     }
 
+    /**
+     * @see FormInterface
+     */
+
     public function getInputData(): array {
         $data = [
             "email" => $_POST["email"],

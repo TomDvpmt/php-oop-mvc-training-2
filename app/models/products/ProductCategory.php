@@ -15,9 +15,19 @@ class ProductCategory {
     public function __construct($name)
     {
         $this->name = $name;
+        $this->setSpecificProperties();
+    }
+    
 
-        $productModelName = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($name);
-        
+    /**
+     * Set specific properties of this product category
+     * 
+     * @access private
+     * @package PhpTraining2\models\products
+     */
+    
+    private function setSpecificProperties(): void {
+        $productModelName = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->name);
         $options = (new $productModelName)->getSelectOptions();
         $this->specificProperties = array_keys($options["questions"]);
     }
@@ -26,7 +36,7 @@ class ProductCategory {
      * Get this category's specific properties
      * 
      * @access public
-     * @package PhpTraining2\models
+     * @package PhpTraining2\models\products
      * @return array
      */
 
@@ -38,7 +48,7 @@ class ProductCategory {
      * Get all products of this category
      * 
      * @access public
-     * @package PhpTraining2\models
+     * @package PhpTraining2\models\products
      * @return array
      */
 
@@ -66,7 +76,7 @@ class ProductCategory {
      * Get this category thumbnail's URL
      * 
      * @access public
-     * @package PhpTraining2\models
+     * @package PhpTraining2\models\products
      */
 
     public function getThumbnail(): string {

@@ -17,7 +17,7 @@ if(isset($data["error"])) {
     $generic = $data["genericData"];
     $title = $generic["name"];
 
-    $thumbnailPath = ROOT. Product::PRODUCTS_THUMBS_DIR . $generic["thumbnail"];
+    $thumbnailPath = ROOT. Product::PRODUCTS_THUMBS_DIR . $generic["thumbnail"]; // TODO : full path compiling not in the view, but before
 
     $specific = [];
     foreach ($data["specificData"] as $key => $value) {

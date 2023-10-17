@@ -87,28 +87,22 @@ trait Model {
 
      protected function query($query, $params = []): array|bool {
         
-        try {
-            $pdo = $this->connect();
-            $statement = $pdo->prepare($query);
-            $check = $statement->execute($params);
-            if(!$check) {
-                throw new PDOException("PDO statement execution error.");
-            }
-            $results = $statement->fetchAll(PDO::FETCH_OBJ);
-            if(!is_array($results)) {
-                throw new PDOException("PDO statement fetching error.");
-            }
-            if(!count($results)) {
-                return false;
-            };
-
-        } catch (Exception $e) {
-            $statement = null;
-            $pdo = null;
-            return false;
-        }
-
-        return $results;
+         $pdo = $this->connect();
+         $statement = $pdo->prepare($query);
+         $check = $statement->execute($params);
+         if(!$check) {
+             throw new PDOException("PDO statement execution error.");
+         }
+         $results = $statement->fetchAll(PDO::FETCH_OBJ);
+         if(!is_array($results)) {
+             throw new PDOException("PDO statement fetching error.");
+         }
+         if(!count($results)) {
+             $statement = null;
+             $pdo = null;
+             return false;
+         };
+         return $results;
     }
 
     /**
@@ -193,7 +187,7 @@ trait Model {
     protected function delete(string $selectorKey, string $selectorValue): void 
     {
         $query = "DELETE FROM $this->table WHERE $selectorKey = :$selectorKey";
-        $this->query($query, [$selectorKey => $selectorValue]);
+        $results = $this->query($query, [$selectorKey => $selectorValue]);
     }
 
 

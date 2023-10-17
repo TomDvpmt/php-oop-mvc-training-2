@@ -21,12 +21,15 @@ final class UserFormSignIn extends UserForm {
         parent::__construct();
     }
 
+    /**
+     * @see FormInterface
+     */
+
     public function getInputData(): array {
         $data = [
             "email" => $_POST["email"],
             "password" => $_POST["password"],
         ];
-        
         return $data;
     }
 }

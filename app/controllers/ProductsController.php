@@ -16,7 +16,7 @@ abstract class ProductsController {
     public function __construct()
     {
         $this->setProductCategoryFromURL();
-        $this->model = getModelNameFromCategoryName($this->category);
+        $this->model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->category);
     }
 
     /**
@@ -31,11 +31,33 @@ abstract class ProductsController {
         $lastChunk = end($pathChunks);
         
         if(count($pathChunks) > 1) {
-            $this->category = $lastChunk;
+            $this->setCategory($lastChunk);
         }
         
         if(isset($_GET["category"])) {
-            $this->category = $_GET["category"];
-        }    
+            $this->setCategory($_GET["category"]);
+        }
+    }
+
+    /**
+     * Set category of products
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     */
+
+    private function setCategory(string $category): void {
+        $this->category = $category;
+    }
+
+    /**
+     * Get category of products
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
+
+     public function getCategory(): string {
+        return $this->category;
     }
 }
