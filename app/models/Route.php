@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpTraining2\core;
+namespace PhpTraining2\models;
 
-use PhpTraining2\controllers\ControllerInterface;
+use PhpTraining2\core\ControllerInterface;
 use PhpTraining2\controllers\ProductController;
 
 class Route {
@@ -19,7 +19,7 @@ class Route {
      * Call a controller
      * 
      * @access public
-     * @package PhpTraining2\core
+     * @package PhpTraining2\models
      */
 
     public function callController() {
@@ -32,7 +32,7 @@ class Route {
      * Get controller object
      * 
      * @access private
-     * @package PhpTraining2\core
+     * @package PhpTraining2\models
      * @return ControllerInterface The controller
      */
 
@@ -57,12 +57,13 @@ class Route {
      * Set the controller's name
      * 
      * @access private
-     * @package PhpTraining2\core
+     * @package PhpTraining2\models
      */
 
     private function setControllerName(): void {
-        $base = getURI()["base"];
-        $last = getURI()["last"];
+        $URI = getURI();
+        $base = $URI["base"];
+        $last = $URI["last"];
         
         $controllerName = empty($base) ? "HomeController" : ucfirst($base) . "Controller";
 
@@ -89,7 +90,7 @@ class Route {
      * Set method
      * 
      * @access private
-     * @package PhpTraining2\core
+     * @package PhpTraining2\models
      */
 
     private function setMethod(string $method): void {

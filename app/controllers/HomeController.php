@@ -4,7 +4,7 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
-use PhpTraining2\controllers\ControllerInterface;
+use PhpTraining2\core\ControllerInterface;
 
 class HomeController implements ControllerInterface {
 

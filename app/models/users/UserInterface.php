@@ -10,10 +10,10 @@ interface UserInterface {
      * @access public
      * @package PhpTraining2\models
      * @param string $selector Example : "email = :email"
-     * @return object
+     * @return array
      */
     
-    function findOne(string $selector): object;
+    function findOne(string $selector): array|bool;
 
     function createOne();
 

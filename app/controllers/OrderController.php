@@ -3,7 +3,7 @@
 namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
-use PhpTraining2\controllers\ControllerInterface;
+use PhpTraining2\core\ControllerInterface;
 use PhpTraining2\models\Cart;
 use PhpTraining2\models\Order;
 

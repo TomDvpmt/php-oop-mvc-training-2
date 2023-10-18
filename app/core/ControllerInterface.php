@@ -1,6 +1,6 @@
 <?php 
 
-namespace PhpTraining2\controllers;
+namespace PhpTraining2\core;
 
 interface ControllerInterface {
     
@@ -8,7 +8,7 @@ interface ControllerInterface {
      * Default method of the controller
      * 
      * @access public
-     * @package PhpTraining2\controllers
+     * @package PhpTraining2\core
      */
     
     function index(): void;

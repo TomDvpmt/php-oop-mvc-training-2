@@ -2,7 +2,9 @@
 
 namespace PhpTraining2\models\users;
 
+use Exception;
 use PhpTraining2\core\Model;
+use PhpTraining2\exceptions\UserCreateException;
 use RuntimeException;
 
 abstract class User implements UserInterface {
@@ -30,49 +32,68 @@ abstract class User implements UserInterface {
      * @package PhpTraining2\models
      */
 
-    protected function setId(string|int $id): void {
+    protected function setId(string|int $id): void 
+    {
         if(!intval($id)) {
             throw new RuntimeException("Invalid id type.");
         }
         $this->id = intval($id);
     }
 
-    public function findOne(string $selector): object {
+    public function findOne(string $selector): array|bool 
+    {
         $this->setWhere($selector);
-        $result = $this->find(["email" => $this->email]);
+        $result = $this->find(["email" => $this->email]); // TODO : dynamic property
         return $result;
     }
 
-    public function createOne() {
-        $this->create([
-            "first_name" => $this->firstName,
-            "last_name" => $this->lastName,
-            "email" => $this->email,
-            "password" => $this->password,
-        ]);
+    public function createOne() 
+    {
+        try {
+            $this->create([
+                "first_name" => $this->firstName,
+                "last_name" => $this->lastName,
+                "email" => $this->email,
+                "password" => $this->password,
+            ]);
+            return true;
+        } catch (Exception $e) {
+            throw new UserCreateException();
+        }
     }
 
-    public function signIn() {
+    public function signIn() 
+    {
         //
     }
 
-    public function signOut() {
+    public function signOut() 
+    {
         //
     }
 
-    public function updateOne() {
+    public function updateOne() 
+    {
         //
     }
 
-    public function deleteOne() {
+    public function deleteOne() 
+    {
         //
     }
 
-    public function isUserSignedIn(): bool {
+    public function isUserSignedIn(): bool 
+    {
         return $_SESSION["user"]["id"];
     }
 
-    private function isValidCredentials() {
+    private function isValidCredentials() 
+    {
         //
+    }
+
+    public function alreadyExists(): bool 
+    {
+        return (bool) $this->findOne("email = :email");
     }
 }

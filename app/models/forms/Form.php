@@ -73,13 +73,13 @@ abstract class Form implements FormInterface {
     }
 
     /**
-     * Set an error message all the required fields have not been filled
+     * Throw an exception if all the required fields have not been filled
      * 
      * @access public
      * @package PhpTraining2/models
      */
 
-    public function setEmptyFieldsError(): void {
+    public function checkEmptyFields(): void {
         if($this->hasEmptyFields()) {
             throw new FormEmptyFieldException();
         }
@@ -100,6 +100,8 @@ abstract class Form implements FormInterface {
         }, false );
         return $hasEmptyFields;
     }
+
+    
 
     // /**
     //  * Validate an array of inputs

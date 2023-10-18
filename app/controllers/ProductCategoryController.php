@@ -4,7 +4,7 @@ namespace PhpTraining2\controllers;
 
 use Exception;
 use LogicException;
-use PhpTraining2\controllers\ControllerInterface;
+use PhpTraining2\core\ControllerInterface;
 use PhpTraining2\models\products\ProductCategory;
 use PhpTraining2\models\products\Product;
 

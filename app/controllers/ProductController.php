@@ -3,7 +3,7 @@
 namespace PhpTraining2\controllers;
 
 use Exception;
-use PhpTraining2\controllers\ControllerInterface;
+use PhpTraining2\core\ControllerInterface;
 use PhpTraining2\exceptions\FormEmptyFieldException;
 use PhpTraining2\exceptions\ProductCreateException;
 use PhpTraining2\exceptions\ProductGetDataException;

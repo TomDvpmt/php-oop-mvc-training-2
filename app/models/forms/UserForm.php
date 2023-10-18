@@ -2,8 +2,7 @@
 
 namespace PhpTraining2\models\forms;
 
-use PhpTraining2\exceptions\FormEmailException;
-use PhpTraining2\exceptions\FormNumberException;
+use PhpTraining2\exceptions\FormEmailFormatException;
 use PhpTraining2\exceptions\FormPasswordLengthException;
 use PhpTraining2\models\forms\Form;
 
@@ -48,10 +47,10 @@ abstract class UserForm extends Form {
         if(isset($sanitizedInput["value"])) {
             switch($sanitizedInput["type"]) {
                 case "email":
-                    $this->validateEmail($sanitizedInput);
+                    $validated = $this->validateEmail($sanitizedInput);
                     break;
                 case "password":
-                    $this->validatePassword($sanitizedInput);
+                    $validated = $this->validatePassword($sanitizedInput);
                     break;
                 default:
                     $validated = $sanitizedInput;
@@ -71,7 +70,7 @@ abstract class UserForm extends Form {
 
     private function validateEmail(array $sanitizedInput): bool {
         $validated = filter_var($sanitizedInput["value"], FILTER_VALIDATE_EMAIL);
-        if(!$validated) throw new FormEmailException();
+        if(!$validated) throw new FormEmailFormatException();
         return $validated;
     }
 
@@ -84,7 +83,7 @@ abstract class UserForm extends Form {
      */
 
     private function validatePassword(array $sanitizedInput): bool {
-        $validated = strlen($sanitizedInput["value"]) > self::PASSWORD_MIN_LENGTH;
+        $validated = strlen($sanitizedInput["value"]) >= self::PASSWORD_MIN_LENGTH;
         if(!$validated) throw new FormPasswordLengthException(self::PASSWORD_MIN_LENGTH);
         return $validated;
     }
