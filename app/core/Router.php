@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpTraining2\models;
+namespace PhpTraining2\core;
 
-use PhpTraining2\models\Route;
+use PhpTraining2\core\Route;
 
 class Router {
 
@@ -10,7 +10,7 @@ class Router {
      * Call a route
      * 
      * @access public
-     * @package PhpTraining2\models
+     * @package PhpTraining2\core
      */
 
     public function callRoute(): void {
@@ -23,7 +23,7 @@ class Router {
      * Create a route
      * 
      * @access private
-     * @package PhpTraining2\models
+     * @package PhpTraining2\core
      * @return Route
      */
 

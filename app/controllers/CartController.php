@@ -47,7 +47,7 @@ class CartController implements ControllerInterface {
 
     private function add(): void {
         $category = $_GET["category"];
-        $model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($category);
+        $model = "PhpTraining2\models\products\\" . getModelNameFromTableName($category);
 
         $cart = new Cart($this->cartItems);
         $product = new $model();

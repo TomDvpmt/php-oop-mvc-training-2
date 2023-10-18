@@ -20,14 +20,30 @@ function show($data) {
  * @return string A concatenated string of 1 timestamp & 3 chunks of 10 random characters, all separated with dashes
  */
 
-function generateRandomId() {
-    $chars = implode(array_merge(range(0, 9), range("a", "z"), range("A", "Z")));
-    $chunks = [time()];
+function generateRandomId(): string {
+    // $chars = implode(array_merge(range(0, 9), range("a", "z"), range("A", "Z")));
+    // $chunks = [time()];
     for($i = 0 ; $i < 3 ;$i++) {
-        $chunks[] = substr(str_shuffle($chars), 0, 10);
+        $chunks[] = getRandomString(10);
+        // $chunks[] = substr(str_shuffle($chars), 0, 10);
     }
     return implode("-", $chunks);
 }
+
+
+/**
+ * Get a random string
+ * 
+ * @param int $length The string's length
+ * @return string
+ */
+
+function getRandomString(int $length): string {
+    $chars = implode(array_merge(range("a", "z"), range("A", "Z"), range(0, 9)));
+    $shuffled = str_shuffle($chars);
+    $randomString = substr($shuffled, 0, $length);
+    return $randomString;
+} 
 
 
 /**
@@ -62,18 +78,7 @@ function getURI(): array {
  * @return string
  */
 
- function getModelNameFromCategoryName(string $category): string {
+ function getModelNameFromTableName(string $category): string {
     $model = substr($category, -1) === "s" ? substr($category, 0, -1) : $category;
     return ucfirst($model);
-}
-
-
-/**
- * Get product model names from the models/products folder
- * 
- * @return array
- */
-
-function getProductModelNames(): array {
-    return array_map(fn($fileName) => lcfirst(str_replace(".php", "", $fileName)), scandir(MODELS_DIR . "products"));
 }

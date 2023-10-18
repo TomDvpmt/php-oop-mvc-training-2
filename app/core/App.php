@@ -2,7 +2,7 @@
 
 namespace PhpTraining2\core;
 
-use PhpTraining2\models\Router;
+use PhpTraining2\core\Router;
 
 class App {
 

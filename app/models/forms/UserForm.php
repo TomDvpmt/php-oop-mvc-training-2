@@ -9,7 +9,7 @@ use PhpTraining2\models\forms\Form;
 
 abstract class UserForm extends Form {
 
-    private const PASSWORD_MIN_LENGTH = 8;
+    public const PASSWORD_MIN_LENGTH = 8;
     
     public function __construct()
     {
@@ -32,7 +32,7 @@ abstract class UserForm extends Form {
         }, $inputs);
         return empty($this->validationErrors) ? $tested : false;
     }
-    
+
 
     /**
      * Validate user input

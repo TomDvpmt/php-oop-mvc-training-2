@@ -27,7 +27,7 @@ class ProductCategory {
      */
     
     private function setSpecificProperties(): void {
-        $productModelName = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->name);
+        $productModelName = "PhpTraining2\models\products\\" . getModelNameFromTableName($this->name);
         $options = (new $productModelName)->getSelectOptions();
         $this->specificProperties = array_keys($options["questions"]);
     }

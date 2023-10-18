@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpTraining2\models;
+namespace PhpTraining2\core;
 
 use PhpTraining2\controllers\ControllerInterface;
 use PhpTraining2\controllers\ProductController;
@@ -57,7 +57,7 @@ class Route {
      * Set the controller's name
      * 
      * @access private
-     * @package PhpTraining2\models
+     * @package PhpTraining2\core
      */
 
     private function setControllerName(): void {
@@ -89,7 +89,7 @@ class Route {
      * Set method
      * 
      * @access private
-     * @package PhpTraining2\models
+     * @package PhpTraining2\core
      */
 
     private function setMethod(string $method): void {

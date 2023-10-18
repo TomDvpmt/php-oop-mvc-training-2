@@ -17,7 +17,7 @@ class UserFormSignInTest extends TestCase {
 
     public function testInvalidEmailThrowsEmailException() {
         $this->expectException(FormEmailException::class);
-        $input = ["type" => "email", "value" => "WRONG", "name" => "email"];
+        $input = ["type" => "email", "value" => "WRONG", "name" => "email"]; // TODO : other wrong values
         $form = new UserFormSignIn();
         $form->validate([$input]);
     }
@@ -28,8 +28,16 @@ class UserFormSignInTest extends TestCase {
 
     public function testShortPasswordThrowsPasswordLengthException() {
         $this->expectException(FormPasswordLengthException::class);
-        $input = ["type" => "password", "value" => "WRONG", "name" => "password"];
         $form = new UserFormSignIn();
-        $form->validate([$input]);
+        $minLength = $form::PASSWORD_MIN_LENGTH;
+        $length = random_int(1, $minLength);
+        
+        // $randomString = getRandomString($length); // TODO : put utils in Utils class and call its getRandomString method here
+        $chars = implode(array_merge(range("a", "z"), range("A", "Z"), range(0, 9)));
+        $shuffled = str_shuffle($chars);
+        $randomString = substr($shuffled, 0, $length);
+
+        $input = ["type" => "password", "value" => $randomString, "name" => "password"]; 
+        $form->validate([$input]); // TODO : 10 tries
     }
 }

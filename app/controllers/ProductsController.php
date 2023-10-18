@@ -16,7 +16,7 @@ abstract class ProductsController {
     public function __construct()
     {
         $this->setProductCategoryFromURL();
-        $this->model = "PhpTraining2\models\products\\" . getModelNameFromCategoryName($this->category);
+        $this->model = "PhpTraining2\models\products\\" . getModelNameFromTableName($this->category);
     }
 
     /**
