@@ -40,11 +40,31 @@ abstract class User implements UserInterface {
         $this->id = intval($id);
     }
 
-    public function findOne(string $selector): array|bool 
+
+    /**
+     * Set user email
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+
+    public function setEmail(string $email): void 
     {
-        $this->setWhere($selector);
-        $result = $this->find(["email" => $this->email]); // TODO : dynamic property
-        return $result;
+        $this->email = $email;
+    }
+
+    /**
+     * Get a user
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+
+    public function getOne(string $selector, mixed $value): array|bool 
+    {
+        $this->setWhere("$selector = :$selector");
+        $result = $this->find([$selector => $value]);
+        return $result ? (array) $result[0] : false;
     }
 
     public function createOne() 
@@ -62,16 +82,6 @@ abstract class User implements UserInterface {
         }
     }
 
-    public function signIn() 
-    {
-        //
-    }
-
-    public function signOut() 
-    {
-        //
-    }
-
     public function updateOne() 
     {
         //
@@ -82,18 +92,8 @@ abstract class User implements UserInterface {
         //
     }
 
-    public function isUserSignedIn(): bool 
-    {
-        return $_SESSION["user"]["id"];
-    }
-
-    private function isValidCredentials() 
-    {
-        //
-    }
-
     public function alreadyExists(): bool 
     {
-        return (bool) $this->findOne("email = :email");
+        return (bool) $this->getOne("email = :email", $this->email);
     }
 }

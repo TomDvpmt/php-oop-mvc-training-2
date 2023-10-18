@@ -10,20 +10,15 @@ interface UserInterface {
      * @access public
      * @package PhpTraining2\models
      * @param string $selector Example : "email = :email"
+     * @param mixed $value The selector value
      * @return array
      */
     
-    function findOne(string $selector): array|bool;
+    function getOne(string $selector, mixed $value): array|bool;
 
     function createOne();
-
-    function signIn();
-
-    function signOut();
 
     function updateOne();
 
     function deleteOne();
-
-    function isUserSignedIn(): bool;
 }

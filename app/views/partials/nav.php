@@ -1,3 +1,27 @@
+<?php 
+
+ob_start(); ?>
+<li class="nav__menu__item nav__menu__item--icon-text">
+    <a href="<?=ROOT?>user/signout"><i class="fa-solid fa-arrow-right-from-bracket"></i></i><span>Sign out</span></a>
+</li>
+<li class="nav__menu__item">
+    <a href="<?=ROOT?>products/add">Add a product</a>
+</li>
+<?php $userSignedInMenu = ob_get_clean();
+
+ob_start(); ?>
+<li class="nav__menu__item nav__menu__item--icon-text">
+    <a href="<?=ROOT?>user/signin"><i class="fa-solid fa-arrow-right-to-bracket"></i><span>Sign in</span></a>
+</li>
+<li class="nav__menu__item nav__menu__item--icon-text">
+    <a href="<?=ROOT?>user/signup"><i class="fa-solid fa-user-plus"></i></i><span>Sign up</span></a>
+</li>
+<?php $userSignedOutMenu = ob_get_clean();
+
+$userMenu = isset($_SESSION["userId"]) ? $userSignedInMenu : $userSignedOutMenu;
+
+?>
+
 <nav class="nav">
    <ul id="nav-pages-menu" class="nav__menu">
         <li class="nav__menu__item">
@@ -40,15 +64,7 @@
             <a href="#"><i class="fa-solid fa-user"></i></a>
             <div class="nav__submenu">
                 <ul id="nav-user-submenu" class="nav__submenu__list">
-                    <li class="nav__menu__item nav__menu__item--icon-text">
-                        <a href="<?=ROOT?>user/signin"><i class="fa-solid fa-arrow-right-to-bracket"></i><span>Sign in</span></a>
-                    </li>
-                    <li class="nav__menu__item nav__menu__item--icon-text">
-                        <a href="<?=ROOT?>user/signup"><i class="fa-solid fa-user-plus"></i></i><span>Sign up</span></a>
-                    </li> 
-                    <li class="nav__menu__item">
-                        <a href="<?=ROOT?>products/add">Add a product</a>
-                    </li>
+                    <?= $userMenu ?>
                 </ul>
             </div>
         </li>

@@ -6,6 +6,8 @@ use Exception;
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\ControllerInterface;
 use PhpTraining2\exceptions\FormPropertyAlreadyExistsException;
+use PhpTraining2\exceptions\UserInvalidCredentialsException;
+use PhpTraining2\models\forms\UserFormSignIn;
 use PhpTraining2\models\forms\UserFormSignUp;
 use PhpTraining2\models\users\Customer;
 use PhpTraining2\models\users\User;
@@ -15,7 +17,6 @@ class UserController implements ControllerInterface {
 
     public function index(): void 
     {
-        // $user = new User();
         $this->executeMethodIfExists();
     }
 
@@ -29,6 +30,10 @@ class UserController implements ControllerInterface {
 
     public function signup() 
     {
+        if($this->isUserSignedIn()) {
+            header("Location:" . ROOT);
+        }
+        
         if (isset($_POST["submit"])) { 
             $form = new UserFormSignUp();
             
@@ -73,7 +78,65 @@ class UserController implements ControllerInterface {
 
     public function signin() 
     {
-        // TODO
+        if($this->isUserSignedIn()) {
+            header("Location:" . ROOT);
+        }
+        
+        if (isset($_POST["submit"])) { 
+            $form = new UserFormSignIn();
+            
+            /* Input validation */
+            $form->setRequired($form::SIGNIN_REQUIRED);
+            try {
+                $form->checkEmptyFields();
+            } catch (Exception $e) {
+                $this->view("pages/signin", $_POST, $e->getMessage());
+                return;
+            }
+
+            /* Check credentials */
+            try {
+                $emailInput = [
+                    "type" => "email",
+                    "name" => "email",
+                    "value" => $_POST["email"]
+                ];
+                $sanitizedEmail = $form->sanitizeInput($emailInput)["value"]; // TODO : test email sanitation
+                $customer = (new Customer())->getOne("email", $sanitizedEmail);
+                if(!$customer) {
+                    throw new UserInvalidCredentialsException();
+                }
+                $isPasswordMatch = password_verify($_POST["password"], $customer["password"]);
+                if(!$isPasswordMatch) {
+                    throw new UserInvalidCredentialsException();
+                }
+            } catch (Exception $e) {
+                $this->view("pages/signin", $_POST, $e->getMessage());
+                return;
+            }
+
+            /* Sign in */
+            $_SESSION["userId"] = $customer["id"];
+            header("Location:" . ROOT);
+        }
         $this->view("pages/signin");
+    }
+
+    /**
+     * Sign the user out
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
+
+    public function signOut() 
+    {
+        session_unset();
+        header("Location:" . ROOT);
+    }
+
+
+    private function isUserSignedIn(): bool {
+        return  isset($_SESSION["userId"]);
     }
 }

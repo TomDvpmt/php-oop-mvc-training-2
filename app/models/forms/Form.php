@@ -158,14 +158,14 @@ abstract class Form implements FormInterface {
     /**
      * Sanitize an input
      * 
-     * @access private
+     * @access public
      * @package PhpTraining2\models
      * @param array $input
      * @param string $name The input's type : email, text
      * @return mixed The input if sanitized, false otherwise
      */
 
-    protected function sanitizeInput(array $input): mixed {
+    public function sanitizeInput(array $input): mixed {
         $sanitized = null;
         switch($input["type"]) {
             case "email":
@@ -182,7 +182,7 @@ abstract class Form implements FormInterface {
                 $sanitized = filter_var($input["value"], FILTER_SANITIZE_URL);
                 break;
             case "password":
-                $sanitized = $input["value"];
+                $sanitized = $input["value"]; // TODO
                 break;
             default:
                 $sanitized = null;

@@ -32,4 +32,31 @@ final class UserFormSignIn extends UserForm {
         ];
         return $data;
     }
+
+
+
+    /**
+     * Get temporary signin data
+     * 
+     * @access public
+     * @package PhpTraining2\models\forms
+     * @return array
+     */
+
+     public function getTempSignInData(): array 
+     {
+         $data = [
+            "email" => [
+                "type" => "email", 
+                "value" => $_POST["email"], 
+                "name" => "email"
+            ],
+            "password" => [
+                "type" => "password", 
+                "value" => $_POST["password"], 
+                "name" => "password"
+            ],
+         ];
+         return $data;
+     }  
 }

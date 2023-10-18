@@ -16,7 +16,7 @@ ob_start();?>
         </div>
         <div class="form__field">
             <label for="passwordConfirm">* Confirm password:</label> 
-            <input type="password" name="passwordConfirm" id="passwordConfirm" value="<?=$_POST["passwordConfirm"] ?? ""?>" required/>
+            <input type="password" name="passwordConfirm" id="passwordConfirm" required/>
         </div>
         <div class="form__field">
             <label for="firstName">First name:</label>
