@@ -46,8 +46,10 @@ class ProductCategoryController extends ProductsController implements Controller
             if(!$scanned) {
                 throw new LogicException("Unable to display product categories.");
             }
+            
             $productCategoryFiles = array_slice($scanned, 2);
             $productCategories = array_map(fn($file) => str_replace(".webp", "", $file), $productCategoryFiles);
+            
             $data = array_map(function($category) {
                 $categoryObject = new ProductCategory($category);
                 $categoryData = [
@@ -139,5 +141,24 @@ class ProductCategoryController extends ProductsController implements Controller
 
         $product = new ($this->model)($genericData, $specificData);
         return $product;
+    }
+
+
+    /**
+     * Get product categories list
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     * @return array
+     */
+
+    public static function getProductCategoriesList(): array {
+        $scanned = scandir(ProductCategory::PRODUCT_CATEGORIES_THUMB_DIR);
+        if(!$scanned) {
+            throw new LogicException("Unable to display product categories.");
+        }
+        $productCategoryFiles = array_slice($scanned, 2);
+        $productCategories = array_map(fn($file) => str_replace(".webp", "", $file), $productCategoryFiles);
+        return $productCategories;
     }
 }

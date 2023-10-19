@@ -131,7 +131,7 @@ class UserController implements ControllerInterface {
 
     public function signOut() 
     {
-        session_unset();
+        unset($_SESSION["userId"]);
         header("Location:" . ROOT);
     }
 

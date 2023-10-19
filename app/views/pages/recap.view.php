@@ -12,6 +12,7 @@ foreach($data["billingInfo"] as $key => $value) {
 }
 
 foreach($data["items"] as $item) {
+    show($item);
     ob_start();
     require VIEWS_DIR . "partials/recap-card.php";
     $card = ob_get_clean();
@@ -29,7 +30,7 @@ ob_start();?>
     <section class="recap__cart">
         <h2>Products</h2>
         <?= implode("", $itemsGrid) ?>
-        <p class="recap__cart__total">Total: $ <?=$data["totalPrice"]?></p>
+        <p class="recap__cart__total">CART TOTAL: $ <?=$data["totalPrice"]?></p>
     </section>
     <button><a href="<?= ROOT . "order?action=confirm"?>">Pay</a></button>
 </div>

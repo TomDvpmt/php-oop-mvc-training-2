@@ -2,6 +2,7 @@
 
 namespace PhpTraining2\models\forms;
 
+use PhpTraining2\exceptions\FormNumberException;
 use PhpTraining2\models\forms\Form;
 
 abstract class ProductForm extends Form {
@@ -33,6 +34,51 @@ abstract class ProductForm extends Form {
         }
         $validatedData = ["generic" => $genericValidated, "specific" => $specificValidated];
         return $validatedData;
+    }
+
+    // TODO : DRY (same on UserForm)
+    /**
+     * Validate an array of inputs
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     * @param array $inputs
+     * @return mixed The sanitized and validated array if no errors, false if errors
+     */
+
+     public function validate(array $inputs): mixed {
+        $tested = array_map(function($input) {
+            $sanitizedInput = $this->sanitizeInput($input);
+            return $this->validateInput($sanitizedInput);
+        }, $inputs);
+        return empty($this->validationErrors) ? $tested : false;
+    }
+
+
+    // TODO : DRY (same on UserForm)
+    /**
+     * Validate user input
+     * 
+     * @access private
+     * @package PhpTraining2\models\forms
+     * @param array $input [string $type, mixed $value, string $name]
+     * @return mixed The input if validated, false otherwise
+     */
+
+     private function validateInput(array $sanitizedInput): mixed {
+        $validated = false;
+        if(isset($sanitizedInput["value"])) {
+            switch($sanitizedInput["type"]) {
+                case "number":
+                    $validated = filter_var($sanitizedInput["value"], FILTER_VALIDATE_INT);
+                    if(!$validated) throw new FormNumberException();
+                    break;
+                default:
+                    $validated = $sanitizedInput;
+                    break;
+            }
+        }
+        return $validated ? $sanitizedInput["value"] : false;
     }
 
 

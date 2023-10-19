@@ -4,6 +4,7 @@ namespace PhpTraining2\controllers;
 
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\Model;
+use PhpTraining2\models\products\ProductCategory;
 
 abstract class ProductsController {
 
@@ -29,8 +30,9 @@ abstract class ProductsController {
     private function setProductCategoryFromURL(): void {
         $pathChunks = $this->getPathChunks();
         $lastChunk = end($pathChunks);
+        $categoriesList = ProductCategoryController::getProductCategoriesList();
         
-        if(count($pathChunks) > 1) {
+        if(in_array($lastChunk, $categoriesList) && count($pathChunks) > 1) {
             $this->setCategory($lastChunk);
         }
         

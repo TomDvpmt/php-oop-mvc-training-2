@@ -69,28 +69,19 @@ class ProductController extends ProductsController implements ControllerInterfac
             $specificProperties = array_keys($product::DEFAULT_SPECIFIC_DATA);
             
             $form = new ProductFormAdd();
+
             $form->setRequired(array_merge($product::REQUIRED_GENERIC_PROPERTIES, $specificProperties));
             
-            /* Check for empty required inputs */
             try {
-                $form->setEmptyFieldsError();
-            } catch (FormEmptyFieldException $e) {
-                $this->view("pages/product-add", ["error" => $e->getMessage(), "specificAddFormHtml" => $specificAddFormHtml]);
-                return;
-            }
-
-            /* Validate form inputs */
-            try {
+                /* Check for empty required inputs */
+                $form->checkEmptyFields();
+                
+                /* Validate form inputs */
                 $validatedData = $form->validateProductForm($product);
-            } catch (RuntimeException $e) {
-                $this->view("pages/product-add", ["error" => $e->getMessage(), "specificAddFormHtml" => $specificAddFormHtml]);
-                return;
-            }
-            
-            /* Thumbnail upload check */
-            try {
+                
+                /* Thumbnail upload check */
                 $upload = $this->getUploadedThumbnail();
-            } catch (RuntimeException $e) {
+            } catch (Exception $e) {
                 $this->view("pages/product-add", ["error" => $e->getMessage(), "specificAddFormHtml" => $specificAddFormHtml]);
                 return;
             }

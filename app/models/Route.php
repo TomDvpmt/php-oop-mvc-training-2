@@ -8,10 +8,11 @@ use PhpTraining2\controllers\ProductController;
 class Route {
     
     private string $controllerName = "HomeController";
-    private string $method = "index";
+    private string $method;
 
     public function __construct()
     {      
+        $this->setMethod();
         $this->setControllerName();
     }
 
@@ -93,7 +94,7 @@ class Route {
      * @package PhpTraining2\models
      */
 
-    private function setMethod(string $method): void {
-        $this->method = $method;
+    private function setMethod(string $method = "index"): void {
+        $this->method = $_GET["action"] ?? $method;
     }
 }

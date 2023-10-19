@@ -18,7 +18,9 @@ class CartController implements ControllerInterface {
     }
 
     public function index():void {
-        (new Order)->removeIdFromSession();
+        if(isset($_SESSION["orderId"])) {
+            (new Order)->removeIdFromSession();
+        }
         $this->executeMethodIfExists();
         $this->displayCart();
     }
@@ -41,11 +43,11 @@ class CartController implements ControllerInterface {
     /**
      * Add an item to the cart
      * 
-     * @access private
+     * @access public
      * @package PhpTraining2\controllers
      */
 
-    private function add(): void {
+    public function add(): void {
         $category = $_GET["category"];
         $model = "PhpTraining2\models\products\\" . getModelNameFromTableName($category);
 
@@ -65,11 +67,11 @@ class CartController implements ControllerInterface {
     /**
      * Update an item's quantity
      * 
-     * @access private
+     * @access public
      * @package PhpTraining2\controllers
      */
     
-    private function updateQuantity(): void {
+    public function updateQuantity(): void {
         $productId = strip_tags($_GET["id"]);
         $newQuantity = strip_tags($_POST["quantity"]);
         $cart = new Cart($this->cartItems);
@@ -81,11 +83,11 @@ class CartController implements ControllerInterface {
     /**
      * Remove an item from the cart
      * 
-     * @access private
+     * @access public
      * @package PhpTraining2\controllers
      */
 
-    private function remove() {
+    public function remove() {
         $productId = strip_tags($_GET["id"]);
         $cart = new Cart($this->cartItems);
         $cart->removeItem($productId);

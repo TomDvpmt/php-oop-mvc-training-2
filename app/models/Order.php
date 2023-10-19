@@ -11,13 +11,12 @@ class Order {
     public function __construct()
     {
         if(!isset($_SESSION["orderId"])) {
-            $this->id = generateRandomId();
+            $this->id = $this->generateOrderId();
             $_SESSION["orderId"] = $this->id;
         } else {
             $this->id = $_SESSION["orderId"];
         }
-        
-        
+            
         $cart = new Cart();
         $this->items = $cart->getAllItems();
     }
@@ -44,7 +43,7 @@ class Order {
 
     public function removeIdFromSession(): void {
         if(isset($_SESSION["orderId"])) {
-            $_SESSION["orderId"] = null;
+            unset($_SESSION["orderId"]);
         };
     }
 
@@ -59,5 +58,27 @@ class Order {
 
     public function getItems(): array {
         return $this->items;
+    }
+
+
+    /**
+     * Generate an alphanumeric order id
+     * 
+     * @return string A concatenated string of userId + timestamp + random string(s)
+     */
+
+    function generateOrderId(): string {
+        $numberOfRandomStrings = 1;
+        $lengthOfRandomString = 5;
+        $userId = $_SESSION["userId"];
+        $timeStamp = time();
+        
+        $idParts = [$userId, $timeStamp];
+
+        for($i = 0 ; $i < $numberOfRandomStrings ;$i++) {
+            $idParts[] = getRandomString($lengthOfRandomString);
+        }
+
+        return implode("-", $idParts);
     }
 }

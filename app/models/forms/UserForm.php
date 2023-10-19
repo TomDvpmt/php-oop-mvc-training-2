@@ -15,6 +15,7 @@ abstract class UserForm extends Form {
         parent::__construct();
     }
 
+    // TODO : DRY (same on ProductForm)
     /**
      * Validate an array of inputs
      * 
@@ -33,6 +34,7 @@ abstract class UserForm extends Form {
     }
 
 
+    // TODO : DRY (same on ProductForm)
     /**
      * Validate user input
      * 
@@ -45,7 +47,7 @@ abstract class UserForm extends Form {
      private function validateInput(array $sanitizedInput): mixed {
         $validated = false;
         if(isset($sanitizedInput["value"])) {
-            switch($sanitizedInput["type"]) {
+            switch($sanitizedInput["name"]) {
                 case "email":
                     $validated = $this->validateEmail($sanitizedInput);
                     break;

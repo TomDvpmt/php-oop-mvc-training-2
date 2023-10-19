@@ -5,13 +5,13 @@ class Billing {
         this.fillButton = document.getElementById("billing-fill-button");
         console.log(this.fillButton);
         this.demoData = {
-            name: "Edmund Hillary",
-            email: "edmund_hillary@mock.com",
+            name: "Tintin",
+            email: "the_unicorn@mock.com",
             phone: 1234567890,
-            address: "Mount Everest",
-            zipcode: "44600",
-            city: "Katmandu",
-            country: "Nepal",
+            address: "Marlinspike Hall",
+            zipcode: "10000",
+            city: "Marlinspike",
+            country: "Belgium",
         };
     }
 

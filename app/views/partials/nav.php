@@ -1,5 +1,7 @@
 <?php 
 
+$cartItemsNumber = isset($_SESSION["cart"]) ? count($_SESSION["cart"]) : 0;
+
 ob_start(); ?>
 <li class="nav__menu__item nav__menu__item--icon-text">
     <a href="<?=ROOT?>user/signout"><i class="fa-solid fa-arrow-right-from-bracket"></i></i><span>Sign out</span></a>
@@ -58,7 +60,7 @@ $userMenu = isset($_SESSION["userId"]) ? $userSignedInMenu : $userSignedOutMenu;
     </ul>
     <ul id="nav-user-menu" class="nav__menu">
         <li id="nav-cart-item" class="nav__menu__item">
-            <a href="<?=ROOT?>cart"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a href="<?=ROOT?>cart"><i class="fa-solid fa-cart-shopping"></i><?=$cartItemsNumber !== 0 ? " ($cartItemsNumber)" : null ?></a>
         </li>
         <li class="nav__menu__item  nav__menu__item__parent">
             <a href="#"><i class="fa-solid fa-user"></i></a>
