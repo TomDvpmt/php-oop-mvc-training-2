@@ -37,7 +37,7 @@ trait Database {
         $pdo = $this->connect();
 
         $queries = [
-            // tables
+            // users
             "
                 CREATE TABLE IF NOT EXISTS users (
                     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,6 +48,7 @@ trait Database {
                     is_admin BOOL DEFAULT 0 NOT NULL
                 );
             ",
+            // products
             "
                 CREATE TABLE IF NOT EXISTS products (
                     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -56,7 +57,7 @@ trait Database {
                     description VARCHAR(5000) NOT NULL,
                     special_features VARCHAR(5000) NOT NULL,
                     limitations VARCHAR(5000) NOT NULL,
-                    price INT DEFAULT 0 NOT NULL DEFAULT 0,
+                    price INT DEFAULT 0 NOT NULL,
                     thumbnail VARCHAR(255) DEFAULT 'default_product_thumbnail.webp' NOT NULL
                 );
             ",
@@ -100,6 +101,25 @@ trait Database {
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     product_id INT NOT NULL,
                     ideal_range VARCHAR(255) DEFAULT 'medium' NOT NULL,
+                    FOREIGN KEY (product_id) REFERENCES products(id)
+                );
+            ",
+            // orders
+            "
+                CREATE TABLE IF NOT EXISTS orders (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id)
+                );
+            ",
+            "
+                CREATE TABLE IF NOT EXISTS order_products (
+                    product_id INT NOT NULL,
+                    unit_price INT DEFAULT 0 NOT NULL,
+                    quantity INT NOT NULL,
+                    order_id INT NOT NULL,
+                    FOREIGN KEY (order_id) REFERENCES orders(id),
                     FOREIGN KEY (product_id) REFERENCES products(id)
                 );
             ",

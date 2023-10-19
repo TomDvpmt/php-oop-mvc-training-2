@@ -12,7 +12,6 @@ foreach($data["billingInfo"] as $key => $value) {
 }
 
 foreach($data["items"] as $item) {
-    show($item);
     ob_start();
     require VIEWS_DIR . "partials/recap-card.php";
     $card = ob_get_clean();
