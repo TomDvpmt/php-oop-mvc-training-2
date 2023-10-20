@@ -22,7 +22,7 @@ class ProductController extends ProductsController implements ControllerInterfac
         try {
             $data = $this->getFullData();
         } catch (ProductGetDataException $e) {
-            $data = ["error" => "Unable to get product data."];
+            $data = ["error" => PRODUCTION ? "Unable to get product data." : $e->getMessage()];
         }
         $this->view("pages/product", $data);
     }
@@ -103,7 +103,7 @@ class ProductController extends ProductsController implements ControllerInterfac
             
 
         } else {
-            $this->view("pages/product-add", ["specificAddFormHtml" => $specificAddFormHtml], null, null);
+            $this->view("pages/product-add", ["specificAddFormHtml" => $specificAddFormHtml]);
         }
 
     }
@@ -194,8 +194,8 @@ class ProductController extends ProductsController implements ControllerInterfac
             $product->deleteThumbnailFile();
             $product->removeProductFromDB(); 
             header("Location:" . $this->category);
-        } catch (Exception) {
-            $this->view("pages/error500", ["error" => "Unable to delete the product."]);
+        } catch (Exception $e) {
+            $this->view("pages/error500", ["error" => PRODUCTION ? "Unable to delete the product." : $e->getMessage()]);
         }
     }
 };

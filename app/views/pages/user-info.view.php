@@ -11,7 +11,7 @@ $billingAddressesGrid = ""; // TODO
 if(isset($data["error"])) {
     ob_start();?>
     <div class="page__content user-info">
-        <?=require_once VIEWS_DIR . "partials/error.php"?>
+        <?php require_once VIEWS_DIR . "partials/error.php"?>
     </div>
     <?php $content = ob_get_clean();
 } else {

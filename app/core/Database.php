@@ -50,9 +50,8 @@ trait Database {
             ",
             "
                 CREATE TABLE IF NOT EXISTS user_billing_addresses (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
                     user_id INT NOT NULL,
-                    address_slug VARCHAR(200) NOT NULL,
+                    address_slug VARCHAR(200) NOT NULL PRIMARY KEY,
                     name VARCHAR(200) NOT NULL,
                     phone VARCHAR(30) NOT NULL,
                     address VARCHAR(100) NOT NULL,

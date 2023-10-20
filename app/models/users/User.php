@@ -20,6 +20,7 @@ class User implements UserInterface {
     )
     {
         $this->setTable("users");
+
         if(isset($_SESSION["userId"])) {
             $this->setId($_SESSION["userId"]);
         }
@@ -29,7 +30,7 @@ class User implements UserInterface {
      * Set user id
      * 
      * @access protected
-     * @package PhpTraining2\models
+     * @package PhpTraining2\models\users
      */
 
     protected function setId(int $id): void 
@@ -45,7 +46,7 @@ class User implements UserInterface {
      * Set user email
      * 
      * @access public
-     * @package PhpTraining2\models
+     * @package PhpTraining2\models\users
      */
 
     public function setEmail(string $email): void 
@@ -57,7 +58,7 @@ class User implements UserInterface {
      * Get a user
      * 
      * @access public
-     * @package PhpTraining2\models
+     * @package PhpTraining2\models\users
      */
 
     public function getOne(string $selector, mixed $value): array|bool 
@@ -72,7 +73,7 @@ class User implements UserInterface {
      * Get a user by its id
      * 
      * @access public
-     * @package PhpTraining2\models
+     * @package PhpTraining2\models\users
      */
 
     public function getOneById(): array|bool {
@@ -115,5 +116,27 @@ class User implements UserInterface {
 
     public function getOrders(): array {
         return [];
+    }
+
+    /**
+     * Get user's registered billing addresses
+     * 
+     * @access public
+     * @package PhpTraining2\models\users
+     */
+
+    public function getBillingAddresses(): array|bool {
+        $this->setTable("user_billing_addresses");
+        $this->setWhere("user_id = :id");
+        $this->setOrderColumn("address_slug");
+        $addresses = $this->find(["id" => $this->id]);
+        return $addresses;
+    }
+
+
+    public function saveBillingAddress(array $data): void {
+        $data["user_id"] = $this->id;
+        $this->setTable("user_billing_addresses");
+        $this->create($data);
     }
 }

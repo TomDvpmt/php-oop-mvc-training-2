@@ -1,0 +1,7 @@
+#address-slug-field {
+    display: none;
+
+    &.visible {
+        display: flex;
+    }
+}

@@ -6,6 +6,7 @@ use Exception;
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\ControllerInterface;
 use PhpTraining2\exceptions\FormPropertyAlreadyExistsException;
+use PhpTraining2\exceptions\UserGetDataException;
 use PhpTraining2\exceptions\UserInvalidCredentialsException;
 use PhpTraining2\models\forms\UserFormSignIn;
 use PhpTraining2\models\forms\UserFormSignUp;
@@ -44,7 +45,7 @@ class UserController implements ControllerInterface {
                 $tempData = $form->getTempSignUpData();
                 $validated = $form->validate($tempData["toValidate"]);
             } catch (Exception $e) {
-                $this->view("pages/signup", $_POST, $e->getMessage());
+                $this->view("pages/signup", [...$_POST, "error" => $e->getMessage()]);
                 return;
             }
 
@@ -61,7 +62,7 @@ class UserController implements ControllerInterface {
                 };
                 $user->createOne();
             } catch (Exception $e) {
-                $this->view("pages/signup", $_POST, $e->getMessage());
+                $this->view("pages/signup", [...$_POST, "error" => $e->getMessage()]);
                 return;
             }
         }
@@ -89,7 +90,7 @@ class UserController implements ControllerInterface {
             try {
                 $form->checkEmptyFields();
             } catch (Exception $e) {
-                $this->view("pages/signin", $_POST, $e->getMessage());
+                $this->view("pages/signin", [...$_POST, "error" => $e->getMessage()]);
                 return;
             }
 
@@ -110,7 +111,8 @@ class UserController implements ControllerInterface {
                     throw new UserInvalidCredentialsException();
                 }
             } catch (Exception $e) {
-                $this->view("pages/signin", $_POST, $e->getMessage());
+                $this->view("pages/signin", [...$_POST, "error" => $e->getMessage()]);
+                // show("exception");
                 return;
             }
 
@@ -139,10 +141,12 @@ class UserController implements ControllerInterface {
      * 
      * @access private
      * @package PhpTraining2\controllers
+     * @return array
      */
 
     private function getUserInfo(): array {
         $user = (new User())->getOneById();
+        if(!$user) throw new UserGetDataException();
         return $user;
     }
 
@@ -168,8 +172,8 @@ class UserController implements ControllerInterface {
     public function info(): void {
         try {
             $userFullInfo = $this->getUserInfo();
-        } catch (Exception) {
-            $this->view("pages/user-info", ["error" => "Unable to get user data."]);
+        } catch (Exception $e) {
+            $this->view("pages/user-info", ["error" => PRODUCTION ? "Unable to get user data." : $e->getMessage()]);
             return;
         }
         $propertiesToShow = ["email", "first_name", "last_name"];

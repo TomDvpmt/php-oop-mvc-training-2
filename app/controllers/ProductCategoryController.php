@@ -59,7 +59,7 @@ class ProductCategoryController extends ProductsController implements Controller
                 return $categoryData;
             }, $productCategories);
         } catch (Exception $e) {
-            $data = ["error" => $e->getMessage()];
+            $data = ["error" => PRODUCTION ? "Unable to display product categories." : $e->getMessage()];
         }
         $this->view("pages/categories", $data);
     }
@@ -77,7 +77,7 @@ class ProductCategoryController extends ProductsController implements Controller
             $pageContent = $this->getPageContent($products);
             $this->view("pages/category", $pageContent);
         } catch (Exception $e) {
-            $this->view("pages/category", ["error" => "Unable to display products."]);
+            $this->view("pages/category", ["error" => PRODUCTION ? "Unable to display products." : $e->getMessage()]);
         }
     }
 
