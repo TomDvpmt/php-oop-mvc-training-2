@@ -17,30 +17,17 @@ abstract class Form implements FormInterface {
         )
     {}
 
-    
-    /**
-     * Get an array of form validation errors
-     * 
-     * @access public
-     * @package PhpTraining2\models
-     * @return array
-     */
-    
-    public function getValidationErrors(): array {
-        return $this->validationErrors;
-    }
 
-
-    /**
-     * Add an item to the validation errors array
-     * 
-     * @access public
-     * @package PhpTraining2\models
-     */
+    // /**
+    //  * Add an item to the validation errors array
+    //  * 
+    //  * @access public
+    //  * @package PhpTraining2\models
+    //  */
     
-     public function setValidationError(string $errorType, string $message): void {
-        $this->validationErrors[$errorType] = $message;
-    }
+    //  public function setValidationError(string $errorType, string $message): void { // TODO : remove if unused
+    //     $this->validationErrors[$errorType] = $message;
+    // }
 
 
     /**
@@ -100,60 +87,6 @@ abstract class Form implements FormInterface {
         }, false );
         return $hasEmptyFields;
     }
-
-    
-
-    // /**
-    //  * Validate an array of inputs
-    //  * 
-    //  * @access public
-    //  * @package PhpTraining2\models
-    //  * @param array $inputs
-    //  * @return mixed The sanitized and validated array if no errors, false if errors
-    //  */
-
-    //  public function validate(array $inputs): mixed {
-    //     $tested = array_map(function($input) {
-    //         $sanitizedInput = $this->sanitizeInput($input);
-    //         return $this->validateInput($sanitizedInput);
-    //     }, $inputs);
-    //     return empty($this->validationErrors) ? $tested : false;
-    // }
-
-
-    // /**
-    //  * Validate user input
-    //  * 
-    //  * @access private
-    //  * @package PhpTraining2\models
-    //  * @param array $input [string $type, mixed $value, string $name]
-    //  * @return mixed The input if validated, false otherwise
-    //  */
-
-    // private function validateInput(array $sanitizedInput): mixed {
-    //     $validated = false;
-    //     if(isset($sanitizedInput["value"])) {
-    //         switch($sanitizedInput["type"]) {
-    //             case "email": // TODO : move to UserForm
-    //                 $validated = filter_var($sanitizedInput["value"], FILTER_VALIDATE_EMAIL);
-    //                 if(!$validated) throw new FormEmailException();
-    //                 break;
-    //             case "password":
-    //                 $validated = strlen($sanitizedInput["value"]) > 8; // TODO : dynamic min length
-    //                 if(!$validated) throw new FormPasswordLengthException(8); // TODO : dynamic min length
-    //                 break;
-    //             case "number":
-    //                 $validated = filter_var($sanitizedInput["value"], FILTER_VALIDATE_INT);
-    //                 if(!$validated) throw new FormNumberException();
-    //                 break;
-    //             default:
-    //                 $validated = $sanitizedInput;
-    //                 break;
-    //         }
-    //     }
-    //     return $validated ? $sanitizedInput["value"] : false;
-    // }
-
 
     /**
      * Sanitize an input

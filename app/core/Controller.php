@@ -74,34 +74,4 @@ trait Controller {
         $path = $_GET["url"] ?? "home";
         return explode("/", $path);
     }
-
-
-    /**
-     * Show the form with error messages for fields that failed validation
-     * 
-     * @access private
-     * @package PhpTraining2\controllers
-     * @param Form $form
-     * @param string $page The page where the form is displayed
-     */
-
-    protected function showFormWithErrors(FormInterface $form, string $page): void {
-        $inputData = $form->getInputData($page);
-        $validationErrors = $form->getValidationErrors();
-        
-        $this->view("pages/$page", ["formData" => $inputData, "validationErrors" => $validationErrors]);
-    }
-
-
-    // /**
-    //  * Send user to the signin page
-    //  * 
-    //  * @access public
-    //  * @package PhpTraining2\core
-    //  */
-    
-    // public function sendToSigninPage(string $redirectionAfter = ""): void {
-    //     $_SESSION["redirectionAfter"] = $redirectionAfter;
-    //     header("Location : " . ROOT . "user/signin");
-    // }
 }

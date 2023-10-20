@@ -1,6 +1,7 @@
 <?php
 
 $title = "Your order";
+show($_POST);
 $billingGrid = [];
 $itemsGrid = [];
 

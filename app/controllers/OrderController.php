@@ -5,6 +5,7 @@ namespace PhpTraining2\controllers;
 use Exception;
 use PhpTraining2\core\Controller;
 use PhpTraining2\core\ControllerInterface;
+use PhpTraining2\models\BillingAddress;
 use PhpTraining2\models\Cart;
 use PhpTraining2\models\Order;
 use PhpTraining2\models\users\User;
@@ -46,19 +47,32 @@ class OrderController implements ControllerInterface {
                 "errorLocation" => "addresses"
             ]);
         }
+        
+        $addressSlug = $_POST["addressOption"] ?? null;
+        if ($addressSlug) {
+            $chosenAddress = array_values(array_filter($addresses, fn($address) => $address["address_slug"] === $addressSlug))[0];
+            $this->view("pages/billing", $addresses ? ["addresses" => $addresses, "chosenAddress" => $chosenAddress] : []);
+        }
 
-        // TODO : choose billing address or create a new one
+        // TODO : form validation
 
-        $this->view("pages/billing", $addresses ? $addresses : []);
+        $this->view("pages/billing", $addresses ? ["addresses" => $addresses] : []);
     }
 
+    /**
+     * Save billing address for this user
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
 
     public function saveAddress(): void {
+        // TODO : form validation
         try {
-            $user = new User();
             $data = $this->filterDataForUser($_POST, ["payment_type", "save_address"]);
-            $user->saveBillingAddress($data);
-            $this->recap();
+            $address = new BillingAddress($data);
+            $address->saveBillingAddress($data);
+            $this->recap($data);
         } catch (Exception $e) {
             // TODO : deal with duplicate entry error (Integrity constraint violation: 1062)
             show($e->getMessage());
@@ -113,6 +127,21 @@ class OrderController implements ControllerInterface {
 
     private function filterDataForUser(array $data, array $wrongProperties): array {
         return array_filter($data, fn($key) => !in_array($key, $wrongProperties), ARRAY_FILTER_USE_KEY);
+    }
+
+    /**
+     * Get a billing address by its slug
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     * @param string $addressSlug
+     * @return array|null
+     */
+
+    private function getOneBillingAddress(string $addressSlug): array|null { // TODO : remove if unused
+        $address = new BillingAddress();
+        $address = $address->getOne($addressSlug);
+        return $address;
     }
 
 }

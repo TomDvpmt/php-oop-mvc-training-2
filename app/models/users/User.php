@@ -5,6 +5,7 @@ namespace PhpTraining2\models\users;
 use Exception;
 use PhpTraining2\core\Model;
 use PhpTraining2\exceptions\UserCreateException;
+use PhpTraining2\models\BillingAddress;
 use RuntimeException;
 
 class User implements UserInterface {
@@ -59,13 +60,14 @@ class User implements UserInterface {
      * 
      * @access public
      * @package PhpTraining2\models\users
+     * @return array|null
      */
 
-    public function getOne(string $selector, mixed $value): array|bool 
+    public function getOne(string $selector, mixed $value): array|null 
     {
         $this->setWhere("$selector = :$selector");
         $result = $this->find([$selector => $value]);
-        return $result ? (array) $result[0] : false;
+        return $result ? (array) $result[0] : null;
     }
 
 
@@ -74,12 +76,13 @@ class User implements UserInterface {
      * 
      * @access public
      * @package PhpTraining2\models\users
+     * @return array|null
      */
 
-    public function getOneById(): array|bool {
+    public function getOneById(): array|null {
         $this->setWhere("id = :id");
         $result = $this->find(["id" => $this->id]);
-        return $result ? (array) $result[0] : false;
+        return $result ? (array) $result[0] : null;
     }
 
 
@@ -118,25 +121,19 @@ class User implements UserInterface {
         return [];
     }
 
+    
     /**
      * Get user's registered billing addresses
      * 
      * @access public
      * @package PhpTraining2\models\users
+     * @return array|null
      */
 
-    public function getBillingAddresses(): array|bool {
-        $this->setTable("user_billing_addresses");
-        $this->setWhere("user_id = :id");
-        $this->setOrderColumn("address_slug");
-        $addresses = $this->find(["id" => $this->id]);
+    public function getBillingAddresses(): array|null {
+        $address = new BillingAddress();
+        $userId = $this->id;
+        $addresses = $address->getAll($userId);
         return $addresses;
-    }
-
-
-    public function saveBillingAddress(array $data): void {
-        $data["user_id"] = $this->id;
-        $this->setTable("user_billing_addresses");
-        $this->create($data);
     }
 }

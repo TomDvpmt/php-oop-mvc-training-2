@@ -1,3 +1,10 @@
+.billing__form {
+    input[readonly] {
+        background-color: $color-background-primary-dark;
+        border: none;
+    }
+}
+
 #address-slug-field {
     display: none;
 

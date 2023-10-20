@@ -14,7 +14,7 @@ interface UserInterface {
      * @return array
      */
     
-    function getOne(string $selector, mixed $value): array|bool;
+    function getOne(string $selector, mixed $value): array|null;
 
     function createOne();
 
