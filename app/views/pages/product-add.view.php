@@ -3,11 +3,12 @@
 $title = "Add a product";
 
 $errorMessage = $data["error"] ?? null;
+$successMessage = $data["success"] ?? null;
 
 ob_start()?>
 
 <form action="" method="POST" enctype="multipart/form-data" class="form" >
-    <?php echo isset($errorMessage) ? "<p class='error'>" . $errorMessage . "</p>" : null ?>
+    <?php echo $errorMessage ? "<p class='error'>" . $errorMessage . "</p>" : null ?>
     <div class="form__field">
         <label for="name">* Name:</label>
         <input type="text" name="name" id="name" value="<?=$_POST["name"] ?? ""?>"/>
@@ -46,7 +47,7 @@ ob_start()?>
 ob_start(); ?>
 <div class="page__content add-product">
     <form action="" method="GET" class="form">
-        <?php echo isset($successMessage) ? "<p class='success'>" . $successMessage . "</p>" : null ?>
+        <?= $successMessage ? "<p class='success'>" . $successMessage . "</p>" : null ?>
         <!-- <input type="hidden" name="action" value="add"/>   -->
         <div class="form__field">
             <label for="category">Product category :</label>

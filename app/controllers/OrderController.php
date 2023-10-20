@@ -34,6 +34,9 @@ class OrderController implements ControllerInterface {
         // if(!$this->isUserLoggedIn()) {
         //     $this->sendToSigninPage("order?action=billing");
         // }
+
+        // TODO : choose billing address or create a new one
+
         $this->view("pages/billing");
     }
 
@@ -63,10 +66,17 @@ class OrderController implements ControllerInterface {
     public function confirm(): void {
         $this->cart->removeAllItems();
         $order = new Order();
-        $orderId = $order->getId();
+        
+        // TODO : register billing address
 
-        // Register order in DB
+        // TODO : Register order in DB
+        
+        $orderId = $order->getId();
 
         $this->view("pages/confirmation", ["orderId" => $orderId]);
     }
+
+
+
+
 }

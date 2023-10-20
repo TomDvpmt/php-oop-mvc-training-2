@@ -1,9 +1,8 @@
 class Billing {
     constructor() {
         this.inputs = document.getElementsByClassName("billing-field");
-        console.log(this.inputs);
+        this.paymentOption = document.getElementById("demo-payment-type");
         this.fillButton = document.getElementById("billing-fill-button");
-        console.log(this.fillButton);
         this.demoData = {
             name: "Tintin",
             email: "the_unicorn@mock.com",
@@ -21,6 +20,7 @@ class Billing {
                 input.value = this.demoData[input.name];
             }
         });
+        this.paymentOption.setAttribute("selected", true);
     };
 
     setFillButtonListener() {

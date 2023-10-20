@@ -1,11 +1,12 @@
 <?php
 
 $title = "Sign in";
+$errorMessage = $data["error"] ?? null;
 
 ob_start();?>
 <div class="page__content signin">
     <form method="POST" class="signin__form form" novalidate>
-        <?= !empty($errorMessage) ? "<p class='error'>" . $errorMessage . "</p>" : null ?>
+        <?= $errorMessage ? "<p class='error'>" . $errorMessage . "</p>" : null ?>
         <div class="form__field">
             <label for="email">* Email:</label> 
             <input type="email" name="email" id="email" value="<?=$_POST["email"] ?? ""?>" required/>

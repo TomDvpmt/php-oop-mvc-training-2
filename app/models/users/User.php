@@ -7,7 +7,7 @@ use PhpTraining2\core\Model;
 use PhpTraining2\exceptions\UserCreateException;
 use RuntimeException;
 
-abstract class User implements UserInterface {
+class User implements UserInterface {
     use Model;
 
     public function __construct(
@@ -20,8 +20,8 @@ abstract class User implements UserInterface {
     )
     {
         $this->setTable("users");
-        if(isset($_SESSION["user"]["id"])) {
-            $this->id = $_SESSION["user"]["id"];
+        if(isset($_SESSION["userId"])) {
+            $this->setId($_SESSION["userId"]);
         }
     }
 
@@ -32,7 +32,7 @@ abstract class User implements UserInterface {
      * @package PhpTraining2\models
      */
 
-    protected function setId(string|int $id): void 
+    protected function setId(int $id): void 
     {
         if(!intval($id)) {
             throw new RuntimeException("Invalid id type.");
@@ -67,6 +67,22 @@ abstract class User implements UserInterface {
         return $result ? (array) $result[0] : false;
     }
 
+
+    /**
+     * Get a user by its id
+     * 
+     * @access public
+     * @package PhpTraining2\models
+     */
+
+    public function getOneById(): array|bool {
+        $this->setWhere("id = :id");
+        $result = $this->find(["id" => $this->id]);
+        return $result ? (array) $result[0] : false;
+    }
+
+
+
     public function createOne() 
     {
         try {
@@ -95,5 +111,9 @@ abstract class User implements UserInterface {
     public function alreadyExists(): bool 
     {
         return (bool) $this->getOne("email = :email", $this->email);
+    }
+
+    public function getOrders(): array {
+        return [];
     }
 }

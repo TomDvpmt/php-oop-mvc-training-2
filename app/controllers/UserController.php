@@ -9,7 +9,6 @@ use PhpTraining2\exceptions\FormPropertyAlreadyExistsException;
 use PhpTraining2\exceptions\UserInvalidCredentialsException;
 use PhpTraining2\models\forms\UserFormSignIn;
 use PhpTraining2\models\forms\UserFormSignUp;
-use PhpTraining2\models\users\Customer;
 use PhpTraining2\models\users\User;
 
 class UserController implements ControllerInterface {
@@ -49,18 +48,18 @@ class UserController implements ControllerInterface {
                 return;
             }
 
-            /* User registering (default role : Customer) */
+            /* User registering */
             $finalSignUpData = array_merge($tempData["notToValidate"], $validated);
             $hashedPassword = $form->getHashedPassword($_POST["password"]);
             $finalSignUpData["password"] = $hashedPassword;
             
-            $customer = new Customer(...$finalSignUpData);
+            $user = new User(...$finalSignUpData);
 
             try {
-                if($customer->alreadyExists()) {
+                if($user->alreadyExists()) {
                     throw new FormPropertyAlreadyExistsException("email address");
                 };
-                $customer->createOne();
+                $user->createOne();
             } catch (Exception $e) {
                 $this->view("pages/signup", $_POST, $e->getMessage());
                 return;
@@ -102,11 +101,11 @@ class UserController implements ControllerInterface {
                     "value" => $_POST["email"]
                 ];
                 $sanitizedEmail = $form->sanitizeInput($emailInput)["value"]; // TODO : test email sanitation
-                $customer = (new Customer())->getOne("email", $sanitizedEmail);
-                if(!$customer) {
+                $user = (new User())->getOne("email", $sanitizedEmail);
+                if(!$user) {
                     throw new UserInvalidCredentialsException();
                 }
-                $isPasswordMatch = password_verify($_POST["password"], $customer["password"]);
+                $isPasswordMatch = password_verify($_POST["password"], $user["password"]);
                 if(!$isPasswordMatch) {
                     throw new UserInvalidCredentialsException();
                 }
@@ -116,7 +115,7 @@ class UserController implements ControllerInterface {
             }
 
             /* Sign in */
-            $_SESSION["userId"] = $customer["id"];
+            $_SESSION["userId"] = $user["id"];
             header("Location:" . ROOT);
         }
         $this->view("pages/signin");
@@ -135,8 +134,58 @@ class UserController implements ControllerInterface {
         header("Location:" . ROOT);
     }
 
+    /**
+     * Get user info
+     * 
+     * @access private
+     * @package PhpTraining2\controllers
+     */
 
-    private function isUserSignedIn(): bool {
+    private function getUserInfo(): array {
+        $user = (new User())->getOneById();
+        return $user;
+    }
+
+    /**
+     * Check if user is signed in
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
+
+    public function isUserSignedIn(): bool {
         return  isset($_SESSION["userId"]);
+    }
+
+
+    /**
+     * Display the user info view
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
+
+    public function info(): void {
+        try {
+            $userFullInfo = $this->getUserInfo();
+        } catch (Exception) {
+            $this->view("pages/user-info", ["error" => "Unable to get user data."]);
+            return;
+        }
+        $propertiesToShow = ["email", "first_name", "last_name"];
+        $userInfo = array_filter($userFullInfo, fn($key) => in_array($key, $propertiesToShow), ARRAY_FILTER_USE_KEY);
+        $this->view("pages/user-info", $userInfo);
+    }
+
+
+    /**
+     * Display the user orders view
+     * 
+     * @access public
+     * @package PhpTraining2\controllers
+     */
+
+    public function orders(): void {
+        $this->view("pages/user-orders");
     }
 }

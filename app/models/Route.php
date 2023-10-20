@@ -14,6 +14,8 @@ class Route {
     {      
         $this->setMethod();
         $this->setControllerName();
+        $userId = $_SESSION["userId"] ?? "none";
+        show("userId : " . $userId);
     }
 
     /**

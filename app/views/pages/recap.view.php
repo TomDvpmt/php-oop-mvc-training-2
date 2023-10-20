@@ -5,8 +5,9 @@ $billingGrid = [];
 $itemsGrid = [];
 
 foreach($data["billingInfo"] as $key => $value) {
+    $formatedKey = ucfirst(str_replace("_", " ", $key));
     ob_start();?>
-    <p class="recap__billing-info__field"><?=ucfirst($key)?>: <?=$value?></p>
+    <p class="recap__billing-info__field"><?=ucfirst($formatedKey)?>: <?=$value?></p>
     <?php $field = ob_get_clean();
     $billingGrid[] = $field;
 }

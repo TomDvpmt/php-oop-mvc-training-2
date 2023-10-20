@@ -4,10 +4,17 @@ $cartItemsNumber = isset($_SESSION["cart"]) ? count($_SESSION["cart"]) : 0;
 
 ob_start(); ?>
 <li class="nav__menu__item nav__menu__item--icon-text">
-    <a href="<?=ROOT?>user/signout"><i class="fa-solid fa-arrow-right-from-bracket"></i></i><span>Sign out</span></a>
+    <a href="<?=ROOT?>user/signout"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Sign out</span></a>
+</li>
+<li class="nav__menu__item nav__menu__item--icon-text">
+    <a href="<?=ROOT?>user/info"><i class="fa-regular fa-address-card"></i><span>My info</span></a>
+</li>
+<li class="nav__menu__item nav__menu__item--icon-text">
+    <a href="<?=ROOT?>user/orders"><i class="fa-solid fa-sack-dollar"></i><span>My orders</span></a>
 </li>
 <li class="nav__menu__item">
-    <a href="<?=ROOT?>products/add">Add a product</a>
+    <!-- TODO: admin only -->
+    <a href="<?=ROOT?>products/add">(Admin) Add a product</a>
 </li>
 <?php $userSignedInMenu = ob_get_clean();
 
@@ -16,7 +23,7 @@ ob_start(); ?>
     <a href="<?=ROOT?>user/signin"><i class="fa-solid fa-arrow-right-to-bracket"></i><span>Sign in</span></a>
 </li>
 <li class="nav__menu__item nav__menu__item--icon-text">
-    <a href="<?=ROOT?>user/signup"><i class="fa-solid fa-user-plus"></i></i><span>Sign up</span></a>
+    <a href="<?=ROOT?>user/signup"><i class="fa-solid fa-user-plus"></i><span>Sign up</span></a>
 </li>
 <?php $userSignedOutMenu = ob_get_clean();
 

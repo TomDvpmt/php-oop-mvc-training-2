@@ -34,6 +34,16 @@ ob_start();?>
             <label for="country">Country: </label>
             <input type="text" name="country" id="country" class="billing-field"><!-- TODO : required -->
         </div>
+        <div class="form__field">
+            <label for="payment_type">Payment type :</label>
+            <select name="payment_type" id="payment_type" required>
+                <option value="">-- How do you want to pay? --</option>
+                <option value="library card">Library card</option>
+                <option value="Monopoly bills">Monopoly bills</option>
+                <option id="demo-payment-type" value="spice shipment">Spice shipment</option>
+                <option value="the Force">I'll use the Force</option>
+            </select>
+        </div>
         <input type="submit" value="Continue">
     </form>
 </div>

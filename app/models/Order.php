@@ -11,7 +11,7 @@ class Order {
     public function __construct()
     {
         if(!isset($_SESSION["orderId"])) {
-            $this->id = $this->generateOrderId();
+            $this->id = $this->generateOrderId(); // TODO : replace with DB id
             $_SESSION["orderId"] = $this->id;
         } else {
             $this->id = $_SESSION["orderId"];

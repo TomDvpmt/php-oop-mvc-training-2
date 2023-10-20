@@ -48,6 +48,20 @@ trait Database {
                     is_admin BOOL DEFAULT 0 NOT NULL
                 );
             ",
+            "
+                CREATE TABLE IF NOT EXISTS user_billing_addresses (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    address_slug VARCHAR(200) NOT NULL,
+                    name VARCHAR(200) NOT NULL,
+                    phone VARCHAR(30) NOT NULL,
+                    address VARCHAR(100) NOT NULL,
+                    zipcode VARCHAR(20) NOT NULL,
+                    city VARCHAR(50) NOT NULL,
+                    country VARCHAR(50) NOT NULL,
+                    FOREIGN KEY (user_id) REFERENCES users(id)
+                );
+            ",
             // products
             "
                 CREATE TABLE IF NOT EXISTS products (
